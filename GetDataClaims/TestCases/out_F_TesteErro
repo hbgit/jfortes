@@ -1,0 +1,37 @@
+ESC/Java version ESCJava-2.0.5
+MySamples/codes/TestCases/F_TesteErro.java: Caution: Using given file as the .java file, even though it is not the java file for F_TesteErro on the classpath
+    [0.064 s 32112640 bytes]
+
+TesteErro ...
+  Prover started:0.027 s 28159144 bytes
+    [0.657 s 28801568 bytes]
+
+TesteErro: main(java.lang.String[]) ...
+------------------------------------------------------------------------
+MySamples/codes/TestCases/F_TesteErro.java:3: Warning: Possible null dereference (Null)
+    System.out.println("inicio do main");
+              ^
+------------------------------------------------------------------------
+    [0.207 s 30086240 bytes]  failed
+
+TesteErro: metodo1() ...
+------------------------------------------------------------------------
+MySamples/codes/TestCases/F_TesteErro.java:9: Warning: Possible null dereference (Null)
+    System.out.println("inicio do metodo1");
+              ^
+------------------------------------------------------------------------
+    [0.076 s 30728520 bytes]  failed
+
+TesteErro: metodo2() ...
+------------------------------------------------------------------------
+MySamples/codes/TestCases/F_TesteErro.java:15: Warning: Possible null dereference (Null)
+    System.out.println("inicio do metodo2");
+              ^
+------------------------------------------------------------------------
+    [0.138 s 32013208 bytes]  failed
+
+TesteErro: TesteErro() ...
+    [0.025 s 32655672 bytes]  passed
+  [1.106 s 32655672 bytes total]
+1 caution
+3 warnings

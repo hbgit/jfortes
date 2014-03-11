@@ -1,0 +1,24 @@
+ESC/Java version ESCJava-2.0.5
+MySamples/codes/TestCases/F_Divisao.java: Caution: Using given file as the .java file, even though it is not the java file for Divisao on the classpath
+    [0.059 s 32112640 bytes]
+
+Divisao ...
+MySamples/codes/TestCases/F_Divisao.java:2: Caution: type Divisao must be declared in a file named Divisao.java if it is to be declared public.
+public class Divisao {
+             ^
+  Prover started:0.039 s 28164040 bytes
+    [0.679 s 28806376 bytes]
+
+Divisao: main(java.lang.String[]) ...
+------------------------------------------------------------------------
+MySamples/codes/TestCases/F_Divisao.java:5: Warning: Possible division by zero (ZeroDiv)
+        soma = numA + numB + numC/numA;
+                                 ^
+------------------------------------------------------------------------
+    [0.19 s 30095752 bytes]  failed
+
+Divisao: Divisao() ...
+    [0.025 s 30095752 bytes]  passed
+  [0.896 s 30095752 bytes total]
+2 cautions
+1 warning

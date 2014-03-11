@@ -1,0 +1,82 @@
+ESC/Java version ESCJava-2.0.5
+MySamples/codes/TestCases/F_MemoryLeak.java: Caution: Using given file as the .java file, even though it is not the java file for MemoryLeak on the classpath
+    [0.08 s 32112640 bytes]
+
+MemoryLeak ...
+MySamples/codes/TestCases/F_MemoryLeak.java:12: Caution: type MemoryLeak must be declared in a file named MemoryLeak.java if it is to be declared public.
+                public class MemoryLeak
+                             ^
+  Prover started:0.032 s 29403200 bytes
+    [0.725 s 30045520 bytes]
+
+MemoryLeak: main(java.lang.String[]) ...
+------------------------------------------------------------------------
+MySamples/codes/TestCases/F_MemoryLeak.java:19: Warning: Possible null dereference (Null)
+                        System.out.print("Press any key to start memor ...
+                                  ^
+------------------------------------------------------------------------
+    [0.632 s 35184720 bytes]  failed
+
+MemoryLeak: MemoryLeak() ...
+    [0.023 s 35184720 bytes]  passed
+  [1.383 s 35184720 bytes total]
+
+Stack ...
+    [0.0070 s 35184720 bytes]
+
+Stack: Stack(int) ...
+------------------------------------------------------------------------
+MySamples/codes/TestCases/F_MemoryLeak.java:45: Warning: Possible attempt to allocate array of negative length (NegSize)
+                        this.elements = new Object[initialCapacity];
+                                                  ^
+------------------------------------------------------------------------
+    [0.095 s 35827016 bytes]  failed
+
+Stack: push(java.lang.Object) ...
+------------------------------------------------------------------------
+MySamples/codes/TestCases/F_MemoryLeak.java:51: Warning: Possible null dereference (Null)
+                        elements[size++] = e;
+                                ^
+------------------------------------------------------------------------
+MySamples/codes/TestCases/F_MemoryLeak.java:51: Warning: Possible negative array index (IndexNegative)
+                        elements[size++] = e;
+                                ^
+------------------------------------------------------------------------
+MySamples/codes/TestCases/F_MemoryLeak.java:51: Warning: Array index possibly too large (IndexTooBig)
+                        elements[size++] = e;
+                                ^
+------------------------------------------------------------------------
+MySamples/codes/TestCases/F_MemoryLeak.java:51: Warning: Type of right-hand side possibly not a subtype of array element type (ArrayStore)
+                        elements[size++] = e;
+                                         ^
+------------------------------------------------------------------------
+    [0.249 s 37111976 bytes]  failed
+
+Stack: pop() ...
+------------------------------------------------------------------------
+MySamples/codes/TestCases/F_MemoryLeak.java:58: Warning: Possible null dereference (Null)
+                            return elements[--size]; // MEMORY LEAK
+                                           ^
+Execution trace information:
+    Executed then branch in "MySamples/codes/TestCases/F_MemoryLeak.java", line 57, col 10.
+
+------------------------------------------------------------------------
+MySamples/codes/TestCases/F_MemoryLeak.java:58: Warning: Array index possibly too large (IndexTooBig)
+                            return elements[--size]; // MEMORY LEAK
+                                           ^
+Execution trace information:
+    Executed then branch in "MySamples/codes/TestCases/F_MemoryLeak.java", line 57, col 10.
+
+------------------------------------------------------------------------
+    [0.113 s 37754344 bytes]  failed
+
+Stack: ensureCapacity() ...
+------------------------------------------------------------------------
+MySamples/codes/TestCases/F_MemoryLeak.java:69: Warning: Possible null dereference (Null)
+                        if (elements.length == size)
+                                    ^
+------------------------------------------------------------------------
+    [0.065 s 38396632 bytes]  failed
+  [0.529 s 38396632 bytes total]
+2 cautions
+9 warnings

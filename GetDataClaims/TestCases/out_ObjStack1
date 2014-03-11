@@ -1,0 +1,47 @@
+ESC/Java version ESCJava-2.0.5
+MySamples/codes/TestCases/ObjStack1.java: Caution: Using given file as the .java file, even though it is not the java file for ObjStack1 on the classpath
+    [0.069 s 32112640 bytes]
+
+ObjStack ...
+  Prover started:0.027 s 23624736 bytes
+    [0.451 s 23624736 bytes]
+
+ObjStack: ObjStack() ...
+    [0.138 s 24909536 bytes]  passed
+
+ObjStack: Push(java.lang.Object) ...
+------------------------------------------------------------------------
+MySamples/codes/TestCases/ObjStack1.java:12: Warning: Array index possibly too large (IndexTooBig)
+    a[n++] = o;
+     ^
+------------------------------------------------------------------------
+MySamples/codes/TestCases/ObjStack1.java:12: Warning: Type of right-hand side possibly not a subtype of array element type (ArrayStore)
+    a[n++] = o;
+           ^
+------------------------------------------------------------------------
+MySamples/codes/TestCases/ObjStack1.java:12: Warning: Possible assignment of null to variable declared non_null (NonNull)
+    a[n++] = o;
+           ^
+Associated declaration is "MySamples/codes/TestCases/ObjStack1.java", line 2, col 6:
+  /*@ non_null */ Object [] a;  
+      ^
+------------------------------------------------------------------------
+    [0.217 s 26194144 bytes]  failed
+
+ObjStack: Pop() ...
+------------------------------------------------------------------------
+MySamples/codes/TestCases/ObjStack1.java:17: Warning: Array index possibly too large (IndexTooBig)
+    Object o = a[--n];
+                ^
+------------------------------------------------------------------------
+MySamples/codes/TestCases/ObjStack1.java:18: Warning: Possible assignment of null to variable declared non_null (NonNull)
+    a[n] = null;
+         ^
+Associated declaration is "MySamples/codes/TestCases/ObjStack1.java", line 2, col 6:
+  /*@ non_null */ Object [] a;  
+      ^
+------------------------------------------------------------------------
+    [0.091 s 26836424 bytes]  failed
+  [0.899 s 26836424 bytes total]
+1 caution
+5 warnings

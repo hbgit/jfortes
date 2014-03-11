@@ -1,0 +1,24 @@
+ESC/Java version ESCJava-2.0.5
+MySamples/codes/TestCases/F_Deadlock.java: Caution: Using given file as the .java file, even though it is not the java file for Deadlock on the classpath
+    [0.071 s 32112640 bytes]
+
+Deadlock ...
+MySamples/codes/TestCases/F_Deadlock.java:2: Caution: type Deadlock must be declared in a file named Deadlock.java if it is to be declared public.
+public class Deadlock {
+             ^
+  Prover started:0.036 s 30099560 bytes
+    [0.765 s 30744904 bytes]
+
+Deadlock: main(java.lang.String[]) ...
+MySamples/codes/TestCases/F_Deadlock.java:8: Caution: Not checking body of anonymous class (subclass of Thread)
+    Thread t1 = new Thread() {
+                             ^
+MySamples/codes/TestCases/F_Deadlock.java:29: Caution: Not checking body of anonymous class (subclass of Thread)
+    Thread t2 = new Thread() {
+                             ^
+    [0.194 s 32036736 bytes]  passed
+
+Deadlock: Deadlock() ...
+    [0.027 s 32036736 bytes]  passed
+  [0.987 s 32036736 bytes total]
+4 cautions
