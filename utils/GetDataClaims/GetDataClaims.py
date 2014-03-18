@@ -20,7 +20,7 @@ import re
 
 
 
-class GetDataClaims():
+class GetDataClaims(object):
 
     def __init__(self):
         self.list_lines_file = []
@@ -64,6 +64,8 @@ class GetDataClaims():
             # Identify begin block, e.g., -----------------
             matchTryBeginBlock = matchIdentifyBlock.match(self.list_lines_file[index])
 
+            # Identify if in the claim block has the trace to variable in the claim
+            flag_has_trace_var = False
 
             if matchTryBeginBlock:
 
@@ -94,6 +96,18 @@ class GetDataClaims():
                     #print("\t Claim: %s " % self.getClaim(self.list_lines_file[index]))
                     self.list_data_claims_2_csv.append(self.getClaim(self.list_lines_file[index]))
 
+                    # Get the variable location in the claim if there is
+                    index += 2 # skip ...............^ <- Identifier
+                    matchTrace = re.search(r'^Execution trace.*', self.list_lines_file[index])
+                    if matchTrace:
+                        flag_has_trace_var = True
+                        index += 1 # Going to the line with the date trace
+                        matchCol = re.search(r'col[ ]+([0-9])[.]$', self.list_lines_file[index])
+                        if matchCol:
+                            # TODO: gathering only the text realted to the variable indicated in the claim $$$
+                            self.list_data_claims_2_csv.append(matchCol.group(1))
+
+
                     flag_write_csv = True
 
                     # Identify the next block
@@ -118,7 +132,11 @@ class GetDataClaims():
 
             # write the line of CSV output
             if flag_write_csv:
-                recFormatCsv = ' ; '.join(self.list_data_claims_2_csv)
+                if flag_has_trace_var:
+                    recFormatCsv = ' ; '.join(self.list_data_claims_2_csv)
+                else:
+                    recFormatCsv = ' ; '.join(self.list_data_claims_2_csv)
+                    recFormatCsv += ' ;  NO'
                 print(recFormatCsv)
                 self.list_data_claims_2_csv = []
                 flag_write_csv = False
@@ -154,11 +172,9 @@ class GetDataClaims():
 
 
     def writeHeader2Csv(self):
-        head = ['Number of Line','Comments','Claim']
+        head = ['Number of Line','Comments','Claim','Col Location']
         recFormatCsv = ' ; '.join(head)
         print(recFormatCsv)
-
-
 
 
 
@@ -177,8 +193,6 @@ if __name__ == "__main__":
         print("Usage: ./script <output from ESC/JAVA>")
         sys.exit()
 
-    print("Reading CSV Output ESC/JAVA... ")
-    print("")
     test = GetDataClaims()
     test.readFile(path_input_file)
     #test.prinFile()
