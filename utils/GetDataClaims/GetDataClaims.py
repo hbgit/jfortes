@@ -97,6 +97,17 @@ class GetDataClaims(object):
                     self.list_data_claims_2_csv.append(self.getClaim(self.list_lines_file[index]))
 
                     # Get the variable location in the claim if there is
+                    # TODO: Thinking in other approach, cuz not all ESC/JAVA output has col location
+                    # HIP1: The best way is to use a grammar to isolate the variable according to claim
+                    # HIP2: Use the ...^ <- Identifier to get the variable, like this:
+                    #       a = "      if (a[i] < m) {"
+                    #       b = "           ^"
+                    #       list_a = list(a)
+                    #       get_index = (len(list(b)) - 1)
+                    #       print list_a[get_index] <<<< almost there
+                    #       Is necessary to identify first what type of the claim is to gather from claim all needed data
+                    #>>> This transformation seems to be the TRANSLATION
+
                     index += 2 # skip ...............^ <- Identifier
                     matchTrace = re.search(r'^Execution trace.*', self.list_lines_file[index])
                     if matchTrace:
