@@ -8,7 +8,7 @@ __author__ = 'Herbert OLiveira Rocha'
 # Goal: This program aims to gather the data in output from
 #       the ESC/JAVA.
 #
-# Status: [DOING]
+# Status: [DONE]
 #----------------------------------------------------------
 
 
@@ -96,27 +96,17 @@ class GetDataClaims(object):
                     #print("\t Claim: %s " % self.getClaim(self.list_lines_file[index]))
                     self.list_data_claims_2_csv.append(self.getClaim(self.list_lines_file[index]))
 
-                    # Get the variable location in the claim if there is
-                    # TODO: Thinking in other approach, cuz not all ESC/JAVA output has col location
-                    # HIP1: The best way is to use a grammar to isolate the variable according to claim
-                    # HIP2: Use the ...^ <- Identifier to get the variable, like this:
-                    #       a = "      if (a[i] < m) {"
-                    #       b = "           ^"
-                    #       list_a = list(a)
-                    #       get_index = (len(list(b)) - 1)
-                    #       print list_a[get_index] <<<< almost there
-                    #       Is necessary to identify first what type of the claim is to gather from claim all needed data
-                    #>>> This transformation seems to be the TRANSLATION
-
-                    index += 2 # skip ...............^ <- Identifier
-                    matchTrace = re.search(r'^Execution trace.*', self.list_lines_file[index])
-                    if matchTrace:
-                        flag_has_trace_var = True
-                        index += 1 # Going to the line with the date trace
-                        matchCol = re.search(r'col[ ]+([0-9])[.]$', self.list_lines_file[index])
-                        if matchCol:
-                            # TODO: gathering only the text realted to the variable indicated in the claim $$$
-                            self.list_data_claims_2_csv.append(matchCol.group(1))
+                    # Get the variable location in the claim based on this ...^ <- Identifier
+                    index += 1
+                    self.list_data_claims_2_csv.append(self.list_lines_file[index].rstrip('\n'))
+                    #matchTrace = re.search(r'^Execution trace.*', self.list_lines_file[index])
+                    # if matchTrace:
+                    #     flag_has_trace_var = True
+                    #     index += 1 # Going to the line with the date trace
+                    #     matchCol = re.search(r'col[ ]+([0-9])[.]$', self.list_lines_file[index])
+                    #     if matchCol:
+                    #         # TODO: gathering only the text realted to the variable indicated in the claim $$$
+                    #         self.list_data_claims_2_csv.append(matchCol.group(1))
 
 
                     flag_write_csv = True
@@ -143,11 +133,12 @@ class GetDataClaims(object):
 
             # write the line of CSV output
             if flag_write_csv:
-                if flag_has_trace_var:
-                    recFormatCsv = ' ; '.join(self.list_data_claims_2_csv)
-                else:
-                    recFormatCsv = ' ; '.join(self.list_data_claims_2_csv)
-                    recFormatCsv += ' ;  NO'
+                recFormatCsv = ';'.join(self.list_data_claims_2_csv)
+                # if flag_has_trace_var:
+                #     recFormatCsv = ' ; '.join(self.list_data_claims_2_csv)
+                # else:
+                #     recFormatCsv = ' ; '.join(self.list_data_claims_2_csv)
+                #     recFormatCsv += ' ;  NO'
                 print(recFormatCsv)
                 self.list_data_claims_2_csv = []
                 flag_write_csv = False
@@ -177,14 +168,14 @@ class GetDataClaims(object):
 
     def getClaim(self, lineClaim):
         # Apply regex to get the claim of line i the claim
-        matchNumLine = re.search(r'(.*)', lineClaim)
+        matchNumLine = re.search(r'(.[^;]*)', lineClaim)
         if matchNumLine:
-            return matchNumLine.group(1)
+            return matchNumLine.group(1).rstrip('\n')
 
 
     def writeHeader2Csv(self):
-        head = ['Number of Line','Comments','Claim','Col Location']
-        recFormatCsv = ' ; '.join(head)
+        head = ['Number of Line','Comments','Claim','Point Data']
+        recFormatCsv = ';'.join(head)
         print(recFormatCsv)
 
 
