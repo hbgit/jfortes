@@ -16,6 +16,7 @@ __author__ = 'Herbert OLiveira Rocha'
 # From Python
 import sys
 import csv
+import re
 from collections import defaultdict
 
 
@@ -31,6 +32,7 @@ class IsolateDataClaim(object):
         self.claim_list_comments = []
         self.claim_list_claim = []
         self.claim_list_point_data = []
+        self.claim_list_tag_comm = []
 
         # CSV input
         self.pathCsvFile = ''
@@ -46,6 +48,7 @@ class IsolateDataClaim(object):
                     self.columns_csv[k].append(v)
 
         self.setData2Lists()
+        self.getTagsFromComments()
 
 
     def setData2Lists(self):
@@ -56,13 +59,15 @@ class IsolateDataClaim(object):
             self.claim_list_point_data.append(pt_data)
 
 
-    def showDataLoaded(self):
-        print(self.claim_list_line_num)
-        print(self.claim_list_comments)
-        #print(self.claim_list_claim)
-        #print(self.claim_list_point_data)
-
-        self.getObjectPointed()
+    def getTagsFromComments(self):
+        """
+        This tag will help to apply the rules to get the objects pointed in the claim
+        and also to apply the transformation rule
+        """
+        for eachComm in self.claim_list_comments:
+            matchTag = re.search(r'\((.[^ ]*)\)$', eachComm)
+            if matchTag:
+                self.claim_list_tag_comm.append(matchTag.group(1).rstrip('\n'))
 
 
     def getObjectPointed(self):
@@ -70,17 +75,39 @@ class IsolateDataClaim(object):
         This method is related to get the object pointed by
         identifier in the claim
         """
-        for eachCl,pt_data in zip(self.claim_list_claim,self.claim_list_point_data):
+        id = 0
+        while id < len(self.claim_list_claim):
             # Generating a list from the text claim
-            list_tmp_cl = list(eachCl)
+            list_tmp_cl = list(self.claim_list_claim[id])
             # Getting the index position pointed by identified
-            get_index = (len(list(pt_data)) - 1)
+            get_index = (len(list(self.claim_list_point_data[id])) - 1)
             print()
-            # TODO: Now is necessary to define the rule to get the correct object,
-            #       this based on the comments
-            print("From claim:    %s" % eachCl)
-            print("The object is: %s" % list_tmp_cl[get_index])
+            print("From claim   : %s" % self.claim_list_claim[id])
+            print("Tag Comment  : %s" % self.claim_list_tag_comm[id])
+            # DOING: Create a method to select the object and then apply the transformation rule
+            #       to the claims
+            print("The object is: %s" % self.getObjectInClaim(self.claim_list_tag_comm[id],self.claim_list_claim[id],get_index))
             print()
+
+            id += 1
+
+
+    def getObjectInClaim(self, tagComm, claim, indexPointed):
+        """
+        Method to gather the object pointed in the claim
+        """
+        # TODO: Create a approach to get the object based on the tagComm
+        #       Other point is thinking about how to get other objects
+        #       need to execute the claim translation
+        if tagComm == "IndexTooBig":
+            # This tag is related to UPPER BOUND violation of ARRAY
+            # I.e., A[I] -> "I < a.length()"
+            flagStop = False
+            while flagStop:
+                # Running the claim from indexPointed to last index of array name
+                flagStop = True
+
+
 
 
 
@@ -105,4 +132,5 @@ if __name__ == "__main__":
 
     test = IsolateDataClaim()
     test.loadDataFromCsv(path_input_file)
-    test.showDataLoaded()
+    #test.showDataLoaded()
+    test.getObjectPointed()
