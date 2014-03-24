@@ -16,8 +16,10 @@
     <inspection_tool class="PyUnresolvedReferencesInspection" enabled="true" level="WARNING" enabled_by_default="true">
       <option name="ignoredIdentifiers">
         <value>
-          <list size="1">
+          <list size="3">
             <item index="0" class="java.lang.String" itemvalue="mark_code.generate_map.generate_map" />
+            <item index="1" class="java.lang.String" itemvalue="sets" />
+            <item index="2" class="java.lang.String" itemvalue="ebnf" />
           </list>
         </value>
       </option>
