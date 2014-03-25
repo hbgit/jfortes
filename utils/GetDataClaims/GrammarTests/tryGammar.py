@@ -9,16 +9,23 @@ import ebnf
 import sets
 
 grammar = """
-digit_zero = "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" ;
-digit                = "0" | digit_zero ;
+prog =	(expr NEWLINE)* ;
+expr =	expr ('*'|'/') expr
+    |	expr ('+'|'-') expr
+    |	INT
+    |	'(' expr ')'
+    ;
+NEWLINE = [\r\n]+ ;
+INT     = [0-9]+ ;
 """
 
 
 
 e = ebnf.parse(grammar)
 #
-tokens = e['digit'].parseString('5')
+tokens = e['digit'].parseString('5122333')
+print(tokens)
 #e.parseString('5')
 
-for i,token in enumerate(tokens):
-    print(i,token)
+#for i,token in enumerate(tokens):
+#    print(i,token)
