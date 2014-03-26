@@ -38,6 +38,13 @@ class IsolateDataClaim(object):
         self.pathCsvFile = ''
         self.columns_csv = defaultdict(list) #we want a list to append each value in each column to
 
+        # Dictionary of regex to get data claim
+        # Here we have a list with regex and dictionary item related to tag_comm from claim
+        self.regex_patterns = {
+            # Case base: a[i] < m
+            'IndexTooBig': ['[^\(]*']
+        }
+
 
     def loadDataFromCsv(self, file):
         self.pathCsvFile = file
@@ -83,10 +90,10 @@ class IsolateDataClaim(object):
             get_index = (len(list(self.claim_list_point_data[id])) - 1)
             print()
             print("From claim   : %s" % self.claim_list_claim[id])
-            print("Tag Comment  : %s" % self.claim_list_tag_comm[id])
+            print("Tag comment  : %s" % self.claim_list_tag_comm[id])
             # DOING: Create a method to select the object and then apply the transformation rule
             #       to the claims
-            print("The object is: %s" % self.getObjectInClaim(self.claim_list_tag_comm[id],self.claim_list_claim[id],get_index))
+            print("The translation: %s" % self.getObjectInClaim(self.claim_list_tag_comm[id],self.claim_list_claim[id],get_index))
             print()
 
             id += 1
@@ -99,13 +106,52 @@ class IsolateDataClaim(object):
         # TODO: Create a approach to get the object based on the tagComm
         #       Other point is thinking about how to get other objects
         #       need to execute the claim translation
-        if tagComm == "IndexTooBig":
+
+        #self.isolateTextPointed(claim)
+
+        if tagComm in ["IndexTooBig","IndexNegative"]:
+            print(tagComm)
             # This tag is related to UPPER BOUND violation of ARRAY
             # I.e., A[I] -> "I < a.length()"
-            flagStop = False
-            while flagStop:
-                # Running the claim from indexPointed to last index of array name
-                flagStop = True
+            # TODO: Here we isolate the text code located to gather the data
+
+            #Isolating the text in the claim
+            # Running the claim from indexPointed to last index of array name
+            list_tmp_cl = list(claim)
+            # How is an array we need isolate two parts the array name and the index
+            # So we start to get the index
+            tmpIndex = indexPointed
+            isolateStrIndex = ''
+            while list_tmp_cl[tmpIndex] != "]":
+                #print(list_tmp_cl[tmpIndex],end="")
+                isolateStrIndex += list_tmp_cl[tmpIndex]
+                tmpIndex += 1
+            isolateStrIndex += "]"
+
+
+            # get the name array
+            tmpIndex = indexPointed
+            tmpIndex -= 1
+            isolateStrVarArr = ''
+            countFlag = 1
+            while (not list_tmp_cl[tmpIndex] in ['(',')',';','=']) and (tmpIndex >= 0):
+                matchBlank = re.search(r'\s', list_tmp_cl[tmpIndex])
+                if not matchBlank:
+                    countFlag += 1
+                    isolateStrVarArr += list_tmp_cl[tmpIndex]
+
+                if countFlag > 2:
+                    tmpIndex = -1
+
+                tmpIndex -= 1
+
+            strIsolaCl = isolateStrVarArr+isolateStrIndex
+            print("======> %s" % strIsolaCl)
+
+
+
+    def isolateTextPointed(self, claim, indexPointed):
+        return "as"
 
 
 
