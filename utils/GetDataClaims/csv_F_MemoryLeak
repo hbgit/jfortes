@@ -1,0 +1,10 @@
+Number of Line;Comments;Claim;Point Data
+19; Possible null dereference (Null);                        System.out.print("Press any key to start memor ...;                                  ^
+45; Possible attempt to allocate array of negative length (NegSize);                        this.elements = new Object[initialCapacity];                                                  ^
+51; Possible null dereference (Null);                        elements[size++] = e;                                ^
+51; Possible negative array index (IndexNegative);                        elements[size++] = e;                                ^
+51; Array index possibly too large (IndexTooBig);                        elements[size++] = e;                                ^
+51; Type of right-hand side possibly not a subtype of array element type (ArrayStore);                        elements[size++] = e;                                         ^
+58; Possible null dereference (Null);                            return elements[--size];                                           ^
+58; Array index possibly too large (IndexTooBig);                            return elements[--size];                                           ^
+69; Possible null dereference (Null);                        if (elements.length == size);                                    ^

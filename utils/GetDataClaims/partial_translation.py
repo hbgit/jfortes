@@ -25,6 +25,8 @@ class IsolateDataClaim(object):
     """
     This class has as main function isolate the variable or structure
     related in the claim
+
+    TODO: Remove unsed code <- development process
     """
 
     def __init__(self):
@@ -33,6 +35,7 @@ class IsolateDataClaim(object):
         self.claim_list_claim = []
         self.claim_list_point_data = []
         self.claim_list_tag_comm = []
+
 
         # CSV input
         self.pathCsvFile = ''
@@ -44,6 +47,13 @@ class IsolateDataClaim(object):
             # Case base: a[i] < m
             'IndexTooBig': ['[^\(]*']
         }
+
+        # Atributes for tags
+        self.claim_translated = ''
+        self.tag_name_array = ''
+        self.tag_index_array = ''
+
+
 
 
     def loadDataFromCsv(self, file):
@@ -108,9 +118,11 @@ class IsolateDataClaim(object):
         #       need to execute the claim translation
 
         #self.isolateTextPointed(claim)
+        self.claim_translated = ''
+
 
         if tagComm in ["IndexTooBig","IndexNegative"]:
-            print(tagComm)
+
             # This tag is related to UPPER BOUND violation of ARRAY
             # I.e., A[I] -> "I < a.length()"
             # TODO: Here we isolate the text code located to gather the data
@@ -125,6 +137,8 @@ class IsolateDataClaim(object):
             while list_tmp_cl[tmpIndex] != "]":
                 #print(list_tmp_cl[tmpIndex],end="")
                 isolateStrIndex += list_tmp_cl[tmpIndex]
+                if list_tmp_cl[tmpIndex] != "[":
+                    self.tag_index_array += list_tmp_cl[tmpIndex]
                 tmpIndex += 1
             isolateStrIndex += "]"
 
@@ -139,19 +153,66 @@ class IsolateDataClaim(object):
                 if not matchBlank:
                     countFlag += 1
                     isolateStrVarArr += list_tmp_cl[tmpIndex]
-
+                    self.tag_name_array += list_tmp_cl[tmpIndex]
                 if countFlag > 2:
                     tmpIndex = -1
 
                 tmpIndex -= 1
 
             strIsolaCl = isolateStrVarArr+isolateStrIndex
-            print("======> %s" % strIsolaCl)
+            #print("======> %s" % strIsolaCl)
 
+            # Apply the correct transformation rule
+            if tagComm == 'IndexTooBig':
+                self.claim_translated = self.tag_index_array+" <= "+self.tag_name_array+".length"
+            elif tagComm == 'IndexNegative':
+                self.claim_translated = self.tag_index_array+" >= 0"
+
+
+        elif tagComm == 'Null':
+
+            list_tmp_cl = list(claim)
+
+            # get the name var
+            tmpIndex = indexPointed
+
+            # Identify the type of NULL DEREFENCE
+            # Is a array -> ex: array.length
+            if list_tmp_cl[tmpIndex] == '.' or list_tmp_cl[tmpIndex] == '[':
+                tmpIndex -= 1
+                while tmpIndex >= 0 and not list_tmp_cl[tmpIndex] in ['(',')',';','=',' ']:
+                    self.claim_translated += list_tmp_cl[tmpIndex]
+                    tmpIndex -= 1
+                self.claim_translated = self.claim_translated[::-1]
+                self.claim_translated += " != NULL && "+self.claim_translated+".length() > 0"
+
+        elif tagComm == 'ZeroDiv':
+            list_tmp_cl = list(claim)
+            # get the name var
+            tmpIndex = indexPointed
+            if list_tmp_cl[tmpIndex] == '/':
+                tmpIndex += 1
+                while tmpIndex < len(list_tmp_cl) and not list_tmp_cl[tmpIndex] in [';']:
+                    self.claim_translated += list_tmp_cl[tmpIndex]
+                    tmpIndex += 1
+                self.claim_translated += " > 0"
+
+
+        self.reset_var_claims()
+        if self.claim_translated:
+            return self.claim_translated
+        else:
+            return 1
 
 
     def isolateTextPointed(self, claim, indexPointed):
         return "as"
+
+
+    def reset_var_claims(self):
+        # Atributes for tags
+        self.tag_name_array = ''
+        self.tag_index_array = ''
 
 
 
