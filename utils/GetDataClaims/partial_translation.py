@@ -20,6 +20,8 @@ import re
 from collections import defaultdict
 
 
+DEBUG_STATUS = False
+
 
 class IsolateDataClaim(object):
     """
@@ -93,18 +95,28 @@ class IsolateDataClaim(object):
         identifier in the claim
         """
         id = 0
+        if not DEBUG_STATUS:
+            print("Number of Line ; Original Claim ; Claim Translated ; Comments ")
+
         while id < len(self.claim_list_claim):
             # Generating a list from the text claim
             list_tmp_cl = list(self.claim_list_claim[id])
             # Getting the index position pointed by identified
             get_index = (len(list(self.claim_list_point_data[id])) - 1)
-            print()
-            print("From claim   : %s" % self.claim_list_claim[id])
-            print("Tag comment  : %s" % self.claim_list_tag_comm[id])
-            # DOING: Create a method to select the object and then apply the transformation rule
-            #       to the claims
-            print("The translation: %s" % self.getObjectInClaim(self.claim_list_tag_comm[id],self.claim_list_claim[id],get_index))
-            print()
+
+            if DEBUG_STATUS:
+                print()
+                print("From claim   : %s" % self.claim_list_claim[id])
+                print("Tag comment  : %s" % self.claim_list_tag_comm[id])
+                # DOING: Create a method to select the object and then apply the transformation rule
+                #       to the claims
+                print("The translation: %s" % self.getObjectInClaim(self.claim_list_tag_comm[id],self.claim_list_claim[id],get_index))
+                print()
+            # Print the new csv
+            else:
+                claim_translated = self.getObjectInClaim(self.claim_list_tag_comm[id],self.claim_list_claim[id],get_index)
+                row = self.claim_list_line_num[id].strip()+" ; "+self.claim_list_claim[id].strip()+" ; "+str(claim_translated)+" ; "+self.claim_list_comments[id].strip()
+                print(row)
 
             id += 1
 
@@ -171,20 +183,28 @@ class IsolateDataClaim(object):
 
         elif tagComm == 'Null':
 
-            list_tmp_cl = list(claim)
+            # Avoid System.out
+            matchSysOut = re.search(r'System\.out', claim)
 
-            # get the name var
-            tmpIndex = indexPointed
+            if not matchSysOut:
 
-            # Identify the type of NULL DEREFENCE
-            # Is a array -> ex: array.length
-            if list_tmp_cl[tmpIndex] == '.' or list_tmp_cl[tmpIndex] == '[':
-                tmpIndex -= 1
-                while tmpIndex >= 0 and not list_tmp_cl[tmpIndex] in ['(',')',';','=',' ']:
-                    self.claim_translated += list_tmp_cl[tmpIndex]
+                list_tmp_cl = list(claim)
+
+                # get the name var
+                tmpIndex = indexPointed
+
+                # Identify the type of NULL DEREFENCE
+                # Is a array -> ex: array.length
+                if list_tmp_cl[tmpIndex] == '.' or list_tmp_cl[tmpIndex] == '[':
                     tmpIndex -= 1
-                self.claim_translated = self.claim_translated[::-1]
-                self.claim_translated += " != NULL && "+self.claim_translated+".length() > 0"
+                    while tmpIndex >= 0 and not list_tmp_cl[tmpIndex] in ['(',')',';','=',' ']:
+                        self.claim_translated += list_tmp_cl[tmpIndex]
+                        tmpIndex -= 1
+                    self.claim_translated = self.claim_translated[::-1]
+                    self.claim_translated += " != NULL && "+self.claim_translated+".length() > 0"
+
+            else:
+                self.claim_translated = 1
 
         elif tagComm == 'ZeroDiv':
             list_tmp_cl = list(claim)
@@ -204,9 +224,6 @@ class IsolateDataClaim(object):
         else:
             return 1
 
-
-    def isolateTextPointed(self, claim, indexPointed):
-        return "as"
 
 
     def reset_var_claims(self):

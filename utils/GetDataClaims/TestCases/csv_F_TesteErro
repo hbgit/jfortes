@@ -1,0 +1,4 @@
+Number of Line;Comments;Claim;Point Data
+3; Possible null dereference (Null);    System.out.println("inicio do main");              ^
+9; Possible null dereference (Null);    System.out.println("inicio do metodo1");              ^
+15; Possible null dereference (Null);    System.out.println("inicio do metodo2");              ^

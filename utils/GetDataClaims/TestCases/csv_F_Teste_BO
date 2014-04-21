@@ -1,0 +1,2 @@
+Number of Line;Comments;Claim;Point Data
+6; Possible null dereference (Null);                System.out.println(soma);                          ^
