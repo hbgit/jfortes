@@ -21,6 +21,7 @@ from collections import defaultdict
 
 
 DEBUG_STATUS = False
+PRETTY_PRINT = False
 
 
 class IsolateDataClaim(object):
@@ -95,8 +96,12 @@ class IsolateDataClaim(object):
         identifier in the claim
         """
         id = 0
-        if not DEBUG_STATUS:
+        if not DEBUG_STATUS and not PRETTY_PRINT:
             print("Number of Line ; Original Claim ; Claim Translated ; Comments ")
+
+        if PRETTY_PRINT:
+            print("%11s ;%11s ;%11s ;%11s " % ("Number of Line","Original Claim","Claim Translated","Comments"))
+            print("%s" % ("-"*90))
 
         while id < len(self.claim_list_claim):
             # Generating a list from the text claim
@@ -115,10 +120,17 @@ class IsolateDataClaim(object):
             # Print the new csv
             else:
                 claim_translated = self.getObjectInClaim(self.claim_list_tag_comm[id],self.claim_list_claim[id],get_index)
-                row = self.claim_list_line_num[id].strip()+" ; "+self.claim_list_claim[id].strip()+" ; "+str(claim_translated)+" ; "+self.claim_list_comments[id].strip()
-                print(row)
+
+                if PRETTY_PRINT:
+                    print("%3s ;%50s ;%20s ;%11s " % (self.claim_list_line_num[id].strip(),self.claim_list_claim[id].strip(),str(claim_translated),self.claim_list_comments[id].strip()))
+                else:
+                    row = self.claim_list_line_num[id].strip()+" ; "+self.claim_list_claim[id].strip()+" ; "+str(claim_translated)+" ; "+self.claim_list_comments[id].strip()
+                    print(row)
 
             id += 1
+
+        if PRETTY_PRINT:
+            print("%s" % ("-"*90))
 
 
     def getObjectInClaim(self, tagComm, claim, indexPointed):
