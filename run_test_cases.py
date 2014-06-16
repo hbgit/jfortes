@@ -26,13 +26,12 @@ class RunTests(object):
                 if file.endswith(".java"):
                     get_path_program = os.path.join(root, file)
                     self.actualProgram = get_path_program
-                    print(get_path_program)
+                    #print(get_path_program)
                     self.run_test_in_jfortes(get_path_program)
 
 
     def run_test_in_jfortes(self, _pathjavafile):
-        saveresult = commands.getoutput(self.pathJfortes+" "+_pathjavafile)
-        # TODO: Planning a way to classify the results of the tests
+        saveresult = commands.getoutput(self.pathJfortes+" -t "+_pathjavafile)
         print(saveresult)
 
 
@@ -57,4 +56,5 @@ if __name__ == "__main__":
             sys.exit()
         else:
             executeTests = RunTests()
+            print("Program ; NOT translation ; INCOMPLETE translation ; FAILED translation ; OKAY translation")
             executeTests.load_dir_and_run_recursive(args.dirTestCasesDir)

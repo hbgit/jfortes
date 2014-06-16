@@ -10,6 +10,12 @@ __author__ = 'Herbert OLiveira Rocha'
 #       related in the claim.
 #
 # Status: [DOING]
+#
+# TODO: Create a flag to set the test where we need to check:
+#   (1) Number of the claims
+#   (2) Identify the number of the claims translated
+#   (3) Identify the number of the claims NOT translated (identify when we are not able to handle some part of the claim)
+#
 #----------------------------------------------------------
 
 
@@ -49,8 +55,17 @@ class IsolateDataClaim(object):
 
 
         # Flags
-        self.DEBUG_STATUS = False
-        self.PRETTY_PRINT = False
+        self.DEBUG_STATUS   = False
+        self.PRETTY_PRINT   = False
+        self.TESTING_STATUS = False
+
+
+        # For testing the translation
+        self.test_num_total_cl            = 0
+        self.test_num_total_failed_translate_cl = 0
+        self.test_num_actual_failed_translate_cl = 0
+        self.test_num_total_incomplete_trans_cl = 0
+        self.test_num_actual_incomplete_trans_cl = 0
 
 
         # CSV input
@@ -78,6 +93,10 @@ class IsolateDataClaim(object):
         self.PRETTY_PRINT = True
 
 
+    def set_testing_flag(self):
+        self.TESTING_STATUS = True
+
+
 
     def loadDataFromCsv(self, csvFileClaims, javaFile):
         self.pathCsvFile = csvFileClaims
@@ -94,6 +113,10 @@ class IsolateDataClaim(object):
 
     def setData2Lists(self):
         for line,comm,claim,pt_data,tag,annoted,annoted_pt in zip(self.columns_csv['Number of Line'],self.columns_csv['Comments'],self.columns_csv['Claim'],self.columns_csv['Point Data'],self.columns_csv['Tag'],self.columns_csv['Annoted'],self.columns_csv['Annoted Point']):
+
+            if self.TESTING_STATUS:
+                self.test_num_total_cl += 1
+
             if self.DEBUG_STATUS:
                 print("Data gather from csv file: ")
                 print("Line    : ",line)
@@ -132,14 +155,14 @@ class IsolateDataClaim(object):
         identifier in the claim
         """
         id = 0
-        if not self.DEBUG_STATUS and not self.PRETTY_PRINT:
+        if not self.DEBUG_STATUS and not self.PRETTY_PRINT and not self.TESTING_STATUS:
             print("Number of Line ; Original Claim ; Claim Translated ; Comments ")
 
         if self.PRETTY_PRINT:
             print("%11s ;%11s ;%11s ;%11s " % ("Number of Line","Original Claim","Claim Translated","Comments"))
             print("%s" % ("-"*90))
 
-        
+
         # >> Starting translation
         
         while id < len(self.claim_list_claim):
@@ -166,19 +189,27 @@ class IsolateDataClaim(object):
                     print("%3s ;%50s ;%20s ;%11s " % (self.claim_list_line_num[id].strip(),self.claim_list_claim[id].strip(),str(claim_translated),self.claim_list_comments[id].strip()))
                 else:
                     row = self.claim_list_line_num[id].strip()+" ; "+self.claim_list_claim[id].strip()+" ; "+str(claim_translated)+" ; "+self.claim_list_comments[id].strip()
-                    print(row)
+                    # >>> Print the translation
+                    if not self.TESTING_STATUS:
+                        print(row)
 
             id += 1
 
         if self.PRETTY_PRINT:
             print("%s" % ("-"*90))
 
+        if self.TESTING_STATUS:
+            # Print log TOTAL
+            print(self.pathJavaFile+" ; "+str(self.test_num_total_failed_translate_cl)+" ; "+str(self.test_num_total_incomplete_trans_cl)+" ; "+
+                  str(self.test_num_total_failed_translate_cl + self.test_num_total_incomplete_trans_cl)+" ; "+
+                  str(self.test_num_total_cl - (self.test_num_total_failed_translate_cl + self.test_num_total_incomplete_trans_cl)))
+
 
     def getObjectInClaim(self, lineNumber, tagComm, claim, indexPointed, annoted):
         """
         Method to gather the object pointed in the claim
         """
-        # TODO: Create a approach to get the object based on the tagComm
+        #
         #       Other point is thinking about how to get other objects
         #       need to execute the claim translation
 
@@ -229,9 +260,20 @@ class IsolateDataClaim(object):
 
             # Apply the correct transformation rule
             if tagComm == 'IndexTooBig':
-                self.claim_translated = self.tag_index_array+" <= "+self.tag_name_array+".length"
+                # Checking parts translated]
+                if not self.check_translated_is_empty(self.tag_index_array) and \
+                   not self.check_translated_is_empty(self.tag_name_array):
+                    self.claim_translated = self.tag_index_array+" <= "+self.tag_name_array+".length"
+                else:
+                    self.claim_translated = ""
+                    self.test_num_total_incomplete_trans_cl += 1
+
             elif tagComm == 'IndexNegative':
-                self.claim_translated = self.tag_index_array+" >= 0"
+                if not self.check_translated_is_empty(self.tag_index_array):
+                    self.claim_translated = self.tag_index_array+" >= 0"
+                else:
+                    self.claim_translated = ""
+                    self.test_num_total_incomplete_trans_cl += 1
 
 
         elif tagComm == 'Null':
@@ -253,11 +295,18 @@ class IsolateDataClaim(object):
                     while tmpIndex >= 0 and not list_tmp_cl[tmpIndex] in ['(',')',';','=',' ']:
                         self.claim_translated += list_tmp_cl[tmpIndex]
                         tmpIndex -= 1
+
                     self.claim_translated = self.claim_translated[::-1]
-                    self.claim_translated += " != NULL && "+self.claim_translated+".length() > 0"
+                    # Checking parts translated
+                    if not self.check_translated_is_empty(self.claim_translated):
+                        self.claim_translated += " != NULL && "+self.claim_translated+".length() > 0"
+                    else:
+                        self.claim_translated = ""
+                        self.test_num_total_incomplete_trans_cl += 1
 
             else:
                 self.claim_translated = 1
+
 
         elif tagComm == 'ZeroDiv':
             list_tmp_cl = list(claim)
@@ -268,7 +317,13 @@ class IsolateDataClaim(object):
                 while tmpIndex < len(list_tmp_cl) and not list_tmp_cl[tmpIndex] in [';']:
                     self.claim_translated += list_tmp_cl[tmpIndex]
                     tmpIndex += 1
-                self.claim_translated += " > 0"
+
+                # Checking parts translated
+                if not self.check_translated_is_empty(self.claim_translated):
+                    self.claim_translated += " > 0"
+                else:
+                    self.claim_translated = ""
+                    self.test_num_total_incomplete_trans_cl += 1
                 
                 
         elif tagComm == 'ArrayStore':
@@ -280,15 +335,26 @@ class IsolateDataClaim(object):
                 rvalue = self.getOnlyVarName(assignment[0].strip())
                 # Get only var name for lvalue
                 lvalue = self.getOnlyVarName(assignment[1].strip())
-                txt = str(rvalue)+".getClass().getName() == "+str(lvalue)+".getClass().getName()"
-                self.claim_translated = txt
+
+                # Checking parts translated
+                if not self.check_translated_is_empty(str(rvalue)) and not self.check_translated_is_empty(str(lvalue)):
+                    txt = str(rvalue)+".getClass().getName() == "+str(lvalue)+".getClass().getName()"
+                    self.claim_translated = txt
+                else:
+                    self.claim_translated = ""
+                    self.test_num_total_incomplete_trans_cl += 1
                 
         
         elif tagComm == 'Assert':
             # We consider the annotations, e.g.,  //@ assert i >= 0
             matchAssert = re.search(r'assert[ ]*(.*)', claim)
-            if matchAssert:    
-                self.claim_translated = matchAssert.group(1)
+            if matchAssert:
+                # Checking parts translated
+                if not self.check_translated_is_empty(matchAssert.group(1)):
+                    self.claim_translated = matchAssert.group(1)
+                else:
+                    self.claim_translated = ""
+                    self.test_num_total_incomplete_trans_cl += 1
                 
                 
         elif tagComm == 'Reachable':
@@ -300,7 +366,12 @@ class IsolateDataClaim(object):
             # [TODO] WARNNING: fix untracked line
             matchInvariant = re.search(r'invariant[ ]*(.*)', annoted)
             if matchInvariant:
-                self.claim_translated = matchInvariant.group(1)
+                # Checking parts translated
+                if not self.check_translated_is_empty(matchInvariant.group(1)):
+                    self.claim_translated = matchInvariant.group(1)
+                else:
+                    self.claim_translated = ""
+                    self.test_num_total_incomplete_trans_cl += 1
             
             
         elif tagComm == 'Cast':
@@ -327,7 +398,14 @@ class IsolateDataClaim(object):
             # Isolating the parts
             matchCast = re.search(r'\(([a-zA-Z0-9\_]*)\)*[ ]*([a-zA-Z0-9\_\[\]]*)', text)
             if matchCast:
-                self.claim_translated += "( "+matchCast.group(2)+" instanceof "+matchCast.group(1)+" )"
+                # Checking parts translated
+                if not self.check_translated_is_empty(matchCast.group(2)) and \
+                    not self.check_translated_is_empty(matchCast.group(1)):
+                    self.claim_translated += "( "+matchCast.group(2)+" instanceof "+matchCast.group(1)+" )"
+
+                else:
+                    self.claim_translated = ""
+                    self.test_num_total_incomplete_trans_cl += 1
                 #print(matchCast.group(2))
                 
             #.getClass().getSimpleName()
@@ -338,7 +416,13 @@ class IsolateDataClaim(object):
             assignment = text.split("=")
             self.claim_translated = "!("
             if not len(assignment) == 0:
-                self.claim_translated += assignment[0].strip()+" == "+assignment[1].strip()+" )"
+                # Checking parts translated
+                if not self.check_translated_is_empty(assignment[0].strip()) and \
+                    not self.check_translated_is_empty(assignment[1].strip()):
+                    self.claim_translated += assignment[0].strip()+" == "+assignment[1].strip()+" )"
+                else:
+                    self.claim_translated = ""
+                    self.test_num_total_incomplete_trans_cl += 1
             
             
         elif tagComm == 'NegSize':
@@ -383,7 +467,12 @@ class IsolateDataClaim(object):
                 # Now create the assert
                 #print(matchRequires.group(1))
                 tmp_str += " "+str(matchRequires.group(1).rstrip('\n'))
-                self.claim_translated = tmp_str
+                # Checking parts translated
+                if not self.check_translated_is_empty(tmp_str):
+                    self.claim_translated = tmp_str
+                else:
+                    self.claim_translated = ""
+                    self.test_num_total_incomplete_trans_cl += 1
                             
                         
             
@@ -411,7 +500,11 @@ class IsolateDataClaim(object):
                     if matchEnsures:
                         #print(matchEnsures.group(1))
                         tmp_str += " "+str(matchEnsures.group(1))
-                        self.claim_translated = tmp_str
+                        if not self.check_translated_is_empty(tmp_str):
+                            self.claim_translated = tmp_str
+                        else:
+                            self.claim_translated = ""
+                            self.test_num_total_incomplete_trans_cl += 1
                 
             
 
@@ -420,8 +513,16 @@ class IsolateDataClaim(object):
         if self.claim_translated:
             return self.claim_translated
         else:
+            self.test_num_total_failed_translate_cl += 1
             return 1
-            
+
+
+    def check_translated_is_empty(self, _string):
+        if _string == "" or _string.isspace():
+            return True
+        else:
+            return False
+
             
     def getOnlyVarName(self, var):
         #print(var)
@@ -523,3 +624,4 @@ class IsolateDataClaim(object):
 #
 #     #test.showDataLoaded()
 #     test.getObjectPointed()
+

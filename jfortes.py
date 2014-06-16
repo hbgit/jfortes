@@ -23,6 +23,7 @@ class Jfortes(object):
         self.ABS_PATH = os.path.dirname(__file__)
         self.javaFilePath = ""
         self.javaClassPath = ""
+        self.setTranslationTest = False
         self.list_tmp_files = []
 
 
@@ -85,6 +86,10 @@ class Jfortes(object):
 
     def translate_claims(self, claimsFile):
         translateCl = ClaimsTranslate.IsolateDataClaim()
+
+        if self.setTranslationTest:
+            translateCl.set_testing_flag()
+
         translateCl.loadDataFromCsv(claimsFile,self.javaFilePath)
         translateCl.generateScopeByLineNumber(self.javaFilePath)
         translateCl.getObjectPointed()
@@ -109,7 +114,9 @@ if __name__ == "__main__":
     parser.add_argument('-v','--version', action='version' , version="version 1")
     parser.add_argument(dest='inputJavaProgram', metavar='file.java', type=str,
                help='the Java program file to be analyzed')
-
+    parser.add_argument('-t','--translation-test', action="store_true" , dest='setTranslationTest',
+               help='run jfortes only to test the translation of the claims, where the ouput is as following: '
+                    'Program ; NOT translation ; INCOMPLETE translation ; FAILED translation ; OKAY translation', default=False)
     args = parser.parse_args()
 
     # --- Check options in the args
@@ -123,6 +130,10 @@ if __name__ == "__main__":
             runJfortes = Jfortes()
             getLoad = runJfortes.load_java_path(os.path.abspath(args.inputJavaProgram), "/usr/lib/java/jdk1.5.0_22/bin/")
             getDataClaim = runJfortes.gather_data_claims(getLoad)
+
+            if args.setTranslationTest:
+                runJfortes.setTranslationTest = True
+
             runJfortes.translate_claims(getDataClaim)
             # Clean all tmp files generated
             runJfortes.delete_tmp_files()
