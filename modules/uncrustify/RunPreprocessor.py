@@ -7,14 +7,15 @@ __author__ = 'Herbert OLiveira Rocha'
 #Python
 import sys
 import os
+import commands
 
 
 class CodeBeautify(object):
 
     def __init__(self):
-        self.option_to_run_tool = ''
-        self.path_tool = 'uncrustify'
-        self.setFileConf = ''
+        self.path_tool = os.path.abspath('modules/uncrustify/uncrustify')
+        self.option_to_run_tool = "-q -l C"
+        self.setFileConf = os.path.abspath("modules/uncrustify/ben.cfg")
 
 
     def setOptions2Run(self, options):
@@ -25,10 +26,10 @@ class CodeBeautify(object):
         self.setFileConf = filePath
 
 
-    def runBeatifyTool(self, pathJavaProgram):
+    def runBeatifyTool(self, pathJavaProgram, _pathfiletosave):
         cmdRun = self.path_tool+" "+self.option_to_run_tool+" -c "+self.setFileConf+" -f "+pathJavaProgram
         #print(cmdRun)
-        os.system("./"+cmdRun)
+        commands.getoutput(cmdRun+" &> "+_pathfiletosave)
 
 
 

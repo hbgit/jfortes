@@ -3,6 +3,13 @@ from __future__ import print_function
 # -*- coding: latin1 -*-
 
 
+# ------------------------------------------------------------------------
+# TODO: Add pre-processing step to jfortes
+# TODO: BUG in test cases path with space
+# TODO: Check when a test case to have main method
+# ------------------------------------------------------------------------
+
+
 __author__ = 'Herbert OLiveira Rocha'
 
 # From Python
@@ -16,6 +23,7 @@ import argparse
 # From JFORTES
 from modules.get_data_claims import GetDataClaims
 from modules.get_data_claims import ClaimsTranslate
+from modules.uncrustify import RunPreprocessor
 
 class Jfortes(object):
 
@@ -36,7 +44,19 @@ class Jfortes(object):
         """
         self.javaFilePath = javafile
         self.javaClassPath = javaClassPath
+
+        # Pre-processing the source code of the program
+        pathprefilejava = self.javaFilePath.replace(".java","_pre.java")
+        self.list_tmp_files.append(pathprefilejava)
+        self.pre_processing(self.javaFilePath, pathprefilejava)
+
+        self.javaFilePath = pathprefilejava
         return self.run_esc_java(self.javaFilePath)
+
+
+    def pre_processing(self, _javafile, _pathtoprefile):
+        run_pre = RunPreprocessor.CodeBeautify()
+        run_pre.runBeatifyTool(_javafile, _pathtoprefile)
 
 
     def run_esc_java(self, javafile):
@@ -52,8 +72,10 @@ class Jfortes(object):
         #savePathFile = javafile
         outPathEscJava = javafile.replace(".java",".escout")
         self.list_tmp_files.append(outPathEscJava)
-        esc_result_status = commands.getoutput("escj -ClassPath "+self.javaClassPath+" "+javafile+" &> "+outPathEscJava)
+        #os.system("escj -ClassPath "+self.javaClassPath+" "+javafile)
+        #sys.exit()
 
+        esc_result_status = commands.getoutput("escj -ClassPath "+self.javaClassPath+" "+javafile+" &> "+outPathEscJava)
 
         return outPathEscJava
 
@@ -92,7 +114,14 @@ class Jfortes(object):
 
         translateCl.loadDataFromCsv(claimsFile,self.javaFilePath)
         translateCl.generateScopeByLineNumber(self.javaFilePath)
-        translateCl.getObjectPointed()
+
+        #TODO add a try-catch here
+        try:
+            translateCl.getObjectPointed()
+        except Exception as e:
+            print(self.javaFilePath+" ; ERROR ; ERROR ; ERROR ; ERROR")
+            #print("Unexpected error: ", sys.exc_info()[0])
+            #raise # reraises the exception
 
 
     def delete_tmp_files(self):

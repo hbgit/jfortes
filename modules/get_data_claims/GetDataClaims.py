@@ -32,7 +32,8 @@ class GetDataClaims(object):
 
         # Testing if the path file is correct
         if not os.path.exists(pathFile):
-            print('Tente outra vez...')
+            print(pathFile)
+            print('File path not found - Get data claims.')
             sys.exit()
 
         # Create a list with the lines with the file
