@@ -118,6 +118,7 @@ class IsolateDataClaim(object):
                 self.test_num_total_cl += 1
 
             if self.DEBUG_STATUS:
+            #if True:
                 print("Data gather from csv file: ")
                 print("Line    : ",line)
                 print("Comments: ",comm)
@@ -136,6 +137,9 @@ class IsolateDataClaim(object):
             
         if self.DEBUG_STATUS:
             print("%s" % ("-"*50))
+
+        #print(self.test_num_total_cl)
+        #sys.exit()
 
 
     def getTagsFromComments(self):
@@ -170,6 +174,7 @@ class IsolateDataClaim(object):
             # Generating a list from the text claim
             list_tmp_cl = list(self.claim_list_claim[id])
             # Getting the index position pointed by identified
+            #print(self.claim_list_point_data[id])
             get_index = (len(list(self.claim_list_point_data[id])) - 1)
 
             if self.DEBUG_STATUS:
@@ -179,11 +184,11 @@ class IsolateDataClaim(object):
                 print("Tag comment  : %s" % self.claim_list_tag_comm[id])
                 # DOING: Create a method to select the object and then apply the transformation rule
                 #       to the claims
-                print("The translation: %s" % self.getObjectInClaim(self.claim_list_line_num[id], self.claim_list_tag_comm[id],self.claim_list_claim[id],get_index,self.claim_list_annoted[id]))
+                print("The translation: %s" % self.getObjectInClaim(self.claim_list_line_num[id], self.claim_list_tag_comm[id],self.claim_list_claim[id],self.claim_list_comments[id],get_index,self.claim_list_annoted[id]))
                 print()
             # Print the new csv
             else:
-                claim_translated = self.getObjectInClaim(self.claim_list_line_num[id], self.claim_list_tag_comm[id],self.claim_list_claim[id],get_index, self.claim_list_annoted[id])
+                claim_translated = self.getObjectInClaim(self.claim_list_line_num[id], self.claim_list_tag_comm[id],self.claim_list_claim[id],self.claim_list_comments[id],get_index, self.claim_list_annoted[id])
 
                 if self.PRETTY_PRINT:
                     print("%3s ;%50s ;%20s ;%11s " % (self.claim_list_line_num[id].strip(),self.claim_list_claim[id].strip(),str(claim_translated),self.claim_list_comments[id].strip()))
@@ -202,10 +207,11 @@ class IsolateDataClaim(object):
             # Print log TOTAL
             print(self.pathJavaFile+" ; "+str(self.test_num_total_failed_translate_cl)+" ; "+str(self.test_num_total_incomplete_trans_cl)+" ; "+
                   str(self.test_num_total_failed_translate_cl + self.test_num_total_incomplete_trans_cl)+" ; "+
-                  str(self.test_num_total_cl - (self.test_num_total_failed_translate_cl + self.test_num_total_incomplete_trans_cl)))
+                  str(self.test_num_total_cl - (self.test_num_total_failed_translate_cl + self.test_num_total_incomplete_trans_cl))+" ; "+
+                  str(self.test_num_total_cl))
 
 
-    def getObjectInClaim(self, lineNumber, tagComm, claim, indexPointed, annoted):
+    def getObjectInClaim(self, lineNumber, tagComm, claim, _commentCl, indexPointed, annoted):
         """
         Method to gather the object pointed in the claim
         """
@@ -287,22 +293,41 @@ class IsolateDataClaim(object):
 
                 # get the name var
                 tmpIndex = indexPointed
+                #print(tmpIndex, len(list_tmp_cl))
+                #print(list_tmp_cl)
+                #print(claim)
+                #sys.exit()
 
                 # Identify the type of NULL DEREFENCE
-                # Is a array -> ex: array.length
                 if list_tmp_cl[tmpIndex] == '.' or list_tmp_cl[tmpIndex] == '[':
-                    tmpIndex -= 1
-                    while tmpIndex >= 0 and not list_tmp_cl[tmpIndex] in ['(',')',';','=',' ']:
-                        self.claim_translated += list_tmp_cl[tmpIndex]
-                        tmpIndex -= 1
 
-                    self.claim_translated = self.claim_translated[::-1]
-                    # Checking parts translated
-                    if not self.check_translated_is_empty(self.claim_translated):
-                        self.claim_translated += " != NULL && "+self.claim_translated+".length() > 0"
+                    #Checking if is a method return, e.g., Runtime.getRuntime().exec("ls " + file);
+                    backOneItem = tmpIndex - 1
+                    if list_tmp_cl[backOneItem] == ")":
+                        # Isolating rvalue from assignment
+                        matchRightAssig = re.search(r'=[ ]*(.[^;]*)', claim)
+                        if matchRightAssig:
+                            rvalueassi = matchRightAssig.group(1)
+                            # Checking if is a exec command
+                            matchExecComan = re.search(r'\.exec', rvalueassi)
+                            if matchExecComan:
+                                #print("JFORTES_CHECK_EXEC_RETURN( "+rvalueassi+" )")
+                                self.claim_translated = "JFORTES_CHECK_EXEC_RETURN( "+rvalueassi+" )"
                     else:
-                        self.claim_translated = ""
-                        self.test_num_total_incomplete_trans_cl += 1
+                        # We conclude that is a array NULL -> ex: array.length
+                        tmpIndex -= 1
+                        while tmpIndex >= 0 and not list_tmp_cl[tmpIndex] in ['(',')',';','=',' ']:
+                            self.claim_translated += list_tmp_cl[tmpIndex]
+                            tmpIndex -= 1
+
+                        self.claim_translated = self.claim_translated[::-1]
+
+                        # Checking parts translated
+                        if not self.check_translated_is_empty(self.claim_translated):
+                            self.claim_translated += " != NULL && "+self.claim_translated+".length() > 0"
+                        else:
+                            self.claim_translated = ""
+                            self.test_num_total_incomplete_trans_cl += 1
 
             else:
                 self.claim_translated = 1
@@ -362,16 +387,39 @@ class IsolateDataClaim(object):
             
             
         elif tagComm == 'Invariant':
-            # Suport only to comparation
-            # [TODO] WARNNING: fix untracked line
-            matchInvariant = re.search(r'invariant[ ]*(.*)', annoted)
-            if matchInvariant:
-                # Checking parts translated
-                if not self.check_translated_is_empty(matchInvariant.group(1)):
-                    self.claim_translated = matchInvariant.group(1)
+            # Only based on annotations
+            if not annoted == "" and not annoted.isspace():
+                # Suport only to comparation
+                # [TODO] WARNNING: fix untracked line
+                matchInvariant = re.search(r'invariant[ ]*(.*)', annoted)
+                if matchInvariant:
+                    # Checking parts translated
+                    if not self.check_translated_is_empty(matchInvariant.group(1)):
+                        self.claim_translated = matchInvariant.group(1)
+                    else:
+                        self.claim_translated = ""
+                        self.test_num_total_incomplete_trans_cl += 1
+
+
+        elif tagComm == 'Constraint':
+            # Only based on annotations
+            #self.claim_translated=annoted
+            if not annoted == "" and not annoted.isspace():
+                matchTagAnnot = re.search(r'\\.*', annoted)
+                if matchTagAnnot:
+                    self.claim_translated = annoted
                 else:
-                    self.claim_translated = ""
-                    self.test_num_total_incomplete_trans_cl += 1
+                    matchConstraintLit = re.search(r'constraint[ ]*(.*)', annoted)
+                    if matchConstraintLit:
+                        # Checking parts translated
+                        if not self.check_translated_is_empty(matchConstraintLit.group(1)):
+                            self.claim_translated = matchConstraintLit.group(1)
+                        else:
+                            self.claim_translated = ""
+                            self.test_num_total_incomplete_trans_cl += 1
+
+
+
             
             
         elif tagComm == 'Cast':
@@ -423,6 +471,10 @@ class IsolateDataClaim(object):
                 else:
                     self.claim_translated = ""
                     self.test_num_total_incomplete_trans_cl += 1
+
+
+        elif tagComm == 'NonNullInit':
+            self.claim_translated = "1"
             
             
         elif tagComm == 'NegSize':
@@ -446,66 +498,85 @@ class IsolateDataClaim(object):
                 
                 
         elif tagComm == 'Pre':
-            
-            # WARNNING for while we just consider @requires
-            # Basead on this model -> @ requires i >= 0;
-            
-            tmpIndex = indexPointed
-            list_tmp_cl = list(claim)
-            # Pre conditions for methods call, e.g., int j = m(-1);
-            # in this case we just get input args for the methods
-            # >> First we get only the input args
-            tmpIndex += 1
-            tmp_str = ''
-            while tmpIndex < len(list_tmp_cl) and not list_tmp_cl[tmpIndex] in [')',';']:
-                tmp_str += list_tmp_cl[tmpIndex]
-                tmpIndex += 1
-            
-            # >> Now getting the annoted code if has any            
-            matchRequires = re.search(r'requires[ ]*[a-zA-Z0-9\_\[\]\(\)][ ]*(.*)', annoted)
-            if matchRequires:
-                # Now create the assert
-                #print(matchRequires.group(1))
-                tmp_str += " "+str(matchRequires.group(1).rstrip('\n'))
-                # Checking parts translated
-                if not self.check_translated_is_empty(tmp_str):
-                    self.claim_translated = tmp_str
-                else:
-                    self.claim_translated = ""
-                    self.test_num_total_incomplete_trans_cl += 1
+
+            # Only based on annotations
+            if not annoted == "" and not annoted.isspace():
+                self.claim_translated = annoted
+            # if not annoted == "" and not annoted.isspace():
+            #     # WARNNING for while we just consider @requires
+            #     # Basead on this model -> @ requires i >= 0;
+            #
+            #     tmpIndex = indexPointed
+            #     list_tmp_cl = list(claim)
+            #     # Pre conditions for methods call, e.g., int j = m(-1);
+            #     # in this case we just get input args for the methods
+            #     # >> First we get only the input args
+            #     tmpIndex += 1
+            #     tmp_str = ''
+            #     while tmpIndex < len(list_tmp_cl) and not list_tmp_cl[tmpIndex] in [')',';']:
+            #         tmp_str += list_tmp_cl[tmpIndex]
+            #         tmpIndex += 1
+            #
+            #     # >> Now getting the annoted code if has any
+            #     matchRequires = re.search(r'requires[ ]*[a-zA-Z0-9\_\[\]\(\)][ ]*(.*)', annoted)
+            #     if matchRequires:
+            #         # Now create the assert
+            #         #print(matchRequires.group(1))
+            #         tmp_str += " "+str(matchRequires.group(1).rstrip('\n'))
+            #         # Checking parts translated
+            #         if not self.check_translated_is_empty(tmp_str):
+            #             self.claim_translated = tmp_str
+            #         else:
+            #             self.claim_translated = ""
+            #             self.test_num_total_incomplete_trans_cl += 1
                             
                         
             
             
-        elif tagComm == 'Post':            
-            # WARNNING for while we just consider @requires
-            # Basead on this model -> //@ ensures \result > 0;
-            # where \result is replaced by the return of the function
-            
-            # Checking if ESC/Java points to end of the method
-            tmpIndex = indexPointed
-            list_tmp_cl = list(claim)
-            tmp_str = ''
-            if list_tmp_cl[tmpIndex] == '}':
-                # Get the scope of the program
-                # the identification is done by the range by num line from the claim
-                save_id_range_sc = self.whatIsTheScope(lineNumber)
-                save_return = self.getValueFromReturn(save_id_range_sc)
-                
-                if not save_return == None:                
-                    tmp_str = str(save_return)
-                    
-                    # Getting data from annoted code
-                    matchEnsures = re.search(r'ensures[ ]*\\result[ ]*(.*)', annoted)
-                    if matchEnsures:
-                        #print(matchEnsures.group(1))
-                        tmp_str += " "+str(matchEnsures.group(1))
-                        if not self.check_translated_is_empty(tmp_str):
-                            self.claim_translated = tmp_str
-                        else:
-                            self.claim_translated = ""
-                            self.test_num_total_incomplete_trans_cl += 1
-                
+        elif tagComm == 'Post':
+            # Only based on annotations
+            if not annoted == "" and not annoted.isspace():
+                #Get only the annotations
+                #matchTagAnnot = re.search(r'([/]+[@].*)', annoted)
+                #if matchTagAnnot:
+                #    self.claim_translated = matchTagAnnot.group(1)
+                matchWarNeedPos = re.search(r'(Postcondition possibly not established)', _commentCl)
+                if matchWarNeedPos:
+                    self.claim_translated = "1"
+                else:
+                    self.claim_translated = annoted
+            # if not annoted == "" and not annoted.isspace():
+            #     # WARNNING for while we just consider @requires
+            #     # Basead on this model -> //@ ensures \result > 0;
+            #     # where \result is replaced by the return of the function
+            #
+            #     # Checking if ESC/Java points to end of the method
+            #     tmpIndex = indexPointed
+            #     list_tmp_cl = list(claim)
+            #     tmp_str = ''
+            #     if list_tmp_cl[tmpIndex] == '}':
+            #         # Get the scope of the program
+            #         # the identification is done by the range by num line from the claim
+            #         save_id_range_sc = self.whatIsTheScope(lineNumber)
+            #         save_return = self.getValueFromReturn(save_id_range_sc)
+            #
+            #         if not save_return == None:
+            #             tmp_str = str(save_return)
+            #
+            #             # Getting data from annoted code
+            #             matchEnsures = re.search(r'ensures[ ]*\\result[ ]*(.*)', annoted)
+            #             if matchEnsures:
+            #                 #print(matchEnsures.group(1))
+            #                 tmp_str += " "+str(matchEnsures.group(1))
+            #                 if not self.check_translated_is_empty(tmp_str):
+            #                     self.claim_translated = tmp_str
+            #                 else:
+            #                     self.claim_translated = ""
+            #                     self.test_num_total_incomplete_trans_cl += 1
+
+
+        elif tagComm == 'Exception':
+            self.claim_translated = "@Test(expected = RuntimeException.class)"
             
 
 
@@ -548,8 +619,17 @@ class IsolateDataClaim(object):
     
     def whatIsTheScope(self, lineNum):
         for index,startLine in enumerate(self.list_num_start_func):
+            #print(self.list_num_end_func[index]+" <= "+lineNum+" and "+lineNum+" >= "+startLine)
             if self.list_num_end_func[index] <= lineNum and lineNum >= startLine:                
                 return index
+
+        # We try to check again cuz Pre and Post, in this case we consider a line after and before
+        # WARNNING: Need improvements
+        for index,startLine in enumerate(self.list_num_start_func):
+            #print(self.list_num_end_func[index]+" <= "+lineNum+" and "+lineNum+" >= "+startLine)
+            if (int(self.list_num_end_func[index])+1) <= lineNum and lineNum >= (int(startLine)+1):
+                return index
+        #sys.exit()
             
     
     

@@ -1,0 +1,55 @@
+TODO:
+	- Rename program benchmarks already supported	
+
+
+WARNNINGS:
+	- The tests aim to check the syntax atributes and do not the semantic (the meaning)
+	- All properties that adopt annotations like JML are translated in two cases:
+		(1) If do not have tags in annotation, e.g., \old, the claims is translated direcly
+		(2) In case the claim has tags in annotation, we just copy the claim. For future work we study how JUnit is able to verify JML annotation
+	- Update Pre and Post translation. Now the annotation is just copied from claims. This decision was taked cuz in some examples
+	  e.g., test_cases/new_properties/PrePost.java the annotation are put outside methods scope
+
+
+-------------------------------------------------------------------------------------------------------------------
+
+::: test_cases/new_properties/Invariant.java 
+	=> [NEW] Constraint - Adopt annotations
+
+::: test_cases/new_properties/NonNull.java 
+	=> [NEW] NonNullInit - Added only a trigger to (1), cuz not data enough to translate correctly
+
+::: test_cases/new_properties/Excepction_not_supported.java 
+	=> [NEW] Exception -  Added a generic (this cuz in most claim in ESC/Java is not identified the type of the exception) JUnit annotation to handle it
+	=> [TODO] When this claim will be intrumeted in the code is need to insert this: 
+	@Rule
+	public ExpectedException expectedEx = ExpectedException.none();
+
+::: test_cases/primary_tests/F_MemoryLeak.java 
+	=> [UPDATE] Postcondition possibly not established (Post) << This should be translate to (1). Example:
+		   }
+		   ^
+		Associated declaration is "/home/nhb/Documents/ON_DEV/JFORTES/JFORTES_git/jfortes/test_cases/primary_tests/F_MemoryLeak_pre.java", line 17, col 42:
+		   public static void main(String[] args) throws IOException ...
+
+::: test_cases/2_VerifyThis_FM_2012/LCP/SuffixArray.java
+	=> BUG SOLVED - update get claim in FOR statements
+
+::: test_cases/samate-2014-04-29-17-23-38/testcases/000/002/084/OSCommandInjection_078.java
+	=> [UPDATE] [NULL] - Support this -> Process p = Runtime.getRuntime().exec("ls " + file);
+		-> In this case, we create a function that will be instrumented in the assertion, called JFORTES_CHECK_EXEC_RETURN
+		   E.G.: 
+			ARG = Runtime.getRuntime().exec("ls " + file)
+			JFORTES_CHECK_EXEC_RETURN( ARG ){
+			   if(ARG.getInputStream() == NULL){
+			      return 0;
+			   }else{
+			      return 1;
+			   }
+			   
+			}
+
+-------------------------------------------------------------------------------------------------------------------
+
+
+	

@@ -72,6 +72,7 @@ class Jfortes(object):
         #savePathFile = javafile
         outPathEscJava = javafile.replace(".java",".escout")
         self.list_tmp_files.append(outPathEscJava)
+        # For Debug
         #os.system("escj -ClassPath "+self.javaClassPath+" "+javafile)
         #sys.exit()
 
@@ -99,10 +100,11 @@ class Jfortes(object):
         fileClaims.write( getData.writeHeader2Csv() )
         # Lines of the file with the claims translated
         for line in getData.getDataClaims():
+            #print(line)
             fileClaims.write(line+"\n")
 
         fileClaims.close()
-
+        #sys.exit()
         return outPathDataClaims
 
 
@@ -115,13 +117,12 @@ class Jfortes(object):
         translateCl.loadDataFromCsv(claimsFile,self.javaFilePath)
         translateCl.generateScopeByLineNumber(self.javaFilePath)
 
-        #TODO add a try-catch here
         try:
             translateCl.getObjectPointed()
         except Exception as e:
-            print(self.javaFilePath+" ; ERROR ; ERROR ; ERROR ; ERROR")
+            print(self.javaFilePath+" ; ERROR ; ERROR ; ERROR ; ERROR ; ERROR")
             #print("Unexpected error: ", sys.exc_info()[0])
-            #raise # reraises the exception
+            raise # reraises the exception
 
 
     def delete_tmp_files(self):

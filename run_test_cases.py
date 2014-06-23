@@ -56,5 +56,5 @@ if __name__ == "__main__":
             sys.exit()
         else:
             executeTests = RunTests()
-            print("Program ; NOT translation ; INCOMPLETE translation ; FAILED translation ; OKAY translation")
+            print("Program ; NOT translation ; INCOMPLETE translation ; FAILED translation ; OKAY translation ; Total Number of Claims")
             executeTests.load_dir_and_run_recursive(args.dirTestCasesDir)

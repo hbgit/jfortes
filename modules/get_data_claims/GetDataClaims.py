@@ -25,7 +25,7 @@ class GetDataClaims(object):
     def __init__(self):
         self.list_lines_file = []
         self.list_data_claims_2_csv = []
-        self.list_annoted_cl = ['Pre','Post','Invariant']
+        self.list_annoted_cl = ['Pre','Post','Invariant','Constraint']
         self.list_claims_translated = []
 
     def readFile(self, pathFile):
@@ -103,7 +103,7 @@ class GetDataClaims(object):
                     if str(tag_CL) in self.list_annoted_cl:                        
                             # Get the property in the claim block
                             index += 1                            
-                            self.list_data_claims_2_csv.append(self.getClaim(self.list_lines_file[index]))
+                            self.list_data_claims_2_csv.append(self.getClaim(self.list_lines_file[index]).rstrip('\n'))
                             
                             # Get the variable location in the claim based on this ...^ <- Identifier
                             index += 1
@@ -111,28 +111,28 @@ class GetDataClaims(object):
                                                         
                             ## Get Annoted info
                             index += 2
-                            self.list_data_claims_2_csv.append(self.getClaim(self.list_lines_file[index]))
+                            self.list_data_claims_2_csv.append(self.getClaim(self.list_lines_file[index]).rstrip('\n'))
                             
                             ## Get the variable location in the claim based on this ...^ <- Identifier
                             index += 1
-                            self.list_data_claims_2_csv.append(self.list_lines_file[index].rstrip('\n'))
+                            self.list_data_claims_2_csv.append(self.list_lines_file[index].rstrip('\n').rstrip('\n'))
                             
 
                     else:                    
                         # Get the property in the claim block
                         index += 1
                         #print("\t Claim: %s " % self.getClaim(self.list_lines_file[index]))
-                        self.list_data_claims_2_csv.append(self.getClaim(self.list_lines_file[index]))
+                        self.list_data_claims_2_csv.append(self.getClaim(self.list_lines_file[index]).rstrip('\n'))
 
                         # Get the variable location in the claim based on this ...^ <- Identifier
                         index += 1
                         self.list_data_claims_2_csv.append(self.list_lines_file[index].rstrip('\n'))
                         
                         # Get Annoted info
-                        self.list_data_claims_2_csv.append('None')
+                        self.list_data_claims_2_csv.append('NO')
                         
                         # Get the variable location in the claim based on this ...^ <- Identifier
-                        self.list_data_claims_2_csv.append('None')
+                        self.list_data_claims_2_csv.append('NO')
 
                     flag_write_csv = True
 
@@ -200,10 +200,18 @@ class GetDataClaims(object):
 
     def getClaim(self, lineClaim):
         # Apply regex to get the claim of line i the claim
-        matchNumLine = re.search(r'(.[^;]*)', lineClaim)
-        #matchNumLine = re.search(r'(.[^=]*)[ ]*;', lineClaim)
-        if matchNumLine:
-            return matchNumLine.group(1).rstrip('\n')
+        # Fisrt of all, we check if the claim has inside in a loop statement
+        matchFor = re.search(r'for[ ]*[\(]', lineClaim)
+        if matchFor:
+            # The replace is cuz the next step adopting CSV format file
+            return lineClaim.replace(';','@')
+            #return lineClaim
+
+        else:
+            matchNumLine = re.search(r'(.[^;]*)', lineClaim)
+            #matchNumLine = re.search(r'(.[^=]*)[ ]*;', lineClaim)
+            if matchNumLine:
+                return matchNumLine.group(1).rstrip('\n')
 
 
     def writeHeader2Csv(self):
