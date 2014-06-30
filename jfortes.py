@@ -4,7 +4,7 @@ from __future__ import print_function
 
 
 # ------------------------------------------------------------------------
-# TODO: Add pre-processing step to jfortes
+# TODO: Apply doc annotations in the programs
 # TODO: BUG in test cases path with space
 # TODO: Check when a test case to have main method
 # ------------------------------------------------------------------------
@@ -24,6 +24,7 @@ import argparse
 from modules.get_data_claims import GetDataClaims
 from modules.get_data_claims import ClaimsTranslate
 from modules.uncrustify import RunPreprocessor
+from modules.read_java import ReadJavaFile
 
 class Jfortes(object):
 
@@ -125,6 +126,11 @@ class Jfortes(object):
             raise # reraises the exception
 
 
+    def insert_claims(self, _javafile, _claimstranslatedfile):
+        readjavafile = ReadJavaFile.ReadJavaFile()
+        readjavafile.readFile(_javafile)
+
+
     def delete_tmp_files(self):
         for pathFile in self.list_tmp_files:
             os.remove(pathFile)
@@ -147,6 +153,9 @@ if __name__ == "__main__":
     parser.add_argument('-t','--translation-test', action="store_true" , dest='setTranslationTest',
                help='run jfortes only to test the translation of the claims, where the ouput is as following: '
                     'Program ; NOT translation ; INCOMPLETE translation ; FAILED translation ; OKAY translation', default=False)
+    parser.add_argument('-i','--insert-claims', type=str , metavar='file.claims', dest='inputClaimsFile',
+               help='run jfortes only to insert assertion with claims in the analyzed program', default=False)
+
     args = parser.parse_args()
 
     # --- Check options in the args
@@ -157,15 +166,24 @@ if __name__ == "__main__":
             sys.exit()
         else:
 
-            runJfortes = Jfortes()
-            getLoad = runJfortes.load_java_path(os.path.abspath(args.inputJavaProgram), "/usr/lib/java/jdk1.5.0_22/bin/")
-            getDataClaim = runJfortes.gather_data_claims(getLoad)
+            if args.inputClaimsFile:
+                    #only to insert the assertion with the claims in the analyzed program
+                    runJfortes = Jfortes()
+                    #parameters need: (1) java file and (2) claims translated file
+                    runJfortes.insert_claims(os.path.abspath(args.inputJavaProgram), os.path.abspath(args.inputClaimsFile))
+                    sys.exit()
 
-            if args.setTranslationTest:
-                runJfortes.setTranslationTest = True
+            else:
+                # Apply all steps of the JFORTES method
+                runJfortes = Jfortes()
+                getLoad = runJfortes.load_java_path(os.path.abspath(args.inputJavaProgram), "/usr/lib/java/jdk1.5.0_22/bin/")
+                getDataClaim = runJfortes.gather_data_claims(getLoad)
 
-            runJfortes.translate_claims(getDataClaim)
-            # Clean all tmp files generated
-            runJfortes.delete_tmp_files()
+                if args.setTranslationTest:
+                    runJfortes.setTranslationTest = True
+
+                runJfortes.translate_claims(getDataClaim)
+                # Clean all tmp files generated
+                runJfortes.delete_tmp_files()
 
 

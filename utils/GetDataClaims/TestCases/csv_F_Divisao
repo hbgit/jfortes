@@ -1,2 +1,0 @@
-Number of Line;Comments;Claim;Point Data
-5; Possible division by zero (ZeroDiv);        soma = numA + numB + numC/numA + numA;                                 ^
