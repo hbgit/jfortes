@@ -167,7 +167,7 @@ if __name__ == "__main__":
         else:
 
             if args.inputClaimsFile:
-                    #only to insert the assertion with the claims in the analyzed program
+                    #only to insert the assertioln with the claims in the analyzed program
                     runJfortes = Jfortes()
                     #parameters need: (1) java file and (2) claims translated file
                     runJfortes.insert_claims(os.path.abspath(args.inputJavaProgram), os.path.abspath(args.inputClaimsFile))

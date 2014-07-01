@@ -1,22 +1,17 @@
 #!/usr/bin/env python
-from __future__ import print_function
 # -*- coding: latin1 -*-
+
+from __future__ import print_function
 __author__ = 'Herbert OLiveira Rocha'
 
 
-#----------------------------------------------------------
-# Goal: This program aims to do a partial translation of the claim.
-#       The focus of this program is isolate the variable or structure
-#       related in the claim.
+#-------------------------------------------------------------------------------------------------
+# Goal: This program aims to perfom the translation of the claim gathered from ESC/JAVA.
+#       The focus of this program is isolate the variable or structure related in the claim.
 #
 # Status: [DOING]
 #
-# TODO: Create a flag to set the test where we need to check:
-#   (1) Number of the claims
-#   (2) Identify the number of the claims translated
-#   (3) Identify the number of the claims NOT translated (identify when we are not able to handle some part of the claim)
-#
-#----------------------------------------------------------
+#-------------------------------------------------------------------------------------------------
 
 
 # From Python
@@ -32,9 +27,7 @@ from collections import defaultdict
 class IsolateDataClaim(object):
     """
     This class has as main function isolate the variable or structure
-    related in the claim
-
-    TODO: Remove unsed code <- development process
+    related in the claim, and then apply its respective translation.
     """
 
     def __init__(self):
@@ -47,6 +40,7 @@ class IsolateDataClaim(object):
         self.claim_list_tag_comm = []
         self.claim_list_annoted = []
         self.claim_list_annoted_pt = []
+        self.claim_list_translated = [] # the return of the execution of this class
         
         #Data scope function
         self.list_name_func = []
@@ -56,7 +50,6 @@ class IsolateDataClaim(object):
 
         # Flags
         self.DEBUG_STATUS   = False
-        self.PRETTY_PRINT   = False
         self.TESTING_STATUS = False
 
 
@@ -72,12 +65,6 @@ class IsolateDataClaim(object):
         self.pathCsvFile = ''
         self.columns_csv = defaultdict(list) #we want a list to append each value in each column to
 
-        # Dictionary of regex to get data claim
-        # Here we have a list with regex and dictionary item related to tag_comm from claim
-        self.regex_patterns = {
-            # Case base: a[i] < m
-            'IndexTooBig': ['[^\(]*']
-        }
 
         # Atributes for tags
         self.claim_translated = ''
@@ -87,10 +74,6 @@ class IsolateDataClaim(object):
 
     def set_debug_flag(self):
         self.DEBUG_STATUS = True
-
-
-    def set_pretty_print(self):
-        self.PRETTY_PRINT = True
 
 
     def set_testing_flag(self):
@@ -112,13 +95,15 @@ class IsolateDataClaim(object):
 
 
     def setData2Lists(self):
-        for line,comm,claim,pt_data,tag,annoted,annoted_pt in zip(self.columns_csv['Number of Line'],self.columns_csv['Comments'],self.columns_csv['Claim'],self.columns_csv['Point Data'],self.columns_csv['Tag'],self.columns_csv['Annoted'],self.columns_csv['Annoted Point']):
+        for line,comm,claim,pt_data,tag,annoted,annoted_pt in \
+                zip(self.columns_csv['Number of Line'],self.columns_csv['Comments'],
+                    self.columns_csv['Claim'],self.columns_csv['Point Data'],self.columns_csv['Tag'],
+                    self.columns_csv['Annoted'],self.columns_csv['Annoted Point']):
 
             if self.TESTING_STATUS:
                 self.test_num_total_cl += 1
 
             if self.DEBUG_STATUS:
-            #if True:
                 print("Data gather from csv file: ")
                 print("Line    : ",line)
                 print("Comments: ",comm)
@@ -138,8 +123,6 @@ class IsolateDataClaim(object):
         if self.DEBUG_STATUS:
             print("%s" % ("-"*50))
 
-        #print(self.test_num_total_cl)
-        #sys.exit()
 
 
     def getTagsFromComments(self):
@@ -159,16 +142,10 @@ class IsolateDataClaim(object):
         identifier in the claim
         """
         id = 0
-        if not self.DEBUG_STATUS and not self.PRETTY_PRINT and not self.TESTING_STATUS:
+        if not self.DEBUG_STATUS and not self.TESTING_STATUS:
             print("Number of Line ; Original Claim ; Claim Translated ; Comments ")
 
-        if self.PRETTY_PRINT:
-            print("%11s ;%11s ;%11s ;%11s " % ("Number of Line","Original Claim","Claim Translated","Comments"))
-            print("%s" % ("-"*90))
-
-
         # >> Starting translation
-        
         while id < len(self.claim_list_claim):
             
             # Generating a list from the text claim
@@ -184,30 +161,40 @@ class IsolateDataClaim(object):
                 print("Tag comment  : %s" % self.claim_list_tag_comm[id])
                 # DOING: Create a method to select the object and then apply the transformation rule
                 #       to the claims
-                print("The translation: %s" % self.getObjectInClaim(self.claim_list_line_num[id], self.claim_list_tag_comm[id],self.claim_list_claim[id],self.claim_list_comments[id],get_index,self.claim_list_annoted[id]))
+                print("The translation: %s" % self.getObjectInClaim(self.claim_list_line_num[id],
+                                                                    self.claim_list_tag_comm[id],
+                                                                    self.claim_list_claim[id],
+                                                                    self.claim_list_comments[id],
+                                                                    get_index,self.claim_list_annoted[id]))
                 print()
+
             # Print the new csv
             else:
-                claim_translated = self.getObjectInClaim(self.claim_list_line_num[id], self.claim_list_tag_comm[id],self.claim_list_claim[id],self.claim_list_comments[id],get_index, self.claim_list_annoted[id])
+                claim_translated = self.getObjectInClaim(self.claim_list_line_num[id],
+                                                         self.claim_list_tag_comm[id],
+                                                         self.claim_list_claim[id],
+                                                         self.claim_list_comments[id],
+                                                         get_index,
+                                                         self.claim_list_annoted[id])
 
-                if self.PRETTY_PRINT:
-                    print("%3s ;%50s ;%20s ;%11s " % (self.claim_list_line_num[id].strip(),self.claim_list_claim[id].strip(),str(claim_translated),self.claim_list_comments[id].strip()))
-                else:
-                    row = self.claim_list_line_num[id].strip()+" ; "+self.claim_list_claim[id].strip()+" ; "+str(claim_translated)+" ; "+self.claim_list_comments[id].strip()
-                    # >>> Print the translation
-                    if not self.TESTING_STATUS:
-                        print(row)
+                row = self.claim_list_line_num[id].strip()+" ; "+\
+                      self.claim_list_claim[id].strip()+" ; "+\
+                      str(claim_translated)+" ; "+\
+                      self.claim_list_comments[id].strip()
+
+                # >>> Print the translation
+                if not self.TESTING_STATUS:
+                    print(row)
 
             id += 1
 
-        if self.PRETTY_PRINT:
-            print("%s" % ("-"*90))
-
         if self.TESTING_STATUS:
             # Print log TOTAL
-            print(self.pathJavaFile+" ; "+str(self.test_num_total_failed_translate_cl)+" ; "+str(self.test_num_total_incomplete_trans_cl)+" ; "+
+            print(self.pathJavaFile+" ; "+str(self.test_num_total_failed_translate_cl)+
+                  " ; "+str(self.test_num_total_incomplete_trans_cl)+" ; "+
                   str(self.test_num_total_failed_translate_cl + self.test_num_total_incomplete_trans_cl)+" ; "+
-                  str(self.test_num_total_cl - (self.test_num_total_failed_translate_cl + self.test_num_total_incomplete_trans_cl))+" ; "+
+                  str(self.test_num_total_cl - (self.test_num_total_failed_translate_cl +
+                                                self.test_num_total_incomplete_trans_cl))+" ; "+
                   str(self.test_num_total_cl))
 
 
@@ -215,11 +202,6 @@ class IsolateDataClaim(object):
         """
         Method to gather the object pointed in the claim
         """
-        #
-        #       Other point is thinking about how to get other objects
-        #       need to execute the claim translation
-
-        #self.isolateTextPointed(claim)
         self.claim_translated = ''
 
 
@@ -390,7 +372,7 @@ class IsolateDataClaim(object):
             # Only based on annotations
             if not annoted == "" and not annoted.isspace():
                 # Suport only to comparation
-                # [TODO] WARNNING: fix untracked line
+                # TODO: WARNNING -> fix untracked line
                 matchInvariant = re.search(r'invariant[ ]*(.*)', annoted)
                 if matchInvariant:
                     # Checking parts translated
@@ -634,6 +616,12 @@ class IsolateDataClaim(object):
     
     
     def generateScopeByLineNumber(self, cfile):
+        """
+        :param cfile: the path of the C program file
+        :return void: the method set in the atributes of the class to
+                      values related to number line of begin and end of the functions
+                      in the analyzed program
+        """
         #print()
         #print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
         cprogram = open(cfile, "r")
@@ -660,48 +648,13 @@ class IsolateDataClaim(object):
                     else:
                         # Is a decl, therefore the start == end
                         self.list_num_end_func.append(matchDataMethod.group(3))
-                    
-        
-            
-           
-    
-    
+
 
     def reset_var_claims(self):
+        """
+        This method just reset the values of the following atributes
+        """
         # Atributes for tags
         self.tag_name_array = ''
         self.tag_index_array = ''
-
-
-
-
-
-
-
-
-
-# -------------------------------------------------
-# Main python program
-# -------------------------------------------------
-
-# if __name__ == "__main__":
-#     path_input_file = ""
-#     path_c_file     = ""
-#
-#     if len(sys.argv) >= 2:
-#         path_input_file  = sys.argv[1]
-#         path_c_file = sys.argv[2]
-#     else:
-#         print("Incorrect Usage")
-#         print("Usage: ./script <csv file> <CFile>")
-#         sys.exit()
-#
-#
-#     test = IsolateDataClaim()
-#     test.loadDataFromCsv(path_input_file)
-#     test.setNameJavaFile(path_c_file)
-#     test.generateScopeByLineNumber(path_c_file)
-#
-#     #test.showDataLoaded()
-#     test.getObjectPointed()
 

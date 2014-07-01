@@ -37,6 +37,10 @@ class ReaderCsv(object):
                     print(k)
 
 
+    def getCsvColummns(self):
+        return self.columns
+
+
     def printAllCsv(self):
         print(self.columns['Number_of_Line'])
         print(self.columns['Comments'])
