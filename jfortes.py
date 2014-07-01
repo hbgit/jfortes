@@ -7,6 +7,8 @@ from __future__ import print_function
 # TODO: Apply doc annotations in the programs
 # TODO: BUG in test cases path with space
 # TODO: Check when a test case to have main method
+#
+# TODO: Create option to allow the execution of each step individually
 # ------------------------------------------------------------------------
 
 
@@ -119,7 +121,23 @@ class Jfortes(object):
         translateCl.generateScopeByLineNumber(self.javaFilePath)
 
         try:
-            translateCl.getObjectPointed()
+            listofclaimstranslated =  translateCl.getObjectPointed()
+            # write the claims translated in a temporary file
+            # first create the file name
+            pathclaimstranslated = self.javaFilePath.replace(".java","_cl.csv")
+            self.list_tmp_files.append(pathclaimstranslated)
+
+            filecltranslated = open(pathclaimstranslated, "w")
+
+            for line in listofclaimstranslated:
+                #print(line)
+                filecltranslated.write(line+"\n")
+
+            filecltranslated.close()
+
+            # the path temporary file with the claims translated
+            return pathclaimstranslated
+
         except Exception as e:
             print(self.javaFilePath+" ; ERROR ; ERROR ; ERROR ; ERROR ; ERROR")
             #print("Unexpected error: ", sys.exc_info()[0])
@@ -128,7 +146,8 @@ class Jfortes(object):
 
     def insert_claims(self, _javafile, _claimstranslatedfile):
         readjavafile = ReadJavaFile.ReadJavaFile()
-        readjavafile.readFile(_javafile)
+        #readjavafile.readFile(_javafile)
+        readjavafile.instrumentCodeAssert(_javafile,_claimstranslatedfile)
 
 
     def delete_tmp_files(self):
@@ -182,7 +201,13 @@ if __name__ == "__main__":
                 if args.setTranslationTest:
                     runJfortes.setTranslationTest = True
 
-                runJfortes.translate_claims(getDataClaim)
+                getPathCLTranslated = runJfortes.translate_claims(getDataClaim)
+
+                # TODO apply a model of the framework unit test to run the assertions with the claims
+
+                # TODO Insert in the analyzed program the claims translated adopting assertions
+                runJfortes.insert_claims(os.path.abspath(args.inputJavaProgram), getPathCLTranslated)
+
                 # Clean all tmp files generated
                 runJfortes.delete_tmp_files()
 

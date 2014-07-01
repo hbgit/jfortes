@@ -31,10 +31,10 @@ class ReaderCsv(object):
         with open(pathCsvFile) as file:
             reader = csv.DictReader(file,delimiter=';')
             for row in reader:
-                print(row)
+                #print(row)
                 for (k,v) in row.items():
                     self.columns[k].append(v)
-                    print(k)
+                    #print(k)
 
 
     def getCsvColummns(self):

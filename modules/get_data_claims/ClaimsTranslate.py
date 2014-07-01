@@ -142,8 +142,8 @@ class IsolateDataClaim(object):
         identifier in the claim
         """
         id = 0
-        if not self.DEBUG_STATUS and not self.TESTING_STATUS:
-            print("Number of Line ; Original Claim ; Claim Translated ; Comments ")
+        #if not self.DEBUG_STATUS and not self.TESTING_STATUS:
+        #    print("Number of Line ; Original Claim ; Claim Translated ; Comments ")
 
         # >> Starting translation
         while id < len(self.claim_list_claim):
@@ -182,9 +182,10 @@ class IsolateDataClaim(object):
                       str(claim_translated)+" ; "+\
                       self.claim_list_comments[id].strip()
 
-                # >>> Print the translation
+                # >>> save each translation result in a list
                 if not self.TESTING_STATUS:
-                    print(row)
+                    #print(row)
+                    self.claim_list_translated.append(row)
 
             id += 1
 
@@ -196,6 +197,10 @@ class IsolateDataClaim(object):
                   str(self.test_num_total_cl - (self.test_num_total_failed_translate_cl +
                                                 self.test_num_total_incomplete_trans_cl))+" ; "+
                   str(self.test_num_total_cl))
+
+
+        # A list with the claims given as input translated to JFORTES
+        return self.claim_list_translated
 
 
     def getObjectInClaim(self, lineNumber, tagComm, claim, _commentCl, indexPointed, annoted):

@@ -5,6 +5,8 @@ from __future__ import print_function
 __author__ = 'Herbert OLiveira Rocha'
 
 
+from modules.utils import ReaderCsvOutput
+
 
 class ReadJavaFile(object):
 
@@ -22,3 +24,20 @@ class ReadJavaFile(object):
         for index, line in enumerate(linesjavafile):
             self.file_actual_number_line = index
             print("%s - %s" % (self.file_actual_number_line,line), end="")
+
+
+    def instrumentCodeAssert(self, _javaPathFile, _csvPathFileToInst):
+        javafile = open(_javaPathFile)
+        linesjavafile = javafile.readlines()
+        javafile.close()
+
+        readCsv = ReaderCsvOutput.ReaderCsv()
+        readCsv.loadCsvFile(_csvPathFileToInst)
+        listOfCsvColummns = readCsv.getCsvColummns()
+
+
+        for index, line in enumerate(linesjavafile):
+            self.file_actual_number_line = index
+            print(line, end="")
+            #STOP. TODO: Identify the lines to be instrumented, and then generated a new instance of the code
+
