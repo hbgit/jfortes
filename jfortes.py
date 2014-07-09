@@ -124,10 +124,12 @@ class Jfortes(object):
             listofclaimstranslated =  translateCl.getObjectPointed()
             # write the claims translated in a temporary file
             # first create the file name
-            pathclaimstranslated = self.javaFilePath.replace(".java","_cl.csv")
+            pathclaimstranslated = self.javaFilePath.replace(".java","_newcl.csv")
             self.list_tmp_files.append(pathclaimstranslated)
 
             filecltranslated = open(pathclaimstranslated, "w")
+            # Write header of the translated claims in the CSV file
+            filecltranslated.write("Number_of_line;Ori_claim;New_claim;Comment\n")
 
             for line in listofclaimstranslated:
                 #print(line)
@@ -209,6 +211,6 @@ if __name__ == "__main__":
                 runJfortes.insert_claims(os.path.abspath(args.inputJavaProgram), getPathCLTranslated)
 
                 # Clean all tmp files generated
-                runJfortes.delete_tmp_files()
+                #runJfortes.delete_tmp_files()
 
 
