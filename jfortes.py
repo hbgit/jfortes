@@ -149,7 +149,24 @@ class Jfortes(object):
     def insert_claims(self, _javafile, _claimstranslatedfile):
         readjavafile = ReadJavaFile.ReadJavaFile()
         #readjavafile.readFile(_javafile)
-        readjavafile.instrumentCodeAssert(_javafile,_claimstranslatedfile)
+        list_new_program = readjavafile.instrumentCodeAssert(_javafile,_claimstranslatedfile)
+
+        #write new program in a temporary file
+        pathnewprogram = self.javaFilePath.replace(".java","_assert.java")
+        self.list_tmp_files.append(pathnewprogram)
+
+        filenewprogram = open(pathnewprogram, "w")
+
+        for line in list_new_program:
+            print(line)
+            filenewprogram.write(line)
+
+        filenewprogram.close()
+
+
+
+
+        # TODO: Create a way to execute the tests
 
 
     def delete_tmp_files(self):
@@ -208,9 +225,9 @@ if __name__ == "__main__":
                 # TODO apply a model of the framework unit test to run the assertions with the claims
 
                 # TODO Insert in the analyzed program the claims translated adopting assertions
-                runJfortes.insert_claims(os.path.abspath(args.inputJavaProgram), getPathCLTranslated)
+                runJfortes.insert_claims(runJfortes.javaFilePath, getPathCLTranslated)
 
                 # Clean all tmp files generated
-                #runJfortes.delete_tmp_files()
+                runJfortes.delete_tmp_files()
 
 
