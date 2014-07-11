@@ -5,6 +5,9 @@ from __future__ import print_function
 __author__ = 'Herbert OLiveira Rocha'
 
 
+import sys
+
+
 from modules.utils import ReaderCsvOutput
 
 
@@ -26,7 +29,11 @@ class ReadJavaFile(object):
             print("%s - %s" % (self.file_actual_number_line,line), end="")
 
 
-    def instrumentCodeAssert(self, _javaPathFile, _csvPathFileToInst):
+    def instrumentCodeAssert(self, _javaPathFile, _csvPathFileToInst, _modelUnitTest):
+
+        modelToApply = self.getModelUnitTest(_modelUnitTest)
+        # TODO: create a strategy to apply each model to be supported by the JFORTES tool
+        print(">>>", modelToApply)
 
         #text of the new program
         list_program_asserts = []
@@ -55,6 +62,12 @@ class ReadJavaFile(object):
             list_program_asserts.append(str(line).rstrip())
 
         return list_program_asserts
+
+
+    def getModelUnitTest(self, _dicModelTest):
+        for key, value in _dicModelTest.items():
+            if value:
+                return key
 
 
 

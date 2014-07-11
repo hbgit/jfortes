@@ -36,6 +36,8 @@ class Jfortes(object):
         self.javaClassPath = ""
         self.setTranslationTest = False
         self.list_tmp_files = []
+        #Model of unit testing supported
+        self.dic_model_unit_test = {'testng':False,'junit':False, 'NO':True}
 
 
 
@@ -147,9 +149,11 @@ class Jfortes(object):
 
 
     def insert_claims(self, _javafile, _claimstranslatedfile):
+
+
         readjavafile = ReadJavaFile.ReadJavaFile()
         #readjavafile.readFile(_javafile)
-        list_new_program = readjavafile.instrumentCodeAssert(_javafile,_claimstranslatedfile)
+        list_new_program = readjavafile.instrumentCodeAssert(_javafile,_claimstranslatedfile,self.dic_model_unit_test)
 
         #write new program in a temporary file
         pathnewprogram = self.javaFilePath.replace(".java","_assert.java")
@@ -188,6 +192,8 @@ if __name__ == "__main__":
     parser.add_argument('-v','--version', action='version' , version="version 1")
     parser.add_argument(dest='inputJavaProgram', metavar='file.java', type=str,
                help='the Java program file to be analyzed')
+    parser.add_argument('-n','--apply-testng-model', action="store_true" , dest='setTestNg',
+               help='run jfortes and then apply the TestNG model to run unit testing', default=False)
     parser.add_argument('-t','--translation-test', action="store_true" , dest='setTranslationTest',
                help='run jfortes only to test the translation of the claims, where the ouput is as following: '
                     'Program ; NOT translation ; INCOMPLETE translation ; FAILED translation ; OKAY translation', default=False)
@@ -222,9 +228,13 @@ if __name__ == "__main__":
 
                 getPathCLTranslated = runJfortes.translate_claims(getDataClaim)
 
-                # TODO apply a model of the framework unit test to run the assertions with the claims
+                # DOING apply a model of the framework unit test to run the assertions with the claims
+                if args.setTestNg:
+                    runJfortes.dic_model_unit_test['testng'] = True
+                    runJfortes.dic_model_unit_test['NO'] = False
 
-                # TODO Insert in the analyzed program the claims translated adopting assertions
+
+                # Insert in the analyzed program the claims translated adopting assertions
                 runJfortes.insert_claims(runJfortes.javaFilePath, getPathCLTranslated)
 
                 # Clean all tmp files generated
