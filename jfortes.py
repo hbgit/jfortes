@@ -168,11 +168,6 @@ class Jfortes(object):
         filenewprogram.close()
 
 
-
-
-        # TODO: Create a way to execute the tests
-
-
     def delete_tmp_files(self):
         for pathFile in self.list_tmp_files:
             os.remove(pathFile)
