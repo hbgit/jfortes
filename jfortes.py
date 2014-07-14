@@ -53,15 +53,15 @@ class Jfortes(object):
         # Pre-processing the source code of the program
         pathprefilejava = self.javaFilePath.replace(".java","_pre.java")
         self.list_tmp_files.append(pathprefilejava)
-        self.pre_processing(self.javaFilePath, pathprefilejava)
+        self.pre_processing(self.javaFilePath, pathprefilejava, True)
 
         self.javaFilePath = pathprefilejava
         return self.run_esc_java(self.javaFilePath)
 
 
-    def pre_processing(self, _javafile, _pathtoprefile):
+    def pre_processing(self, _javafile, _pathtoprefile, _mode):
         run_pre = RunPreprocessor.CodeBeautify()
-        run_pre.runBeatifyTool(_javafile, _pathtoprefile)
+        run_pre.runBeatifyTool(_javafile, _pathtoprefile, _mode)
 
 
     def run_esc_java(self, javafile):
@@ -162,10 +162,15 @@ class Jfortes(object):
         filenewprogram = open(pathnewprogram, "w")
 
         for line in list_new_program:
-            print(line)
-            filenewprogram.write(line)
+            #print(line)
+            filenewprogram.write(line+"\n")
 
         filenewprogram.close()
+
+        # Pre-processing the source code of the program
+        pathendfilejava = pathnewprogram.replace("_assert.java","_end.java")
+        #self.list_tmp_files.append(pathendfilejava)
+        self.pre_processing(pathnewprogram, pathendfilejava, False)
 
 
     def delete_tmp_files(self):

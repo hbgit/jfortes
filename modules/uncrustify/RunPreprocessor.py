@@ -26,12 +26,14 @@ class CodeBeautify(object):
         self.setFileConf = filePath
 
 
-    def runBeatifyTool(self, pathJavaProgram, _pathfiletosave):
-        cmdRun = self.path_tool+" "+self.option_to_run_tool+" -c "+self.setFileConf+" -f "+pathJavaProgram
-        #print(cmdRun)
-        commands.getoutput(cmdRun+" &> "+_pathfiletosave)
-
-
+    def runBeatifyTool(self, pathJavaProgram, _pathfiletosave, _mode):
+        if _mode:
+            cmdRun = self.path_tool+" "+self.option_to_run_tool+" -c "+self.setFileConf+" -f "+pathJavaProgram
+            #print(cmdRun)
+            commands.getoutput(cmdRun+" &> "+_pathfiletosave)
+        else:
+            cmdRun = self.path_tool+" "+self.option_to_run_tool+" -c "+self.setFileConf+" -f "+pathJavaProgram
+            os.system(cmdRun)
 
 
 if __name__ == "__main__":
