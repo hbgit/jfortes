@@ -32,21 +32,51 @@ class ReadJavaFile(object):
             print("%s - %s" % (self.file_actual_number_line,line), end="")
 
 
-    def instrumentCodeAssert(self, _javaPathFile, _csvPathFileToInst, _modelUnitTest):
+    def checkClaimsFileEgual(self, _beforefilepre, _afterfilepre):
+        numlinesbefore = 0
+        numlinesafter = 0
+        with open(_beforefilepre) as f:
+            total = sum(1 for _ in f)
+
+        numlinesbefore = total
+
+        with open(_afterfilepre) as f:
+            total = sum(1 for _ in f)
+
+        numlinesafter = total
+
+        if numlinesbefore == numlinesafter:
+            return True
+        else:
+            return False
+
+
+    def instrumentCodeAssert(self, _javaPathFile, _claimsbeforeprecode, _csvPathFileToInst, _modelUnitTest):
 
         modelToApply = self.getModelUnitTest(_modelUnitTest)
         #print(">>>", modelToApply)
 
         # Check what model to test should be applied in the analyzed program
         if modelToApply == "testng":
-            list_new_program_inst = self.applyTestNgModel(_javaPathFile, _csvPathFileToInst)
-            return list_new_program_inst
+            # verifiyng if there are differences of the claims file
+            numclaimsegual = self.checkClaimsFileEgual(_claimsbeforeprecode, _csvPathFileToInst)
+            if numclaimsegual:
+                # with the line number
+                # TODO: write msg with the line number in the assertions
+                list_new_program_inst = self.applyTestNgModel(_javaPathFile, _csvPathFileToInst, True)
+                return list_new_program_inst
+            else:
+                list_new_program_inst = self.applyTestNgModel(_javaPathFile, _csvPathFileToInst, False)
+                return list_new_program_inst
 
         elif modelToApply == "junit":
             list_new_program_inst = self.applyJunitModel(_javaPathFile, _csvPathFileToInst)
             return list_new_program_inst
 
         elif modelToApply == "NO":
+
+            # verifiyng if there are differences of the claims file
+            numclaimsegual = self.checkClaimsFileEgual(_claimsbeforeprecode, _csvPathFileToInst)
 
             #text of the new program
             list_program_asserts = []
@@ -55,9 +85,17 @@ class ReadJavaFile(object):
             linesjavafile = javafile.readlines()
             javafile.close()
 
+            #claims before preprocessing code
+            readCsv = ReaderCsvOutput.ReaderCsv()
+            readCsv.loadCsvFile(_csvPathFileToInst)
+            listOfCsvFirstClColummns = readCsv.getCsvColummns()
+
+            #claims after preprocessing code
             readCsv = ReaderCsvOutput.ReaderCsv()
             readCsv.loadCsvFile(_csvPathFileToInst)
             listOfCsvNewClColummns = readCsv.getCsvColummns()
+
+
 
 
             for index, line in enumerate(linesjavafile):
@@ -69,7 +107,12 @@ class ReadJavaFile(object):
                         # DEBUG print(">>>>>>>>",numLineCl)
                         # generating the new with the assertion based on the claim
                         #print("assert( %s );" % str(listOfCsvNewClColummns['New_claim'][i]))
-                        list_program_asserts.append("assert( "+str(listOfCsvNewClColummns['New_claim'][i])+" );")
+                        if numclaimsegual:
+                            # with the line number
+                            list_program_asserts.append("// Number line in the original code: "+str(listOfCsvFirstClColummns['Number_of_line'][i]))
+                            list_program_asserts.append("assert( "+str(listOfCsvNewClColummns['New_claim'][i])+" );")
+                        else:
+                            list_program_asserts.append("assert( "+str(listOfCsvNewClColummns['New_claim'][i])+" );")
 
                 #print(line, end="")
                 list_program_asserts.append(str(line).rstrip())
@@ -84,7 +127,7 @@ class ReadJavaFile(object):
 
 
 
-    def applyTestNgModel(self,_javaPathFile, _csvPathFileToInst):
+    def applyTestNgModel(self,_javaPathFile, _csvPathFileToInst, _writenumlineasserts):
         #text of the new program
         list_program_asserts = []
 
