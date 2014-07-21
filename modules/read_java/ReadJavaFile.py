@@ -62,11 +62,11 @@ class ReadJavaFile(object):
             numclaimsegual = self.checkClaimsFileEgual(_claimsbeforeprecode, _csvPathFileToInst)
             if numclaimsegual:
                 # with the line number
-                # TODO: write msg with the line number in the assertions
-                list_new_program_inst = self.applyTestNgModel(_javaPathFile, _csvPathFileToInst, True)
+                # Write msg with the line number in the assertions
+                list_new_program_inst = self.applyTestNgModel(_javaPathFile, _claimsbeforeprecode, _csvPathFileToInst)
                 return list_new_program_inst
             else:
-                list_new_program_inst = self.applyTestNgModel(_javaPathFile, _csvPathFileToInst, False)
+                list_new_program_inst = self.applyTestNgModel(_javaPathFile, _claimsbeforeprecode, _csvPathFileToInst)
                 return list_new_program_inst
 
         elif modelToApply == "junit":
@@ -127,7 +127,12 @@ class ReadJavaFile(object):
 
 
 
-    def applyTestNgModel(self,_javaPathFile, _csvPathFileToInst, _writenumlineasserts):
+    def applyTestNgModel(self,_javaPathFile, _claimsbeforeprecode, _csvPathFileToInst):
+
+        #TODO: Identify the pre-requirements to run test with TESTNG, e.g., the class needs to be public (public class Bag(){)
+        #TODO: Add an option in jfortes to generate XML to run the tests
+        #TODO: Fix bug in the translation: NULL to null; a.length() to a.length. Checkout other.
+
         #text of the new program
         list_program_asserts = []
 
@@ -136,18 +141,28 @@ class ReadJavaFile(object):
         linesjavafile = javafile.readlines()
         javafile.close()
 
+        #claims before preprocessing code
+        readCsv = ReaderCsvOutput.ReaderCsv()
+        readCsv.loadCsvFile(_csvPathFileToInst)
+        listOfCsvFirstClColummns = readCsv.getCsvColummns()
+
         # Reading CSV file with the claims translated
         readCsv = ReaderCsvOutput.ReaderCsv()
         readCsv.loadCsvFile(_csvPathFileToInst)
         listOfCsvNewClColummns = readCsv.getCsvColummns()
 
+        #claims after preprocessing code
         # Getting the number lines of the methods from the analyzed program
         listnumstartmethod = self.identifyNumLineOfMethods(_javaPathFile)
 
+        # verifiyng if there are differences of the claims file
+        numclaimsegual = self.checkClaimsFileEgual(_claimsbeforeprecode, _csvPathFileToInst)
+
 
         # Adding imports of the TestNG
-        list_program_asserts.append("import org.testng.annotations.Test; // <- [JFORTES]")
+        # TODO: BUG in the preprocessing code. It was added a blank space in the Assert import
         list_program_asserts.append("import org.testng.Assert; // <- [JFORTES]")
+        list_program_asserts.append("import org.testng.annotations.Test; // <- [JFORTES]")
         list_program_asserts.append("")
 
 
@@ -164,9 +179,14 @@ class ReadJavaFile(object):
                 numToCompare = int(numLineCl) - 1
                 if numToCompare == index:
                     # DEBUG print(">>>>>>>>",numLineCl)
-                    # generating the new with the assertion based on the claim
-                    #print("assert( %s );" % str(listOfCsvNewClColummns['New_claim'][i]))
-                    list_program_asserts.append("Assert.assertTrue( "+str(listOfCsvNewClColummns['New_claim'][i])+" );")
+                    if numclaimsegual:
+                        # generating the new with the assertion based on the claim
+                        list_program_asserts.append("Assert.assertTrue( "+str(listOfCsvNewClColummns['New_claim'][i])+\
+                                                    ", \" \\n IN ORIGINAL CODE AT LINE: < "+str(listOfCsvFirstClColummns['Number_of_line'][i])+"> " +\
+                                                    "\\n COMMENT: "+str(listOfCsvFirstClColummns['Comment'][i])+"\\n \" );")
+                    else:
+                        # generating the new with the assertion based on the claim
+                        list_program_asserts.append("Assert.assertTrue( "+str(listOfCsvNewClColummns['New_claim'][i])+" );")
 
             #print(line, end="")
             list_program_asserts.append(str(line).rstrip())
