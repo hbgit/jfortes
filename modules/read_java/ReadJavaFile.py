@@ -109,8 +109,10 @@ class ReadJavaFile(object):
                         #print("assert( %s );" % str(listOfCsvNewClColummns['New_claim'][i]))
                         if numclaimsegual:
                             # with the line number
-                            list_program_asserts.append("// Number line in the original code: "+str(listOfCsvFirstClColummns['Number_of_line'][i]))
-                            list_program_asserts.append("assert( "+str(listOfCsvNewClColummns['New_claim'][i])+" );")
+                            #list_program_asserts.append("// Number line in the original code: "+str(listOfCsvFirstClColummns['Number_of_line'][i]))
+                            list_program_asserts.append("assert "+str(listOfCsvNewClColummns['New_claim'][i])+" : "+\
+                                                        " \" \\n IN ORIGINAL CODE AT LINE: < "+str(listOfCsvFirstClColummns['Number_of_line'][i])+"> " +\
+                                                    "\\n COMMENT: "+str(listOfCsvFirstClColummns['Comment'][i])+"\\n \";")
                         else:
                             list_program_asserts.append("assert( "+str(listOfCsvNewClColummns['New_claim'][i])+" );")
 
