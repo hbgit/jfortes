@@ -311,7 +311,7 @@ class IsolateDataClaim(object):
 
                         # Checking parts translated
                         if not self.check_translated_is_empty(self.claim_translated):
-                            self.claim_translated += " != NULL && "+self.claim_translated+".length() > 0"
+                            self.claim_translated += " != null && "+self.claim_translated+".length > 0"
                         else:
                             self.claim_translated = ""
                             self.test_num_total_incomplete_trans_cl += 1
