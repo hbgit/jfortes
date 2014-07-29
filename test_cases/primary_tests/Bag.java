@@ -12,7 +12,7 @@ class Bag {
     System.arraycopy(input, 0, a, 0, n);
   }
 
-  int extractMin() {
+  public int extractMin() {
 	int z, x, k;
     int m = Integer.MAX_VALUE;
     int mindex = 0;
@@ -25,5 +25,10 @@ class Bag {
     n--;
     a[mindex] = a[n];
     return m;
+  }
+  public static void main(String[] args){
+	int[] b = new int [100];
+	Bag x = new Bag(b);
+	System.out.println(x.extractMin());
   }
 }

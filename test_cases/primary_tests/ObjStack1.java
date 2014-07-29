@@ -18,5 +18,10 @@ class ObjStack {
     a[n] = null;
     return o;
   }
+  public static void main (String args[]){
+	ObjStack x = new ObjStack();
+	x.Push(12);
+	x.Pop();
+  }
 
 }
