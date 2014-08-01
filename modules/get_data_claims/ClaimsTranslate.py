@@ -256,7 +256,7 @@ class IsolateDataClaim(object):
                 # Checking parts translated]
                 if not self.check_translated_is_empty(self.tag_index_array) and \
                    not self.check_translated_is_empty(self.tag_name_array):
-                    self.claim_translated = self.tag_index_array+" <= "+self.tag_name_array+".length"
+                    self.claim_translated = self.tag_index_array+" < "+self.tag_name_array+".length"
                 else:
                     self.claim_translated = ""
                     self.test_num_total_incomplete_trans_cl += 1
@@ -488,7 +488,8 @@ class IsolateDataClaim(object):
 
             # Only based on annotations
             if not annoted == "" and not annoted.isspace():
-                self.claim_translated = annoted
+                #self.claim_translated = annoted TODO: Write a method to adopt annotation
+                self.claim_translated = "true"
             # if not annoted == "" and not annoted.isspace():
             #     # WARNNING for while we just consider @requires
             #     # Basead on this model -> @ requires i >= 0;
@@ -529,7 +530,7 @@ class IsolateDataClaim(object):
                 #    self.claim_translated = matchTagAnnot.group(1)
                 matchWarNeedPos = re.search(r'(Postcondition possibly not established)', _commentCl)
                 if matchWarNeedPos:
-                    self.claim_translated = "1"
+                    self.claim_translated = "true"
                 else:
                     self.claim_translated = annoted
             # if not annoted == "" and not annoted.isspace():

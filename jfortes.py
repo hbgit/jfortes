@@ -85,7 +85,8 @@ class Jfortes(object):
         outPathEscJava = _javafile.replace(".java",_nameextension)
         self.list_tmp_files.append(outPathEscJava)
         # For Debug
-        #os.system("escj -ClassPath "+self.javaClassPath+" "+javafile)
+        #os.system("escj -ClassPath "+self.javaClassPath+" "+_javafile)
+        #os.system("escj -ClassPath "+self.javaClassPath+" -h")
         #sys.exit()
 
         esc_result_status = commands.getoutput("escj -ClassPath "+self.javaClassPath+" "+_javafile+" &> "+outPathEscJava)

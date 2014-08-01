@@ -20,7 +20,9 @@ class ObjStack {
   }
   public static void main (String args[]){
 	ObjStack x = new ObjStack();
-	x.Push(12);
+    Object[] value = new Object[5];
+    value[0] = value;
+	x.Push(value);
 	x.Pop();
   }
 

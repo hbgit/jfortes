@@ -1,11 +1,11 @@
 /*
 Se uma pilha cresce e encolhe, os objetos que foram tirados 
-da pilha não vão ser lixo coletado, mesmo que o programa usando 
-a pilha não tenha mais referências à eles. Isto é porque a pilha
-mantém referências obsoletas para estes objetos. Uma referência 
-obsoleta é simplesmente uma referência que nunca será desreferenciado novamente. 
-Neste caso, as referências fora da "parte ativa" do elemento de matriz estão obsoletos. 
-A parte ativa é constituída pelos elementos cujo índice é menor do que o tamanho.
+da pilha nÃ£o vÃ£o ser lixo coletado, mesmo que o programa usando 
+a pilha nÃ£o tenha mais referÃªncias Ã  eles. Isto Ã© porque a pilha
+mantÃ©m referÃªncias obsoletas para estes objetos. Uma referÃªncia 
+obsoleta Ã© simplesmente uma referÃªncia que nunca serÃ¡ desreferenciado novamente. 
+Neste caso, as referÃªncias fora da "parte ativa" do elemento de matriz estÃ£o obsoletos. 
+A parte ativa Ã© constituÃ­da pelos elementos cujo Ã­ndice Ã© menor do que o tamanho.
  */
 import java.io.*;
 		
@@ -24,7 +24,7 @@ import java.io.*;
 		        for (int i = 0; i < CAPACITY; ++i)
 		        {
 		            stack.push(new Object());
-		            System.out.println("Foi inserido um número!");
+		            System.out.println("Foi inserido um nÃºmero!");
 		        }
 		        for (int i = 0; i < HALF_CAPACITY; ++i)
 		        {
