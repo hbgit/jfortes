@@ -38,7 +38,7 @@ class Jfortes(object):
         self.list_tmp_files = []
         self.path_csvclaims_ori_code = ""
         #Model of unit testing supported
-        self.dic_model_unit_test = {'testng':False,'junit':False, 'NO':True}
+        self.dic_model_unit_test = {'testng':False,'jcute':False,'junit':False, 'NO':True}
 
 
 
@@ -161,7 +161,9 @@ class Jfortes(object):
 
         readjavafile = ReadJavaFile.ReadJavaFile()
         #readjavafile.readFile(_javafile)
-        list_new_program = readjavafile.instrumentCodeAssert(_javafile,self.path_csvclaims_ori_code, _claimstranslatedfile,self.dic_model_unit_test)
+        list_new_program = readjavafile.instrumentCodeAssert(_javafile,self.path_csvclaims_ori_code,
+                                                             _claimstranslatedfile,
+                                                             self.dic_model_unit_test)
 
         #write new program in a temporary file
         pathnewprogram = self.javaFilePath.replace(".java","_assert.java")
@@ -201,7 +203,11 @@ if __name__ == "__main__":
     parser.add_argument(dest='inputJavaProgram', metavar='file.java', type=str,
                help='the Java program file to be analyzed')
     parser.add_argument('-n','--apply-testng-model', action="store_true" , dest='setTestNg',
-               help='run jfortes and then apply the TestNG model to run unit testing', default=False)
+                help='run jfortes and then apply the TestNG model to run unit testing', default=False)
+
+    parser.add_argument('-j', '--apply-jcute-model', action="store_true", dest='setJCute',
+                help='run jfortes and then apply the jCUTE model', default=False)
+
     parser.add_argument('-t','--translation-test', action="store_true" , dest='setTranslationTest',
                help='run jfortes only to test the translation of the claims, where the ouput is as following: '
                     'Program ; NOT translation ; INCOMPLETE translation ; FAILED translation ; OKAY translation', default=False)
@@ -240,6 +246,10 @@ if __name__ == "__main__":
                 if args.setTestNg:
                     runJfortes.dic_model_unit_test['testng'] = True
                     runJfortes.dic_model_unit_test['NO'] = False
+                elif args.setJCute:
+                    runJfortes.dic_model_unit_test['jcute'] = True
+                    runJfortes.dic_model_unit_test['NO'] = False
+
 
 
                 # Insert in the analyzed program the claims translated adopting assertions

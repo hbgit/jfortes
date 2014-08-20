@@ -69,6 +69,18 @@ class ReadJavaFile(object):
                 list_new_program_inst = self.applyTestNgModel(_javaPathFile, _claimsbeforeprecode, _csvPathFileToInst)
                 return list_new_program_inst
 
+        elif modelToApply == "jcute":
+            # verifiyng if there are differences of the claims file
+            numclaimsegual = self.checkClaimsFileEgual(_claimsbeforeprecode, _csvPathFileToInst)
+            if numclaimsegual:
+                # with the line number
+                # Write msg with the line number in the assertions
+                list_new_program_inst = self.apply_jcute_model(_javaPathFile, _claimsbeforeprecode, _csvPathFileToInst)
+                return list_new_program_inst
+            else:
+                list_new_program_inst = self.apply_jcute_model(_javaPathFile, _claimsbeforeprecode, _csvPathFileToInst)
+                return list_new_program_inst
+
         elif modelToApply == "junit":
             list_new_program_inst = self.applyJunitModel(_javaPathFile, _csvPathFileToInst)
             return list_new_program_inst
@@ -194,6 +206,60 @@ class ReadJavaFile(object):
             list_program_asserts.append(str(line).rstrip())
 
         return list_program_asserts
+
+
+    def apply_jcute_model(self,_javaPathFile, _claimsbeforeprecode, _csvPathFileToInst):
+
+        #text of the new program
+        list_program_asserts = []
+
+        # Reading java file
+        javafile = open(_javaPathFile)
+        linesjavafile = javafile.readlines()
+        javafile.close()
+
+        #claims before preprocessing code
+        readCsv = ReaderCsvOutput.ReaderCsv()
+        readCsv.loadCsvFile(_csvPathFileToInst)
+        listOfCsvFirstClColummns = readCsv.getCsvColummns()
+
+        # Reading CSV file with the claims translated
+        readCsv = ReaderCsvOutput.ReaderCsv()
+        readCsv.loadCsvFile(_csvPathFileToInst)
+        listOfCsvNewClColummns = readCsv.getCsvColummns()
+
+        #claims after preprocessing code
+        # Getting the number lines of the methods from the analyzed program
+        listnumstartmethod = self.identifyNumLineOfMethods(_javaPathFile)
+
+        # verifiyng if there are differences of the claims file
+        numclaimsegual = self.checkClaimsFileEgual(_claimsbeforeprecode, _csvPathFileToInst)
+
+
+        # Adding imports of the TestNG
+        # TODO: BUG in the preprocessing code. It was added a blank space in the Assert import
+        list_program_asserts.append("import cute.Cute; // <- [JFORTES]")
+        list_program_asserts.append("")
+
+
+        for index, line in enumerate(linesjavafile):
+            self.file_actual_number_line = index
+
+            for i, numLineCl in enumerate(listOfCsvNewClColummns['Number_of_line']):
+                # Identify the lines to be instrumented
+                # Identify the lines to be instrumented
+                numToCompare = int(numLineCl) - 1
+                if numToCompare == index:
+                    list_program_asserts.append("// IN ORIGINAL CODE AT LINE: < "+str(listOfCsvFirstClColummns['Number_of_line'][i])+" > ")
+                    list_program_asserts.append("// COMMENT: "+str(listOfCsvFirstClColummns['Comment'][i]))
+                    list_program_asserts.append("Cute.Assert( " + str(listOfCsvNewClColummns['New_claim'][i]) + "); ")
+
+
+            #print(line, end="")
+            list_program_asserts.append(str(line).rstrip())
+
+        return list_program_asserts
+
 
 
     def applyJunitModel(self,_javaPathFile, _csvPathFileToInst):
