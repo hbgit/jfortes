@@ -4,11 +4,13 @@ from __future__ import print_function
 
 
 # ------------------------------------------------------------------------
-# TODO: Apply doc annotations in the programs
-# TODO: BUG in test cases path with space
-# TODO: Check when a test case to have main method
-#
-# TODO: Create option to allow the execution of each step individually
+# TODO List
+# - Apply doc annotations in the programs
+# - BUG in test cases path with space
+# - Check when a test case has not main method
+# - Create option to allow the execution of each step individually
+# - pos-preprocessing in the imports
+# - wrong line numbers in the asserts for some test cases
 # ------------------------------------------------------------------------
 
 
@@ -16,10 +18,10 @@ __author__ = 'Herbert OLiveira Rocha'
 
 # From Python
 import sys
-import re
 import commands
 import os
 import argparse
+import ConfigParser
 
 
 # From JFORTES
@@ -27,6 +29,20 @@ from modules.get_data_claims import GetDataClaims
 from modules.get_data_claims import ClaimsTranslate
 from modules.uncrustify import RunPreprocessor
 from modules.read_java import ReadJavaFile
+
+
+# Global VAR
+# Check setup to run the program
+ABS_PATH_JFORTES = os.path.dirname(__file__)
+# Checkin is was executed the {configure.py} and if the ESBMC path was added
+PATH_FILE_SETTINGS = ABS_PATH_JFORTES+'/settings.cfg'
+if not os.path.isfile(PATH_FILE_SETTINGS):
+    print("--------------------------- ERROR: ")
+    print('  >> Error: unable to find the { settings.cfg } file')
+    print('  >> Please run ./configure to check the prerequisites to use JFORTES tool')
+    sys.exit()
+
+
 
 class Jfortes(object):
 
@@ -195,7 +211,13 @@ class Jfortes(object):
 
 if __name__ == "__main__":
 
-    # TODO: Create a verify settings like map2check
+    # Verify settings to JFORTES
+    config = ConfigParser.ConfigParser()
+    config.read(PATH_FILE_SETTINGS)
+    java_path_settings = config.get('JAVA', 'java_path', 0)
+    if java_path_settings == 'empty':
+        print("Sorry, you need to set up the java path in settings.cfg file. See REAME file.")
+        sys.exit()
 
     # --- Parse args options
     parser = argparse.ArgumentParser(description='Run JFORTES v1')
@@ -234,7 +256,7 @@ if __name__ == "__main__":
             else:
                 # Apply all steps of the JFORTES method
                 runJfortes = Jfortes()
-                getLoad = runJfortes.load_java_path(os.path.abspath(args.inputJavaProgram), "/usr/lib/java/jdk1.5.0_22/bin/")
+                getLoad = runJfortes.load_java_path(os.path.abspath(args.inputJavaProgram), java_path_settings)
                 getDataClaim = runJfortes.gather_data_claims(getLoad,"_claims.csv")
 
                 if args.setTranslationTest:
