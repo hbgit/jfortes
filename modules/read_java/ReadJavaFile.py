@@ -145,7 +145,6 @@ class ReadJavaFile(object):
 
         #TODO: Identify the pre-requirements to run test with TESTNG, e.g., the class needs to be public (public class Bag(){)
         #TODO: Add an option in jfortes to generate XML to run the tests
-        #Fix bug in the translation: NULL to null; a.length() to a.length. Checkout other.
 
         #text of the new program
         list_program_asserts = []
