@@ -243,30 +243,35 @@ class ReadJavaFile(object):
         list_program_asserts.append("import cute.Cute; // <- [JFORTES]")
         list_program_asserts.append("")
 
+        lenoffile = len(linesjavafile)
 
         for index, line in enumerate(linesjavafile):
+
             self.file_actual_number_line = index
 
             for i, numLineCl in enumerate(listOfCsvNewClColummns['Number_of_line']):
                 # Identify the lines to be instrumented
-                # Identify the lines to be instrumented
+
                 numToCompare = int(numLineCl) - 1
+                #print(numToCompare+" = "+index)
                 if numToCompare == index:
                     list_program_asserts.append("// IN ORIGINAL CODE AT LINE: < "+str(listOfCsvFirstClColummns['Number_of_line'][i])+" > ")
                     list_program_asserts.append("// COMMENT: "+str(listOfCsvFirstClColummns['Comment'][i]))
                     list_program_asserts.append("Cute.Assert( " + str(listOfCsvNewClColummns['New_claim'][i]) + "); ")
 
 
+            if lenoffile == (index+1):
+                # Write a generic main to test the method
+                if not hasmain:
+                    #TODO:
+                    #     Identify the end of the file
+                    #     Adding a new main based on data gathered form parser
+                    #print(_datafileinput)
+                    list_program_asserts.append(_datafileinput)
+                    #sys.exit()
+
             #print(line, end="")
             list_program_asserts.append(str(line).rstrip())
-
-        # Write a generic main to test the method
-        if not hasmain:
-            #TODO:
-            #     Identify the end of the file
-            #     Adding a new main based on data gathered form parser
-            print(_datafileinput)
-            sys.exit()
 
         return list_program_asserts
 
