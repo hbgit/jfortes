@@ -51,7 +51,7 @@ class ReadJavaFile(object):
             return False
 
 
-    def instrumentCodeAssert(self, _javaPathFile, _claimsbeforeprecode, _csvPathFileToInst, _modelUnitTest):
+    def instrumentCodeAssert(self, _javaPathFile, _claimsbeforeprecode, _csvPathFileToInst, _modelUnitTest, _datafileinput):
 
         modelToApply = self.getModelUnitTest(_modelUnitTest)
         #print(">>>", modelToApply)
@@ -75,10 +75,10 @@ class ReadJavaFile(object):
             if numclaimsegual:
                 # with the line number
                 # Write msg with the line number in the assertions
-                list_new_program_inst = self.apply_jcute_model(_javaPathFile, _claimsbeforeprecode, _csvPathFileToInst)
+                list_new_program_inst = self.apply_jcute_model(_javaPathFile, _claimsbeforeprecode, _csvPathFileToInst, _datafileinput)
                 return list_new_program_inst
             else:
-                list_new_program_inst = self.apply_jcute_model(_javaPathFile, _claimsbeforeprecode, _csvPathFileToInst)
+                list_new_program_inst = self.apply_jcute_model(_javaPathFile, _claimsbeforeprecode, _csvPathFileToInst, _datafileinput)
                 return list_new_program_inst
 
         elif modelToApply == "junit":
@@ -207,7 +207,10 @@ class ReadJavaFile(object):
         return list_program_asserts
 
 
-    def apply_jcute_model(self,_javaPathFile, _claimsbeforeprecode, _csvPathFileToInst):
+    def apply_jcute_model(self,_javaPathFile, _claimsbeforeprecode, _csvPathFileToInst, _datafileinput):
+
+        #Identify if the program has main
+        hasmain = self.has_main_method(_javaPathFile)
 
         #text of the new program
         list_program_asserts = []
@@ -257,6 +260,14 @@ class ReadJavaFile(object):
             #print(line, end="")
             list_program_asserts.append(str(line).rstrip())
 
+        # Write a generic main to test the method
+        if not hasmain:
+            #TODO:
+            #     Identify the end of the file
+            #     Adding a new main based on data gathered form parser
+            print(_datafileinput)
+            sys.exit()
+
         return list_program_asserts
 
 
@@ -285,5 +296,19 @@ class ReadJavaFile(object):
                     #self.list_num_start_func.append(matchDataMethod.group(3))
 
         return listnumstartmethods
+
+
+    def has_main_method(self,_javaPathFile):
+        # Gettting the name of the functions
+        get_start_data_method = commands.getoutput("ctags --sort=NO -x --c-kinds=f "+_javaPathFile).split("\n")
+        for line in get_start_data_method:
+            #print(line)
+            matchData = re.search(r'([a-zA-Z0-9\_\(\)\[\]]*)[ ]*([a-zA-Z0-9]*)[ ]*([0-9]*)', line)
+            if matchData:
+                if matchData.group(2) == "method":
+                    if matchData.group(1) == "main":
+                        return True
+
+
 
 

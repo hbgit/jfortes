@@ -43,6 +43,8 @@ if not os.path.isfile(PATH_FILE_SETTINGS):
     sys.exit()
 
 
+JAVA_PARSER = os.path.abspath('')+"/modules/parser/partjavaparser.jar"
+
 
 class Jfortes(object):
 
@@ -172,14 +174,29 @@ class Jfortes(object):
             raise # reraises the exception
 
 
-    def insert_claims(self, _javafile, _claimstranslatedfile):
+    def generate_data2input(self, _javafile):
+        rec_output = commands.getoutput("java -jar "+JAVA_PARSER+" "+_javafile)
+        # Write data gathered in a file
+        pathdatainput = self.javaFilePath.replace(".java","_datainput.csv")
+        self.list_tmp_files.append(pathdatainput)
+
+        filedata = open(pathdatainput, "w")
+        filedata.write(rec_output)
+        filedata.close()
+
+        return pathdatainput
+
+
+    def insert_claims(self, _javafile, _claimstranslatedfile, _datainputfile):
 
 
         readjavafile = ReadJavaFile.ReadJavaFile()
         #readjavafile.readFile(_javafile)
-        list_new_program = readjavafile.instrumentCodeAssert(_javafile,self.path_csvclaims_ori_code,
+        list_new_program = readjavafile.instrumentCodeAssert(_javafile,
+                                                             self.path_csvclaims_ori_code,
                                                              _claimstranslatedfile,
-                                                             self.dic_model_unit_test)
+                                                             self.dic_model_unit_test,
+                                                             _datainputfile)
 
         #write new program in a temporary file
         pathnewprogram = self.javaFilePath.replace(".java","_assert.java")
@@ -264,6 +281,8 @@ if __name__ == "__main__":
 
                 getPathCLTranslated = runJfortes.translate_claims(getDataClaim)
 
+                getpathdatainput = runJfortes.generate_data2input(os.path.abspath(args.inputJavaProgram))
+
                 # DOING apply a model of the framework unit test to run the assertions with the claims
                 if args.setTestNg:
                     runJfortes.dic_model_unit_test['testng'] = True
@@ -275,7 +294,7 @@ if __name__ == "__main__":
 
 
                 # Insert in the analyzed program the claims translated adopting assertions
-                runJfortes.insert_claims(runJfortes.javaFilePath, getPathCLTranslated)
+                runJfortes.insert_claims(runJfortes.javaFilePath, getPathCLTranslated, getpathdatainput)
 
                 # Clean all tmp files generated
                 runJfortes.delete_tmp_files()
