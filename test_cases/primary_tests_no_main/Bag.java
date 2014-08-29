@@ -26,3 +26,5 @@ class Bag {
     a[mindex] = a[n];
     return m;
   }
+
+ }

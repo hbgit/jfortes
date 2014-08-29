@@ -265,7 +265,7 @@ class ReadJavaFile(object):
                 if not hasmain:
                     #TODO:
                     #Adding a new main based on data gathered form parser
-                    print(_datafileinput)
+                    #print(_datafileinput)
                     list_program_asserts.append("public static void main(String[] args){")
 
                     # Reading CSV file with the claims translated
@@ -273,7 +273,30 @@ class ReadJavaFile(object):
                     readCsvi.loadCsvFile(_datafileinput)
                     listOfCsvDataInput = readCsvi.getCsvColummns()
 
-                    print(listOfCsvDataInput['Line'])
+                    #Creating instance of the class
+                    # TODO: Identify if the class has not constructor method
+                    # TODO: Identify if the method constructor has no inputs
+                    listclasses = self.list_all_class(_javaPathFile)
+                    for i, item in enumerate(listOfCsvDataInput['From']):
+                        if item == "method":
+                            # Identify if is a contructor method
+                            if listOfCsvDataInput['Scope'][i] in listclasses:
+                                # has array in input?
+                                analysisInput = self.is_list_input(listOfCsvDataInput['Type'][i])
+
+                                if analysisInput[0]:
+                                    tmpvararray = self.generateArrayInt(analysisInput[1])
+                                    list_program_asserts.append(tmpvararray[0])
+                                    list_program_asserts.append(
+                                        listOfCsvDataInput['Scope'][i]+" runJFORTES = new "
+                                        +listOfCsvDataInput['Scope'][i]+"( " + tmpvararray[1] + " );")
+                                else:
+                                    list_program_asserts.append(
+                                        listOfCsvDataInput['Scope'][i]+" runJFORTES = new "
+                                        +listOfCsvDataInput['Scope'][i]+"( );")
+
+                        # TODO: Adding the attributes
+
 
                     list_program_asserts.append("}")
 
@@ -282,6 +305,29 @@ class ReadJavaFile(object):
             list_program_asserts.append(str(line).rstrip())
 
         return list_program_asserts
+
+
+    def is_list_input(self, _typetext):
+        list_result = [] # True|False , array dimension
+        matchQuantifiers = re.search(r'(.*)([\[][ ]*[\]])+', _typetext)
+        if matchQuantifiers:
+            list_result.append(True)
+
+            dim = matchQuantifiers.group(2).split('[').count(']')
+            list_result.append(dim)
+        else:
+            list_result.append(False)
+        return list_result
+
+
+    def generateArrayInt(self, _dimension):
+        codetxt = [] # new line, the var
+        # For 1
+        if _dimension == 1:
+            codetxt.append('int[] arrJFORTES = new int [Cute.input.Integer()];')
+            codetxt.append('arrJFORTES')
+        return codetxt
+
 
 
 
@@ -321,6 +367,20 @@ class ReadJavaFile(object):
                 if matchData.group(2) == "method":
                     if matchData.group(1) == "main":
                         return True
+
+
+    def list_all_class(self, _javaPathFile):
+        resultlistclasses = []
+        # Gettting the name of the functions
+        get_start_data_method = commands.getoutput("ctags --sort=NO -x --c-kinds=f "+_javaPathFile).split("\n")
+        for line in get_start_data_method:
+            #print(line)
+            matchData = re.search(r'([a-zA-Z0-9\_\(\)\[\]]*)[ ]*([a-zA-Z0-9]*)[ ]*([0-9]*)', line)
+            if matchData:
+                if matchData.group(2) == "class":
+                    resultlistclasses.append(matchData.group(1))
+
+        return resultlistclasses
 
 
 
