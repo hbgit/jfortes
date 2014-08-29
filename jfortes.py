@@ -175,6 +175,8 @@ class Jfortes(object):
 
 
     def generate_data2input(self, _javafile):
+        #os.system("java -jar "+JAVA_PARSER+" "+_javafile)
+        #sys.exit()
         rec_output = commands.getoutput("java -jar "+JAVA_PARSER+" "+_javafile)
         # Write data gathered in a file
         pathdatainput = self.javaFilePath.replace(".java","_datainput.csv")

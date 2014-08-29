@@ -264,13 +264,21 @@ class ReadJavaFile(object):
                 # Write a generic main to test the method
                 if not hasmain:
                     #TODO:
-                    #     Identify the end of the file
-                    #     Adding a new main based on data gathered form parser
-                    #print(_datafileinput)
-                    list_program_asserts.append(_datafileinput)
-                    #sys.exit()
+                    #Adding a new main based on data gathered form parser
+                    print(_datafileinput)
+                    list_program_asserts.append("public static void main(String[] args){")
 
-            #print(line, end="")
+                    # Reading CSV file with the claims translated
+                    readCsvi = ReaderCsvOutput.ReaderCsv()
+                    readCsvi.loadCsvFile(_datafileinput)
+                    listOfCsvDataInput = readCsvi.getCsvColummns()
+
+                    print(listOfCsvDataInput['Line'])
+
+                    list_program_asserts.append("}")
+
+
+
             list_program_asserts.append(str(line).rstrip())
 
         return list_program_asserts
