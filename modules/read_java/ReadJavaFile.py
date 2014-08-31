@@ -274,18 +274,24 @@ class ReadJavaFile(object):
                     listOfCsvDataInput = readCsvi.getCsvColummns()
 
                     #Creating instance of the class
-                    # TODO: Identify if the class has not constructor method
-                    # TODO: Identify if the method constructor has no inputs
+                    list_not_gen = []
                     listclasses = self.list_all_class(_javaPathFile)
+                    #if not len(listclasses) == 0
+                    # Identify the contructor method
+                    flag_has_constructor = False
                     for i, item in enumerate(listOfCsvDataInput['From']):
                         if item == "method":
                             # Identify if is a contructor method
                             if listOfCsvDataInput['Scope'][i] in listclasses:
+                                flag_has_constructor = True
+                                list_not_gen.append(i)
                                 # has array in input?
                                 analysisInput = self.is_list_input(listOfCsvDataInput['Type'][i])
 
                                 if analysisInput[0]:
-                                    tmpvararray = self.generateArrayInt(analysisInput[1])
+                                    tmpvararray = ''
+                                    if analysisInput[1] == "int":
+                                        tmpvararray = self.generateArrayInt(analysisInput[2])
                                     list_program_asserts.append(tmpvararray[0])
                                     list_program_asserts.append(
                                         listOfCsvDataInput['Scope'][i]+" runJFORTES = new "
@@ -295,7 +301,110 @@ class ReadJavaFile(object):
                                         listOfCsvDataInput['Scope'][i]+" runJFORTES = new "
                                         +listOfCsvDataInput['Scope'][i]+"( );")
 
-                        # TODO: Adding the attributes
+                    if not flag_has_constructor:
+                        for classname in listclasses:
+                            list_program_asserts.append(
+                                        classname+" runJFORTES = new "
+                                        +classname+"( );")
+
+
+                    # DOING: Adding the attributes
+                    for i, item in enumerate(listOfCsvDataInput['From']):
+                        if item == "attribute":
+                            # has array in input?
+                            analysisInput = self.is_list_input(listOfCsvDataInput['Type'][i])
+                            if analysisInput[0]:
+                                genassignment = ''
+                                if analysisInput[1] == "int":
+                                    if analysisInput[2] == 1:
+                                        genassignment = 'runJFORTES.'+listOfCsvDataInput['Variable'][i].strip()+' = new int [Cute.input.Integer()];'
+                                        list_program_asserts.append(genassignment)
+                                elif analysisInput[1] == "Object":
+                                    if analysisInput[2] == 1:
+                                        genassignment = 'runJFORTES.'+listOfCsvDataInput['Variable'][i].strip()+' = new Object [Cute.input.Object(".")];'
+                                        list_program_asserts.append(genassignment)
+                            else:
+                                if listOfCsvDataInput['Type'][i] == 'int':
+                                    genassignment = 'runJFORTES.'+listOfCsvDataInput['Variable'][i].strip()+' = Cute.input.Integer();'
+                                    list_program_asserts.append(genassignment)
+
+                                #sys.exit()
+                                #
+
+                    # DOING: Adding the methods
+                    i = 0
+                    while i < len(listOfCsvDataInput['From']):
+                    #for i, item in enumerate(listOfCsvDataInput['From']):
+                        if listOfCsvDataInput['From'][i] == "method" and not i in list_not_gen:
+                            # With parameters
+                            if not listOfCsvDataInput['Type'][i] == "0NONE":
+                                #print("Generate parameters")
+                                # has array in input?
+                                analysisInput = self.is_list_input(listOfCsvDataInput['Type'][i])
+                                if not analysisInput[0]:
+                                    # Possible method with multiples inputs
+                                    if (i+1) < len(listOfCsvDataInput['From']):
+                                        flag_walk = True
+                                        init_method = 'runJFORTES.'+listOfCsvDataInput['Scope'][i].strip()+'('
+                                        list_args_input = []
+                                        while i+1 < len(listOfCsvDataInput['From']) and flag_walk:
+                                            if listOfCsvDataInput['Line'][i] == listOfCsvDataInput['Line'][i+1]:
+
+                                                #list_args_input.append('TODO')
+                                                # TODO: Replace by a function
+                                                # has array in input?
+                                                analysisInput = self.is_list_input(listOfCsvDataInput['Type'][i])
+                                                if analysisInput[0]:
+                                                    genassignment = ''
+                                                    if analysisInput[1] == "int":
+                                                        if analysisInput[2] == 1:
+                                                            list_args_input.append('int[] inM_JFORTES = new int [Cute.input.Integer()]')
+                                                    elif analysisInput[1] == "Object":
+                                                        if analysisInput[2] == 1:
+                                                            list_args_input.append('Object[] inM_JFORTES = new Object [Cute.input.Object()]')
+
+                                                else:
+                                                    if listOfCsvDataInput['Type'][i] == 'int':
+                                                        list_args_input.append('Cute.input.Integer()')
+
+                                                i += 1
+                                                if not i+1 < len(listOfCsvDataInput['From']):
+                                                    flag_walk = False
+                                                elif listOfCsvDataInput['Line'][i] == listOfCsvDataInput['Line'][i+1]:
+                                                    #list_args_input.append('TODO')
+                                                    # TODO: Replace by a function
+                                                    # has array in input?
+                                                    analysisInput = self.is_list_input(listOfCsvDataInput['Type'][i])
+                                                    if analysisInput[0]:
+                                                        genassignment = ''
+                                                        if analysisInput[1] == "int":
+                                                            if analysisInput[2] == 1:
+                                                                list_args_input.append('int[] inM_JFORTES = new int [Cute.input.Integer()]')
+                                                        elif analysisInput[1] == "Object":
+                                                            if analysisInput[2] == 1:
+                                                                list_args_input.append('Object[] inM_JFORTES = new Object [Cute.input.Object()]')
+
+                                                    else:
+                                                        if listOfCsvDataInput['Type'][i] == 'int':
+                                                            list_args_input.append('Cute.input.Integer()')
+                                            else:
+                                                flag_walk = False
+                                        genassignment = ','.join(list_args_input)
+                                        list_program_asserts.append(init_method+genassignment+');')
+                                    # only one input arg
+                                    else:
+                                        # TODO: generate the args input
+                                        genassignment = 'runJFORTES.'+listOfCsvDataInput['Scope'][i].strip()+'();'
+                                        list_program_asserts.append(genassignment)
+
+                                # TODO for arrays
+                            else:
+                                genassignment = 'runJFORTES.'+listOfCsvDataInput['Scope'][i].strip()+'();'
+                                list_program_asserts.append(genassignment)
+
+                        i += 1
+
+
 
 
                     list_program_asserts.append("}")
@@ -308,11 +417,11 @@ class ReadJavaFile(object):
 
 
     def is_list_input(self, _typetext):
-        list_result = [] # True|False , array dimension
+        list_result = [] # True|False, type , array dimension
         matchQuantifiers = re.search(r'(.*)([\[][ ]*[\]])+', _typetext)
         if matchQuantifiers:
             list_result.append(True)
-
+            list_result.append(matchQuantifiers.group(1))
             dim = matchQuantifiers.group(2).split('[').count(']')
             list_result.append(dim)
         else:
@@ -364,9 +473,13 @@ class ReadJavaFile(object):
             #print(line)
             matchData = re.search(r'([a-zA-Z0-9\_\(\)\[\]]*)[ ]*([a-zA-Z0-9]*)[ ]*([0-9]*)', line)
             if matchData:
+                #print(matchData.group(1)+" >> "+matchData.group(2))
+                #sys.exit()
                 if matchData.group(2) == "method":
                     if matchData.group(1) == "main":
                         return True
+                    else:
+                        return False
 
 
     def list_all_class(self, _javaPathFile):
