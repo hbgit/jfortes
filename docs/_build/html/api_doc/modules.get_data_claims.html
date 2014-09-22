@@ -1,0 +1,256 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>modules.get_data_claims package &mdash; JFORTES 1 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="JFORTES 1 documentation" href="../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../index.html">JFORTES 1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="modules-get-data-claims-package">
+<h1>modules.get_data_claims package<a class="headerlink" href="#modules-get-data-claims-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-modules.get_data_claims.ClaimsTranslate">
+<span id="modules-get-data-claims-claimstranslate-module"></span><h2>modules.get_data_claims.ClaimsTranslate module<a class="headerlink" href="#module-modules.get_data_claims.ClaimsTranslate" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="modules.get_data_claims.ClaimsTranslate.IsolateDataClaim">
+<em class="property">class </em><tt class="descclassname">modules.get_data_claims.ClaimsTranslate.</tt><tt class="descname">IsolateDataClaim</tt><a class="reference internal" href="../_modules/modules/get_data_claims/ClaimsTranslate.html#IsolateDataClaim"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modules.get_data_claims.ClaimsTranslate.IsolateDataClaim" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>This class has as main function isolate the variable or structure
+related in the claim, and then apply its respective translation.</p>
+<dl class="method">
+<dt id="modules.get_data_claims.ClaimsTranslate.IsolateDataClaim.check_translated_is_empty">
+<tt class="descname">check_translated_is_empty</tt><big>(</big><em>_string</em><big>)</big><a class="reference internal" href="../_modules/modules/get_data_claims/ClaimsTranslate.html#IsolateDataClaim.check_translated_is_empty"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modules.get_data_claims.ClaimsTranslate.IsolateDataClaim.check_translated_is_empty" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="modules.get_data_claims.ClaimsTranslate.IsolateDataClaim.generateScopeByLineNumber">
+<tt class="descname">generateScopeByLineNumber</tt><big>(</big><em>cfile</em><big>)</big><a class="reference internal" href="../_modules/modules/get_data_claims/ClaimsTranslate.html#IsolateDataClaim.generateScopeByLineNumber"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modules.get_data_claims.ClaimsTranslate.IsolateDataClaim.generateScopeByLineNumber" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>cfile</strong> &#8211; the path of the C program file</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return void:</th><td class="field-body">the method set in the atributes of the class to
+values related to number line of begin and end of the functions
+in the analyzed program</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="modules.get_data_claims.ClaimsTranslate.IsolateDataClaim.getObjectInClaim">
+<tt class="descname">getObjectInClaim</tt><big>(</big><em>lineNumber</em>, <em>tagComm</em>, <em>claim</em>, <em>_commentCl</em>, <em>indexPointed</em>, <em>annoted</em><big>)</big><a class="reference internal" href="../_modules/modules/get_data_claims/ClaimsTranslate.html#IsolateDataClaim.getObjectInClaim"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modules.get_data_claims.ClaimsTranslate.IsolateDataClaim.getObjectInClaim" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to gather the object pointed in the claim</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="modules.get_data_claims.ClaimsTranslate.IsolateDataClaim.getObjectPointed">
+<tt class="descname">getObjectPointed</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/modules/get_data_claims/ClaimsTranslate.html#IsolateDataClaim.getObjectPointed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modules.get_data_claims.ClaimsTranslate.IsolateDataClaim.getObjectPointed" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method is related to get the object pointed by
+identifier in the claim</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="modules.get_data_claims.ClaimsTranslate.IsolateDataClaim.getOnlyVarName">
+<tt class="descname">getOnlyVarName</tt><big>(</big><em>var</em><big>)</big><a class="reference internal" href="../_modules/modules/get_data_claims/ClaimsTranslate.html#IsolateDataClaim.getOnlyVarName"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modules.get_data_claims.ClaimsTranslate.IsolateDataClaim.getOnlyVarName" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="modules.get_data_claims.ClaimsTranslate.IsolateDataClaim.getTagsFromComments">
+<tt class="descname">getTagsFromComments</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/modules/get_data_claims/ClaimsTranslate.html#IsolateDataClaim.getTagsFromComments"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modules.get_data_claims.ClaimsTranslate.IsolateDataClaim.getTagsFromComments" title="Permalink to this definition">¶</a></dt>
+<dd><p>This tag will help to apply the rules to get the objects pointed in the claim
+and also to apply the transformation rule</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="modules.get_data_claims.ClaimsTranslate.IsolateDataClaim.getValueFromReturn">
+<tt class="descname">getValueFromReturn</tt><big>(</big><em>indexList</em><big>)</big><a class="reference internal" href="../_modules/modules/get_data_claims/ClaimsTranslate.html#IsolateDataClaim.getValueFromReturn"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modules.get_data_claims.ClaimsTranslate.IsolateDataClaim.getValueFromReturn" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="modules.get_data_claims.ClaimsTranslate.IsolateDataClaim.loadDataFromCsv">
+<tt class="descname">loadDataFromCsv</tt><big>(</big><em>csvFileClaims</em>, <em>javaFile</em><big>)</big><a class="reference internal" href="../_modules/modules/get_data_claims/ClaimsTranslate.html#IsolateDataClaim.loadDataFromCsv"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modules.get_data_claims.ClaimsTranslate.IsolateDataClaim.loadDataFromCsv" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="modules.get_data_claims.ClaimsTranslate.IsolateDataClaim.reset_var_claims">
+<tt class="descname">reset_var_claims</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/modules/get_data_claims/ClaimsTranslate.html#IsolateDataClaim.reset_var_claims"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modules.get_data_claims.ClaimsTranslate.IsolateDataClaim.reset_var_claims" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method just reset the values of the following atributes</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="modules.get_data_claims.ClaimsTranslate.IsolateDataClaim.setData2Lists">
+<tt class="descname">setData2Lists</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/modules/get_data_claims/ClaimsTranslate.html#IsolateDataClaim.setData2Lists"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modules.get_data_claims.ClaimsTranslate.IsolateDataClaim.setData2Lists" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="modules.get_data_claims.ClaimsTranslate.IsolateDataClaim.set_debug_flag">
+<tt class="descname">set_debug_flag</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/modules/get_data_claims/ClaimsTranslate.html#IsolateDataClaim.set_debug_flag"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modules.get_data_claims.ClaimsTranslate.IsolateDataClaim.set_debug_flag" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="modules.get_data_claims.ClaimsTranslate.IsolateDataClaim.set_testing_flag">
+<tt class="descname">set_testing_flag</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/modules/get_data_claims/ClaimsTranslate.html#IsolateDataClaim.set_testing_flag"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modules.get_data_claims.ClaimsTranslate.IsolateDataClaim.set_testing_flag" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="modules.get_data_claims.ClaimsTranslate.IsolateDataClaim.whatIsTheScope">
+<tt class="descname">whatIsTheScope</tt><big>(</big><em>lineNum</em><big>)</big><a class="reference internal" href="../_modules/modules/get_data_claims/ClaimsTranslate.html#IsolateDataClaim.whatIsTheScope"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modules.get_data_claims.ClaimsTranslate.IsolateDataClaim.whatIsTheScope" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-modules.get_data_claims.GetDataClaims">
+<span id="modules-get-data-claims-getdataclaims-module"></span><h2>modules.get_data_claims.GetDataClaims module<a class="headerlink" href="#module-modules.get_data_claims.GetDataClaims" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="modules.get_data_claims.GetDataClaims.GetDataClaims">
+<em class="property">class </em><tt class="descclassname">modules.get_data_claims.GetDataClaims.</tt><tt class="descname">GetDataClaims</tt><a class="reference internal" href="../_modules/modules/get_data_claims/GetDataClaims.html#GetDataClaims"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modules.get_data_claims.GetDataClaims.GetDataClaims" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<dl class="method">
+<dt id="modules.get_data_claims.GetDataClaims.GetDataClaims.getClaim">
+<tt class="descname">getClaim</tt><big>(</big><em>lineClaim</em><big>)</big><a class="reference internal" href="../_modules/modules/get_data_claims/GetDataClaims.html#GetDataClaims.getClaim"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modules.get_data_claims.GetDataClaims.GetDataClaims.getClaim" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="modules.get_data_claims.GetDataClaims.GetDataClaims.getCommentInClaim">
+<tt class="descname">getCommentInClaim</tt><big>(</big><em>lineClaim</em><big>)</big><a class="reference internal" href="../_modules/modules/get_data_claims/GetDataClaims.html#GetDataClaims.getCommentInClaim"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modules.get_data_claims.GetDataClaims.GetDataClaims.getCommentInClaim" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="modules.get_data_claims.GetDataClaims.GetDataClaims.getDataClaims">
+<tt class="descname">getDataClaims</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/modules/get_data_claims/GetDataClaims.html#GetDataClaims.getDataClaims"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modules.get_data_claims.GetDataClaims.GetDataClaims.getDataClaims" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="modules.get_data_claims.GetDataClaims.GetDataClaims.getNumLineInClaim">
+<tt class="descname">getNumLineInClaim</tt><big>(</big><em>lineClaim</em><big>)</big><a class="reference internal" href="../_modules/modules/get_data_claims/GetDataClaims.html#GetDataClaims.getNumLineInClaim"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modules.get_data_claims.GetDataClaims.GetDataClaims.getNumLineInClaim" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="modules.get_data_claims.GetDataClaims.GetDataClaims.getTagFromCommentCl">
+<tt class="descname">getTagFromCommentCl</tt><big>(</big><em>comment</em><big>)</big><a class="reference internal" href="../_modules/modules/get_data_claims/GetDataClaims.html#GetDataClaims.getTagFromCommentCl"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modules.get_data_claims.GetDataClaims.GetDataClaims.getTagFromCommentCl" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="modules.get_data_claims.GetDataClaims.GetDataClaims.prinFile">
+<tt class="descname">prinFile</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/modules/get_data_claims/GetDataClaims.html#GetDataClaims.prinFile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modules.get_data_claims.GetDataClaims.GetDataClaims.prinFile" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="modules.get_data_claims.GetDataClaims.GetDataClaims.readFile">
+<tt class="descname">readFile</tt><big>(</big><em>pathFile</em><big>)</big><a class="reference internal" href="../_modules/modules/get_data_claims/GetDataClaims.html#GetDataClaims.readFile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modules.get_data_claims.GetDataClaims.GetDataClaims.readFile" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="modules.get_data_claims.GetDataClaims.GetDataClaims.writeHeader2Csv">
+<tt class="descname">writeHeader2Csv</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/modules/get_data_claims/GetDataClaims.html#GetDataClaims.writeHeader2Csv"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modules.get_data_claims.GetDataClaims.GetDataClaims.writeHeader2Csv" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-modules.get_data_claims">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-modules.get_data_claims" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">modules.get_data_claims package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-modules.get_data_claims.ClaimsTranslate">modules.get_data_claims.ClaimsTranslate module</a></li>
+<li><a class="reference internal" href="#module-modules.get_data_claims.GetDataClaims">modules.get_data_claims.GetDataClaims module</a></li>
+<li><a class="reference internal" href="#module-modules.get_data_claims">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/api_doc/modules.get_data_claims.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../index.html">JFORTES 1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, Herbert Rocha.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>

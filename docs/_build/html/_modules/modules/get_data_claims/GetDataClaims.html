@@ -1,0 +1,335 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>modules.get_data_claims.GetDataClaims &mdash; JFORTES 1 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="top" title="JFORTES 1 documentation" href="../../../index.html" />
+    <link rel="up" title="Module code" href="../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">JFORTES 1 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for modules.get_data_claims.GetDataClaims</h1><div class="highlight"><pre>
+<span class="c">#!/usr/bin/env python</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
+<span class="c"># -*- coding: latin1 -*-</span>
+<span class="n">__author__</span> <span class="o">=</span> <span class="s">&#39;Herbert OLiveira Rocha&#39;</span>
+
+
+<span class="c">#----------------------------------------------------------</span>
+<span class="c"># Goal: This program aims to gather the data in output from</span>
+<span class="c">#       the ESC/JAVA.</span>
+<span class="c">#</span>
+<span class="c"># Status: [DONE]</span>
+<span class="c">#----------------------------------------------------------</span>
+
+
+
+<span class="c"># From Python</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">os.path</span>
+<span class="kn">import</span> <span class="nn">re</span>
+
+
+
+<div class="viewcode-block" id="GetDataClaims"><a class="viewcode-back" href="../../../api_doc/modules.get_data_claims.html#modules.get_data_claims.GetDataClaims.GetDataClaims">[docs]</a><span class="k">class</span> <span class="nc">GetDataClaims</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">list_lines_file</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">list_data_claims_2_csv</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">list_annoted_cl</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;Pre&#39;</span><span class="p">,</span><span class="s">&#39;Post&#39;</span><span class="p">,</span><span class="s">&#39;Invariant&#39;</span><span class="p">,</span><span class="s">&#39;Constraint&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">list_claims_translated</span> <span class="o">=</span> <span class="p">[]</span>
+
+<div class="viewcode-block" id="GetDataClaims.readFile"><a class="viewcode-back" href="../../../api_doc/modules.get_data_claims.html#modules.get_data_claims.GetDataClaims.GetDataClaims.readFile">[docs]</a>    <span class="k">def</span> <span class="nf">readFile</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pathFile</span><span class="p">):</span>
+
+        <span class="c"># Testing if the path file is correct</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">pathFile</span><span class="p">):</span>
+            <span class="k">print</span><span class="p">(</span><span class="n">pathFile</span><span class="p">)</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">&#39;File path not found - Get data claims.&#39;</span><span class="p">)</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
+
+        <span class="c"># Create a list with the lines with the file</span>
+        <span class="n">linesFile</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">pathFile</span><span class="p">,</span><span class="s">&quot;r&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">linesFile</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">list_lines_file</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="GetDataClaims.prinFile"><a class="viewcode-back" href="../../../api_doc/modules.get_data_claims.html#modules.get_data_claims.GetDataClaims.GetDataClaims.prinFile">[docs]</a>    <span class="k">def</span> <span class="nf">prinFile</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">list_lines_file</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="GetDataClaims.getDataClaims"><a class="viewcode-back" href="../../../api_doc/modules.get_data_claims.html#modules.get_data_claims.GetDataClaims.GetDataClaims.getDataClaims">[docs]</a>    <span class="k">def</span> <span class="nf">getDataClaims</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="n">flagNextBlock</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="c"># Identify begin block, e.g., -----------------</span>
+        <span class="n">matchIdentifyBlock</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s">r&#39;^-+&#39;</span><span class="p">)</span>
+
+
+        <span class="c">#print(&quot;Data about the claims: &quot;)</span>
+        <span class="c"># print(&quot;-------------------------------------------------------------------&quot;)</span>
+        <span class="c"># Identifying block in the output with the data claims</span>
+
+        <span class="n">index</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">countBlocks</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">flag_write_csv</span> <span class="o">=</span> <span class="bp">False</span>
+
+        <span class="k">while</span> <span class="n">index</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">list_lines_file</span><span class="p">):</span>
+
+            <span class="c"># Identify begin block, e.g., -----------------</span>
+            <span class="n">matchTryBeginBlock</span> <span class="o">=</span> <span class="n">matchIdentifyBlock</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">list_lines_file</span><span class="p">[</span><span class="n">index</span><span class="p">])</span>
+
+            <span class="c"># Identify if in the claim block has the trace to variable in the claim</span>
+            <span class="n">flag_has_trace_var</span> <span class="o">=</span> <span class="bp">False</span>
+
+            <span class="k">if</span> <span class="n">matchTryBeginBlock</span><span class="p">:</span>
+
+                <span class="n">index</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="c"># Last check to identify the begin block</span>
+                <span class="c"># Check if the claim block has a counter example</span>
+                <span class="c"># IF has keep going to look for the next block</span>
+                <span class="c"># ELSE stop the search for the next block, because we already found the next block</span>
+                <span class="n">matchCheckBBlock</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s">r&#39;java:.*&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">list_lines_file</span><span class="p">[</span><span class="n">index</span><span class="p">])</span>
+
+                <span class="k">if</span> <span class="n">matchCheckBBlock</span><span class="p">:</span>
+
+                    <span class="n">countBlocks</span> <span class="o">+=</span> <span class="mi">1</span>
+
+                    <span class="c">#print(countBlocks)</span>
+                    <span class="c">#print(&quot;BEGIN: %s &quot; % (index+1))</span>
+
+                    <span class="c"># Get the number of the number of line in the program where is located the claim</span>
+                    <span class="c">#print(&quot;\t At line: %s &quot; % self.getNumLineInClaim(self.list_lines_file[index]))</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">list_data_claims_2_csv</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">getNumLineInClaim</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">list_lines_file</span><span class="p">[</span><span class="n">index</span><span class="p">]))</span>
+
+                    <span class="c"># Get comment about the claim, e.g.,  Warning:</span>
+                    <span class="n">comment_CL</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getCommentInClaim</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">list_lines_file</span><span class="p">[</span><span class="n">index</span><span class="p">])</span>
+                    <span class="c">#print(&quot;\t Comment: %s &quot; % comment_CL)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">list_data_claims_2_csv</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">getCommentInClaim</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">list_lines_file</span><span class="p">[</span><span class="n">index</span><span class="p">]))</span>
+                    
+                    
+                    <span class="c"># Get tag from commets about the claim</span>
+                    <span class="n">tag_CL</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getTagFromCommentCl</span><span class="p">(</span><span class="n">comment_CL</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">list_data_claims_2_csv</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tag_CL</span><span class="p">)</span>
+                    <span class="c">#print(&quot;\t Tag: %s&quot; % tag_CL)</span>
+                    <span class="k">if</span> <span class="nb">str</span><span class="p">(</span><span class="n">tag_CL</span><span class="p">)</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">list_annoted_cl</span><span class="p">:</span>                        
+                            <span class="c"># Get the property in the claim block</span>
+                            <span class="n">index</span> <span class="o">+=</span> <span class="mi">1</span>                            
+                            <span class="bp">self</span><span class="o">.</span><span class="n">list_data_claims_2_csv</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">getClaim</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">list_lines_file</span><span class="p">[</span><span class="n">index</span><span class="p">])</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">))</span>
+                            
+                            <span class="c"># Get the variable location in the claim based on this ...^ &lt;- Identifier</span>
+                            <span class="n">index</span> <span class="o">+=</span> <span class="mi">1</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">list_data_claims_2_csv</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">list_lines_file</span><span class="p">[</span><span class="n">index</span><span class="p">]</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">))</span>
+                                                        
+                            <span class="c">## Get Annoted info</span>
+                            <span class="n">index</span> <span class="o">+=</span> <span class="mi">2</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">list_data_claims_2_csv</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">getClaim</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">list_lines_file</span><span class="p">[</span><span class="n">index</span><span class="p">])</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">))</span>
+                            
+                            <span class="c">## Get the variable location in the claim based on this ...^ &lt;- Identifier</span>
+                            <span class="n">index</span> <span class="o">+=</span> <span class="mi">1</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">list_data_claims_2_csv</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">list_lines_file</span><span class="p">[</span><span class="n">index</span><span class="p">]</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">))</span>
+                            
+
+                    <span class="k">else</span><span class="p">:</span>                    
+                        <span class="c"># Get the property in the claim block</span>
+                        <span class="n">index</span> <span class="o">+=</span> <span class="mi">1</span>
+                        <span class="c">#print(&quot;\t Claim: %s &quot; % self.getClaim(self.list_lines_file[index]))</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">list_data_claims_2_csv</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">getClaim</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">list_lines_file</span><span class="p">[</span><span class="n">index</span><span class="p">])</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">))</span>
+
+                        <span class="c"># Get the variable location in the claim based on this ...^ &lt;- Identifier</span>
+                        <span class="n">index</span> <span class="o">+=</span> <span class="mi">1</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">list_data_claims_2_csv</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">list_lines_file</span><span class="p">[</span><span class="n">index</span><span class="p">]</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">))</span>
+                        
+                        <span class="c"># Get Annoted info</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">list_data_claims_2_csv</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s">&#39;NO&#39;</span><span class="p">)</span>
+                        
+                        <span class="c"># Get the variable location in the claim based on this ...^ &lt;- Identifier</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">list_data_claims_2_csv</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s">&#39;NO&#39;</span><span class="p">)</span>
+
+                    <span class="n">flag_write_csv</span> <span class="o">=</span> <span class="bp">True</span>
+
+                    <span class="c"># Identify the next block</span>
+                    <span class="k">while</span> <span class="ow">not</span> <span class="n">flagNextBlock</span><span class="p">:</span>
+
+                        <span class="k">if</span> <span class="n">index</span> <span class="o">&lt;=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">list_lines_file</span><span class="p">):</span>
+                            <span class="n">index</span> <span class="o">+=</span> <span class="mi">1</span>
+
+                            <span class="c"># Identify end block</span>
+                            <span class="n">matchDelimitBlock</span> <span class="o">=</span> <span class="n">matchIdentifyBlock</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">list_lines_file</span><span class="p">[</span><span class="n">index</span><span class="p">])</span>
+                            <span class="k">if</span> <span class="n">matchDelimitBlock</span><span class="p">:</span>
+                                <span class="c"># Here we identify the END of the block</span>
+                                <span class="n">flagNextBlock</span> <span class="o">=</span> <span class="bp">True</span>
+                                <span class="c">#decrement the index, because is a new block</span>
+                                <span class="n">index</span> <span class="o">-=</span> <span class="mi">1</span>
+                                <span class="c">#print(&quot;END: %s &quot; % (index+1))</span>
+
+
+                <span class="c"># reset flag</span>
+                <span class="n">flagNextBlock</span> <span class="o">=</span> <span class="bp">False</span>
+
+
+            <span class="c"># write the line of CSV output</span>
+            <span class="k">if</span> <span class="n">flag_write_csv</span><span class="p">:</span>
+                <span class="n">recFormatCsv</span> <span class="o">=</span> <span class="s">&#39;;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">list_data_claims_2_csv</span><span class="p">)</span>
+                <span class="c"># if flag_has_trace_var:</span>
+                <span class="c">#     recFormatCsv = &#39; ; &#39;.join(self.list_data_claims_2_csv)</span>
+                <span class="c"># else:</span>
+                <span class="c">#     recFormatCsv = &#39; ; &#39;.join(self.list_data_claims_2_csv)</span>
+                <span class="c">#     recFormatCsv += &#39; ;  NO&#39;</span>
+                <span class="c">#print(recFormatCsv)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">list_claims_translated</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="n">recFormatCsv</span> <span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">list_data_claims_2_csv</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="n">flag_write_csv</span> <span class="o">=</span> <span class="bp">False</span>
+
+            <span class="c"># While Increment</span>
+            <span class="n">index</span> <span class="o">+=</span> <span class="mi">1</span>
+
+
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">list_claims_translated</span>
+        <span class="c">#print(&quot;-------------------------------------------------------------------&quot;)</span>
+
+</div>
+<div class="viewcode-block" id="GetDataClaims.getNumLineInClaim"><a class="viewcode-back" href="../../../api_doc/modules.get_data_claims.html#modules.get_data_claims.GetDataClaims.GetDataClaims.getNumLineInClaim">[docs]</a>    <span class="k">def</span> <span class="nf">getNumLineInClaim</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lineClaim</span><span class="p">):</span>
+        <span class="c"># Apply regex to get the  number of line i the claim</span>
+        <span class="n">matchNumLine</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s">r&#39;java:([0-9]+)&#39;</span><span class="p">,</span> <span class="n">lineClaim</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">matchNumLine</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">matchNumLine</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="GetDataClaims.getCommentInClaim"><a class="viewcode-back" href="../../../api_doc/modules.get_data_claims.html#modules.get_data_claims.GetDataClaims.GetDataClaims.getCommentInClaim">[docs]</a>    <span class="k">def</span> <span class="nf">getCommentInClaim</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lineClaim</span><span class="p">):</span>
+        <span class="c"># Apply regex to get the  number of line i the claim</span>
+        <span class="n">matchNumLine</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s">r&#39;Warning:(.+)&#39;</span><span class="p">,</span> <span class="n">lineClaim</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">matchNumLine</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">matchNumLine</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+            </div>
+<div class="viewcode-block" id="GetDataClaims.getTagFromCommentCl"><a class="viewcode-back" href="../../../api_doc/modules.get_data_claims.html#modules.get_data_claims.GetDataClaims.GetDataClaims.getTagFromCommentCl">[docs]</a>    <span class="k">def</span> <span class="nf">getTagFromCommentCl</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">comment</span><span class="p">):</span>
+        <span class="n">matchTag</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s">r&#39;\((.[^ ]+)\)$&#39;</span><span class="p">,</span> <span class="n">comment</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">matchTag</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">matchTag</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+            
+    
+</div>
+<div class="viewcode-block" id="GetDataClaims.getClaim"><a class="viewcode-back" href="../../../api_doc/modules.get_data_claims.html#modules.get_data_claims.GetDataClaims.GetDataClaims.getClaim">[docs]</a>    <span class="k">def</span> <span class="nf">getClaim</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lineClaim</span><span class="p">):</span>
+        <span class="c"># Apply regex to get the claim of line i the claim</span>
+        <span class="c"># Fisrt of all, we check if the claim has inside in a loop statement</span>
+        <span class="n">matchFor</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s">r&#39;for[ ]*[\(]&#39;</span><span class="p">,</span> <span class="n">lineClaim</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">matchFor</span><span class="p">:</span>
+            <span class="c"># The replace is cuz the next step adopting CSV format file</span>
+            <span class="k">return</span> <span class="n">lineClaim</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&#39;;&#39;</span><span class="p">,</span><span class="s">&#39;@&#39;</span><span class="p">)</span>
+            <span class="c">#return lineClaim</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">matchNumLine</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s">r&#39;(.[^;]*)&#39;</span><span class="p">,</span> <span class="n">lineClaim</span><span class="p">)</span>
+            <span class="c">#matchNumLine = re.search(r&#39;(.[^=]*)[ ]*;&#39;, lineClaim)</span>
+            <span class="k">if</span> <span class="n">matchNumLine</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">matchNumLine</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="GetDataClaims.writeHeader2Csv"><a class="viewcode-back" href="../../../api_doc/modules.get_data_claims.html#modules.get_data_claims.GetDataClaims.GetDataClaims.writeHeader2Csv">[docs]</a>    <span class="k">def</span> <span class="nf">writeHeader2Csv</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">head</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;Number of Line&#39;</span><span class="p">,</span><span class="s">&#39;Comments&#39;</span><span class="p">,</span><span class="s">&#39;Tag&#39;</span><span class="p">,</span><span class="s">&#39;Claim&#39;</span><span class="p">,</span><span class="s">&#39;Point Data&#39;</span><span class="p">,</span><span class="s">&#39;Annoted&#39;</span><span class="p">,</span><span class="s">&#39;Annoted Point&#39;</span><span class="p">]</span>
+        <span class="n">recFormatCsv</span> <span class="o">=</span> <span class="s">&#39;;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">head</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">recFormatCsv</span><span class="o">+</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span>
+
+
+
+
+<span class="c"># -------------------------------------------------</span>
+<span class="c"># Main python program</span>
+<span class="c"># -------------------------------------------------</span>
+
+<span class="c"># if __name__ == &quot;__main__&quot;:</span>
+<span class="c">#     path_input_file = &quot;&quot;</span>
+<span class="c">#</span>
+<span class="c">#     if len(sys.argv) &gt; 1:</span>
+<span class="c">#         path_input_file  = sys.argv[1]</span>
+<span class="c">#     else:</span>
+<span class="c">#         print(&quot;Incorrect Usage&quot;)</span>
+<span class="c">#         print(&quot;Usage: ./script &lt;output from ESC/JAVA&gt;&quot;)</span>
+<span class="c">#         sys.exit()</span>
+<span class="c">#</span>
+<span class="c">#     test = GetDataClaims()</span>
+<span class="c">#     test.readFile(path_input_file)</span>
+<span class="c">#     #test.prinFile()</span>
+<span class="c">#     test.writeHeader2Csv()</span>
+<span class="c">#     test.getDataClaims()</span>
+</pre></div></div></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">JFORTES 1 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, Herbert Rocha.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>

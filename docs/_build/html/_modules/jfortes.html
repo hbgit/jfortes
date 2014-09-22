@@ -1,0 +1,394 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>jfortes &mdash; JFORTES 1 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="JFORTES 1 documentation" href="../index.html" />
+    <link rel="up" title="Module code" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../index.html">JFORTES 1 documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for jfortes</h1><div class="highlight"><pre>
+<span class="c">#!/usr/bin/env python</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
+<span class="c"># -*- coding: latin1 -*-</span>
+
+
+<span class="c"># ------------------------------------------------------------------------</span>
+<span class="c"># TODO List</span>
+<span class="c"># - Apply doc annotations in the programs</span>
+<span class="c"># - BUG in test cases path with space</span>
+<span class="c"># - Check when a test case has not main method</span>
+<span class="c"># - Create option to allow the execution of each step individually</span>
+<span class="c"># - pos-preprocessing in the imports</span>
+<span class="c"># - wrong line numbers in the asserts for some test cases</span>
+<span class="c"># ------------------------------------------------------------------------</span>
+
+
+<span class="n">__author__</span> <span class="o">=</span> <span class="s">&#39;Herbert OLiveira Rocha&#39;</span>
+
+<span class="c"># From Python</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">commands</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">argparse</span>
+<span class="kn">import</span> <span class="nn">ConfigParser</span>
+
+
+<span class="c"># From JFORTES</span>
+<span class="kn">from</span> <span class="nn">modules.get_data_claims</span> <span class="kn">import</span> <span class="n">GetDataClaims</span>
+<span class="kn">from</span> <span class="nn">modules.get_data_claims</span> <span class="kn">import</span> <span class="n">ClaimsTranslate</span>
+<span class="kn">from</span> <span class="nn">modules.uncrustify</span> <span class="kn">import</span> <span class="n">RunPreprocessor</span>
+<span class="kn">from</span> <span class="nn">modules.read_java</span> <span class="kn">import</span> <span class="n">ReadJavaFile</span>
+
+
+<span class="c"># Global VAR</span>
+<span class="c"># Check setup to run the program</span>
+<span class="n">ABS_PATH_JFORTES</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">__file__</span><span class="p">)</span>
+<span class="c"># Checkin is was executed the {configure.py} and if the ESBMC path was added</span>
+<span class="n">PATH_FILE_SETTINGS</span> <span class="o">=</span> <span class="n">ABS_PATH_JFORTES</span><span class="o">+</span><span class="s">&#39;/settings.cfg&#39;</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">PATH_FILE_SETTINGS</span><span class="p">):</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">&quot;--------------------------- ERROR: &quot;</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">&#39;  &gt;&gt; Error: unable to find the { settings.cfg } file&#39;</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">&#39;  &gt;&gt; Please run ./configure to check the prerequisites to use JFORTES tool&#39;</span><span class="p">)</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
+
+
+<span class="n">JAVA_PARSER</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="s">&#39;&#39;</span><span class="p">)</span><span class="o">+</span><span class="s">&quot;/modules/parser/partjavaparser.jar&quot;</span>
+
+
+<div class="viewcode-block" id="Jfortes"><a class="viewcode-back" href="../api_doc/jfortes.html#jfortes.Jfortes">[docs]</a><span class="k">class</span> <span class="nc">Jfortes</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ABS_PATH</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">__file__</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">javaFilePath</span> <span class="o">=</span> <span class="s">&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">javaClassPath</span> <span class="o">=</span> <span class="s">&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setTranslationTest</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">list_tmp_files</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">path_csvclaims_ori_code</span> <span class="o">=</span> <span class="s">&quot;&quot;</span>
+        <span class="c">#Model of unit testing supported</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dic_model_unit_test</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;testng&#39;</span><span class="p">:</span><span class="bp">False</span><span class="p">,</span><span class="s">&#39;jcute&#39;</span><span class="p">:</span><span class="bp">False</span><span class="p">,</span><span class="s">&#39;junit&#39;</span><span class="p">:</span><span class="bp">False</span><span class="p">,</span> <span class="s">&#39;NO&#39;</span><span class="p">:</span><span class="bp">True</span><span class="p">}</span>
+
+
+
+<div class="viewcode-block" id="Jfortes.load_java_path"><a class="viewcode-back" href="../api_doc/jfortes.html#jfortes.Jfortes.load_java_path">[docs]</a>    <span class="k">def</span> <span class="nf">load_java_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">javafile</span><span class="p">,</span> <span class="n">javaClassPath</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This method loads the java file to run ESC/Java</span>
+<span class="sd">        :param javafile: The path of the java file</span>
+<span class="sd">        :return : The result of the ESC/Java execution</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">javaFilePath</span> <span class="o">=</span> <span class="n">javafile</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">javaClassPath</span> <span class="o">=</span> <span class="n">javaClassPath</span>
+
+        <span class="c"># Getting claims from the code without preprocessing</span>
+        <span class="n">path_escout_ori_code</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">run_esc_java</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">javaFilePath</span><span class="p">,</span><span class="s">&quot;._before_pre_escout&quot;</span><span class="p">)</span>
+        <span class="c"># Generating csv from self.path_escout_ori_code</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">path_csvclaims_ori_code</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gather_data_claims</span><span class="p">(</span><span class="n">path_escout_ori_code</span><span class="p">,</span><span class="s">&quot;_before_pre_claims.csv&quot;</span><span class="p">)</span>
+
+
+        <span class="c"># Pre-processing the source code of the program</span>
+        <span class="n">pathprefilejava</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">javaFilePath</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&quot;.java&quot;</span><span class="p">,</span><span class="s">&quot;_pre.java&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">list_tmp_files</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pathprefilejava</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pre_processing</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">javaFilePath</span><span class="p">,</span> <span class="n">pathprefilejava</span><span class="p">,</span> <span class="bp">True</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">javaFilePath</span> <span class="o">=</span> <span class="n">pathprefilejava</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">run_esc_java</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">javaFilePath</span><span class="p">,</span><span class="s">&quot;.escout&quot;</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="Jfortes.pre_processing"><a class="viewcode-back" href="../api_doc/jfortes.html#jfortes.Jfortes.pre_processing">[docs]</a>    <span class="k">def</span> <span class="nf">pre_processing</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_javafile</span><span class="p">,</span> <span class="n">_pathtoprefile</span><span class="p">,</span> <span class="n">_mode</span><span class="p">):</span>
+        <span class="n">run_pre</span> <span class="o">=</span> <span class="n">RunPreprocessor</span><span class="o">.</span><span class="n">CodeBeautify</span><span class="p">()</span>
+        <span class="n">run_pre</span><span class="o">.</span><span class="n">runBeatifyTool</span><span class="p">(</span><span class="n">_javafile</span><span class="p">,</span> <span class="n">_pathtoprefile</span><span class="p">,</span> <span class="n">_mode</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="Jfortes.run_esc_java"><a class="viewcode-back" href="../api_doc/jfortes.html#jfortes.Jfortes.run_esc_java">[docs]</a>    <span class="k">def</span> <span class="nf">run_esc_java</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_javafile</span><span class="p">,</span> <span class="n">_nameextension</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This method executes the ESC/Java that receives as input the javafile,</span>
+<span class="sd">        and then it saves the ESC/Java output in the file.escout</span>
+<span class="sd">        :param javafile: The path of the java file</span>
+<span class="sd">        :return outPathEscJava: The ESC/Java output saved in the file</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c"># WARNNING to run ESCJ</span>
+	    <span class="c"># Set also in the bashrc</span>
+        <span class="c"># escj -ClassPath /usr/lib/java/jdk1.5.0_22/bin/  test_cases/primary_tests/Bag.java</span>
+        <span class="c">#savePathFile = javafile</span>
+        <span class="n">outPathEscJava</span> <span class="o">=</span> <span class="n">_javafile</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&quot;.java&quot;</span><span class="p">,</span><span class="n">_nameextension</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">list_tmp_files</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">outPathEscJava</span><span class="p">)</span>
+        <span class="c"># For Debug</span>
+        <span class="c">#os.system(&quot;escj -ClassPath &quot;+self.javaClassPath+&quot; &quot;+_javafile)</span>
+        <span class="c">#os.system(&quot;escj -ClassPath &quot;+self.javaClassPath+&quot; -h&quot;)</span>
+        <span class="c">#sys.exit()</span>
+
+        <span class="n">esc_result_status</span> <span class="o">=</span> <span class="n">commands</span><span class="o">.</span><span class="n">getoutput</span><span class="p">(</span><span class="s">&quot;escj -ClassPath &quot;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">javaClassPath</span><span class="o">+</span><span class="s">&quot; &quot;</span><span class="o">+</span><span class="n">_javafile</span><span class="o">+</span><span class="s">&quot; &amp;&gt; &quot;</span><span class="o">+</span><span class="n">outPathEscJava</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">outPathEscJava</span>
+
+
+</div>
+<div class="viewcode-block" id="Jfortes.gather_data_claims"><a class="viewcode-back" href="../api_doc/jfortes.html#jfortes.Jfortes.gather_data_claims">[docs]</a>    <span class="k">def</span> <span class="nf">gather_data_claims</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_escJavaOutPut</span><span class="p">,</span><span class="n">_nameextension</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Gather the data from claims generated by ESC/Java</span>
+<span class="sd">        :param escJavaOutPut: The output from ESC/Java</span>
+<span class="sd">        :return: File with the data gathered from ESC/Java output</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c"># Gather the data claim</span>
+        <span class="n">getData</span> <span class="o">=</span> <span class="n">GetDataClaims</span><span class="o">.</span><span class="n">GetDataClaims</span><span class="p">()</span>
+        <span class="n">getData</span><span class="o">.</span><span class="n">readFile</span><span class="p">(</span><span class="n">_escJavaOutPut</span><span class="p">)</span>
+
+        <span class="n">outPathDataClaims</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">javaFilePath</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&quot;.java&quot;</span><span class="p">,</span><span class="n">_nameextension</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">list_tmp_files</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">outPathDataClaims</span><span class="p">)</span>
+
+        <span class="n">fileClaims</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">outPathDataClaims</span><span class="p">,</span> <span class="s">&quot;w&quot;</span><span class="p">)</span>
+
+        <span class="n">fileClaims</span><span class="o">.</span><span class="n">write</span><span class="p">(</span> <span class="n">getData</span><span class="o">.</span><span class="n">writeHeader2Csv</span><span class="p">()</span> <span class="p">)</span>
+        <span class="c"># Lines of the file with the claims translated</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">getData</span><span class="o">.</span><span class="n">getDataClaims</span><span class="p">():</span>
+            <span class="c">#print(line)</span>
+            <span class="n">fileClaims</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">line</span><span class="o">+</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">)</span>
+
+        <span class="n">fileClaims</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="c">#sys.exit()</span>
+        <span class="k">return</span> <span class="n">outPathDataClaims</span>
+
+</div>
+<div class="viewcode-block" id="Jfortes.translate_claims"><a class="viewcode-back" href="../api_doc/jfortes.html#jfortes.Jfortes.translate_claims">[docs]</a>    <span class="k">def</span> <span class="nf">translate_claims</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">claimsFile</span><span class="p">):</span>
+        <span class="n">translateCl</span> <span class="o">=</span> <span class="n">ClaimsTranslate</span><span class="o">.</span><span class="n">IsolateDataClaim</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">setTranslationTest</span><span class="p">:</span>
+            <span class="n">translateCl</span><span class="o">.</span><span class="n">set_testing_flag</span><span class="p">()</span>
+
+        <span class="n">translateCl</span><span class="o">.</span><span class="n">loadDataFromCsv</span><span class="p">(</span><span class="n">claimsFile</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">javaFilePath</span><span class="p">)</span>
+        <span class="n">translateCl</span><span class="o">.</span><span class="n">generateScopeByLineNumber</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">javaFilePath</span><span class="p">)</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">listofclaimstranslated</span> <span class="o">=</span>  <span class="n">translateCl</span><span class="o">.</span><span class="n">getObjectPointed</span><span class="p">()</span>
+            <span class="c"># write the claims translated in a temporary file</span>
+            <span class="c"># first create the file name</span>
+            <span class="n">pathclaimstranslated</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">javaFilePath</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&quot;.java&quot;</span><span class="p">,</span><span class="s">&quot;_newcl.csv&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">list_tmp_files</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pathclaimstranslated</span><span class="p">)</span>
+
+            <span class="n">filecltranslated</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">pathclaimstranslated</span><span class="p">,</span> <span class="s">&quot;w&quot;</span><span class="p">)</span>
+            <span class="c"># Write header of the translated claims in the CSV file</span>
+            <span class="n">filecltranslated</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&quot;Number_of_line;Ori_claim;New_claim;Comment</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">)</span>
+
+            <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">listofclaimstranslated</span><span class="p">:</span>
+                <span class="c">#print(line)</span>
+                <span class="n">filecltranslated</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">line</span><span class="o">+</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">)</span>
+
+            <span class="n">filecltranslated</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+            <span class="c"># the path temporary file with the claims translated</span>
+            <span class="k">return</span> <span class="n">pathclaimstranslated</span>
+
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">javaFilePath</span><span class="o">+</span><span class="s">&quot; ; ERROR ; ERROR ; ERROR ; ERROR ; ERROR&quot;</span><span class="p">)</span>
+            <span class="c">#print(&quot;Unexpected error: &quot;, sys.exc_info()[0])</span>
+            <span class="k">raise</span> <span class="c"># reraises the exception</span>
+
+</div>
+<div class="viewcode-block" id="Jfortes.generate_data2input"><a class="viewcode-back" href="../api_doc/jfortes.html#jfortes.Jfortes.generate_data2input">[docs]</a>    <span class="k">def</span> <span class="nf">generate_data2input</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_javafile</span><span class="p">):</span>
+        <span class="c">#os.system(&quot;java -jar &quot;+JAVA_PARSER+&quot; &quot;+_javafile)</span>
+        <span class="c">#sys.exit()</span>
+        <span class="n">rec_output</span> <span class="o">=</span> <span class="n">commands</span><span class="o">.</span><span class="n">getoutput</span><span class="p">(</span><span class="s">&quot;java -jar &quot;</span><span class="o">+</span><span class="n">JAVA_PARSER</span><span class="o">+</span><span class="s">&quot; &quot;</span><span class="o">+</span><span class="n">_javafile</span><span class="p">)</span>
+        <span class="c"># Write data gathered in a file</span>
+        <span class="n">pathdatainput</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">javaFilePath</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&quot;.java&quot;</span><span class="p">,</span><span class="s">&quot;_datainput.csv&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">list_tmp_files</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pathdatainput</span><span class="p">)</span>
+
+        <span class="n">filedata</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">pathdatainput</span><span class="p">,</span> <span class="s">&quot;w&quot;</span><span class="p">)</span>
+        <span class="n">filedata</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">rec_output</span><span class="p">)</span>
+        <span class="n">filedata</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">pathdatainput</span>
+
+</div>
+<div class="viewcode-block" id="Jfortes.insert_claims"><a class="viewcode-back" href="../api_doc/jfortes.html#jfortes.Jfortes.insert_claims">[docs]</a>    <span class="k">def</span> <span class="nf">insert_claims</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_javafile</span><span class="p">,</span> <span class="n">_claimstranslatedfile</span><span class="p">,</span> <span class="n">_datainputfile</span><span class="p">):</span>
+
+
+        <span class="n">readjavafile</span> <span class="o">=</span> <span class="n">ReadJavaFile</span><span class="o">.</span><span class="n">ReadJavaFile</span><span class="p">()</span>
+        <span class="c">#readjavafile.readFile(_javafile)</span>
+        <span class="n">list_new_program</span> <span class="o">=</span> <span class="n">readjavafile</span><span class="o">.</span><span class="n">instrumentCodeAssert</span><span class="p">(</span><span class="n">_javafile</span><span class="p">,</span>
+                                                             <span class="bp">self</span><span class="o">.</span><span class="n">path_csvclaims_ori_code</span><span class="p">,</span>
+                                                             <span class="n">_claimstranslatedfile</span><span class="p">,</span>
+                                                             <span class="bp">self</span><span class="o">.</span><span class="n">dic_model_unit_test</span><span class="p">,</span>
+                                                             <span class="n">_datainputfile</span><span class="p">)</span>
+
+        <span class="c">#write new program in a temporary file</span>
+        <span class="n">pathnewprogram</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">javaFilePath</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&quot;.java&quot;</span><span class="p">,</span><span class="s">&quot;_assert.java&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">list_tmp_files</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pathnewprogram</span><span class="p">)</span>
+
+        <span class="n">filenewprogram</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">pathnewprogram</span><span class="p">,</span> <span class="s">&quot;w&quot;</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">list_new_program</span><span class="p">:</span>
+            <span class="c">#print(line)</span>
+            <span class="n">filenewprogram</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">line</span><span class="o">+</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">)</span>
+
+        <span class="n">filenewprogram</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+        <span class="c"># Pre-processing the source code of the program</span>
+        <span class="n">pathendfilejava</span> <span class="o">=</span> <span class="n">pathnewprogram</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&quot;_assert.java&quot;</span><span class="p">,</span><span class="s">&quot;_end.java&quot;</span><span class="p">)</span>
+        <span class="c">#self.list_tmp_files.append(pathendfilejava)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pre_processing</span><span class="p">(</span><span class="n">pathnewprogram</span><span class="p">,</span> <span class="n">pathendfilejava</span><span class="p">,</span> <span class="bp">False</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="Jfortes.delete_tmp_files"><a class="viewcode-back" href="../api_doc/jfortes.html#jfortes.Jfortes.delete_tmp_files">[docs]</a>    <span class="k">def</span> <span class="nf">delete_tmp_files</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">pathFile</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">list_tmp_files</span><span class="p">:</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">pathFile</span><span class="p">)</span>
+
+
+
+<span class="c"># -------------------------------------------------</span>
+<span class="c"># Main JFORTES program</span>
+<span class="c"># -------------------------------------------------</span>
+</div></div>
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&quot;__main__&quot;</span><span class="p">:</span>
+
+    <span class="c"># Verify settings to JFORTES</span>
+    <span class="n">config</span> <span class="o">=</span> <span class="n">ConfigParser</span><span class="o">.</span><span class="n">ConfigParser</span><span class="p">()</span>
+    <span class="n">config</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">PATH_FILE_SETTINGS</span><span class="p">)</span>
+    <span class="n">java_path_settings</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;JAVA&#39;</span><span class="p">,</span> <span class="s">&#39;java_path&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">java_path_settings</span> <span class="o">==</span> <span class="s">&#39;empty&#39;</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">&quot;Sorry, you need to set up the java path in settings.cfg file. See REAME file.&quot;</span><span class="p">)</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
+
+    <span class="c"># --- Parse args options</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s">&#39;Run JFORTES v1&#39;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&#39;-v&#39;</span><span class="p">,</span><span class="s">&#39;--version&#39;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&#39;version&#39;</span> <span class="p">,</span> <span class="n">version</span><span class="o">=</span><span class="s">&quot;version 1&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="n">dest</span><span class="o">=</span><span class="s">&#39;inputJavaProgram&#39;</span><span class="p">,</span> <span class="n">metavar</span><span class="o">=</span><span class="s">&#39;file.java&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span>
+               <span class="n">help</span><span class="o">=</span><span class="s">&#39;the Java program file to be analyzed&#39;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&#39;-n&#39;</span><span class="p">,</span><span class="s">&#39;--apply-testng-model&#39;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store_true&quot;</span> <span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&#39;setTestNg&#39;</span><span class="p">,</span>
+                <span class="n">help</span><span class="o">=</span><span class="s">&#39;run jfortes and then apply the TestNG model to run unit testing&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&#39;-j&#39;</span><span class="p">,</span> <span class="s">&#39;--apply-jcute-model&#39;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store_true&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&#39;setJCute&#39;</span><span class="p">,</span>
+                <span class="n">help</span><span class="o">=</span><span class="s">&#39;run jfortes and then apply the jCUTE model&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&#39;-t&#39;</span><span class="p">,</span><span class="s">&#39;--translation-test&#39;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;store_true&quot;</span> <span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&#39;setTranslationTest&#39;</span><span class="p">,</span>
+               <span class="n">help</span><span class="o">=</span><span class="s">&#39;run jfortes only to test the translation of the claims, where the ouput is as following: &#39;</span>
+                    <span class="s">&#39;Program ; NOT translation ; INCOMPLETE translation ; FAILED translation ; OKAY translation&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&#39;-i&#39;</span><span class="p">,</span><span class="s">&#39;--insert-claims&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span> <span class="p">,</span> <span class="n">metavar</span><span class="o">=</span><span class="s">&#39;file.claims&#39;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&#39;inputClaimsFile&#39;</span><span class="p">,</span>
+               <span class="n">help</span><span class="o">=</span><span class="s">&#39;run jfortes only to insert assertion with claims in the analyzed program&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+
+    <span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+
+    <span class="c"># --- Check options in the args</span>
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">inputJavaProgram</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">inputJavaProgram</span><span class="p">):</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">&#39;Error: unable to open input file (</span><span class="si">%s</span><span class="s">)&#39;</span> <span class="o">%</span> <span class="n">args</span><span class="o">.</span><span class="n">inputJavaProgram</span><span class="p">)</span>
+            <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">([</span><span class="s">&#39;-h&#39;</span><span class="p">])</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+
+            <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">inputClaimsFile</span><span class="p">:</span>
+                    <span class="c">#only to insert the assertioln with the claims in the analyzed program</span>
+                    <span class="n">runJfortes</span> <span class="o">=</span> <span class="n">Jfortes</span><span class="p">()</span>
+                    <span class="c">#parameters need: (1) java file and (2) claims translated file</span>
+                    <span class="n">runJfortes</span><span class="o">.</span><span class="n">insert_claims</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">inputJavaProgram</span><span class="p">),</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">inputClaimsFile</span><span class="p">))</span>
+                    <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
+
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c"># Apply all steps of the JFORTES method</span>
+                <span class="n">runJfortes</span> <span class="o">=</span> <span class="n">Jfortes</span><span class="p">()</span>
+                <span class="n">getLoad</span> <span class="o">=</span> <span class="n">runJfortes</span><span class="o">.</span><span class="n">load_java_path</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">inputJavaProgram</span><span class="p">),</span> <span class="n">java_path_settings</span><span class="p">)</span>
+                <span class="n">getDataClaim</span> <span class="o">=</span> <span class="n">runJfortes</span><span class="o">.</span><span class="n">gather_data_claims</span><span class="p">(</span><span class="n">getLoad</span><span class="p">,</span><span class="s">&quot;_claims.csv&quot;</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">setTranslationTest</span><span class="p">:</span>
+                    <span class="n">runJfortes</span><span class="o">.</span><span class="n">setTranslationTest</span> <span class="o">=</span> <span class="bp">True</span>
+
+                <span class="n">getPathCLTranslated</span> <span class="o">=</span> <span class="n">runJfortes</span><span class="o">.</span><span class="n">translate_claims</span><span class="p">(</span><span class="n">getDataClaim</span><span class="p">)</span>
+
+                <span class="n">getpathdatainput</span> <span class="o">=</span> <span class="n">runJfortes</span><span class="o">.</span><span class="n">generate_data2input</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">inputJavaProgram</span><span class="p">))</span>
+
+                <span class="c"># DOING apply a model of the framework unit test to run the assertions with the claims</span>
+                <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">setTestNg</span><span class="p">:</span>
+                    <span class="n">runJfortes</span><span class="o">.</span><span class="n">dic_model_unit_test</span><span class="p">[</span><span class="s">&#39;testng&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">True</span>
+                    <span class="n">runJfortes</span><span class="o">.</span><span class="n">dic_model_unit_test</span><span class="p">[</span><span class="s">&#39;NO&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">False</span>
+                <span class="k">elif</span> <span class="n">args</span><span class="o">.</span><span class="n">setJCute</span><span class="p">:</span>
+                    <span class="n">runJfortes</span><span class="o">.</span><span class="n">dic_model_unit_test</span><span class="p">[</span><span class="s">&#39;jcute&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">True</span>
+                    <span class="n">runJfortes</span><span class="o">.</span><span class="n">dic_model_unit_test</span><span class="p">[</span><span class="s">&#39;NO&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">False</span>
+
+
+
+                <span class="c"># Insert in the analyzed program the claims translated adopting assertions</span>
+                <span class="n">runJfortes</span><span class="o">.</span><span class="n">insert_claims</span><span class="p">(</span><span class="n">runJfortes</span><span class="o">.</span><span class="n">javaFilePath</span><span class="p">,</span> <span class="n">getPathCLTranslated</span><span class="p">,</span> <span class="n">getpathdatainput</span><span class="p">)</span>
+
+                <span class="c"># Clean all tmp files generated</span>
+                <span class="n">runJfortes</span><span class="o">.</span><span class="n">delete_tmp_files</span><span class="p">()</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../index.html">JFORTES 1 documentation</a> &raquo;</li>
+          <li><a href="index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, Herbert Rocha.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>

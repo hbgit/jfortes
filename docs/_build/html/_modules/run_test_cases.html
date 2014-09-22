@@ -1,0 +1,152 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>run_test_cases &mdash; JFORTES 1 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="JFORTES 1 documentation" href="../index.html" />
+    <link rel="up" title="Module code" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../index.html">JFORTES 1 documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for run_test_cases</h1><div class="highlight"><pre>
+<span class="c">#!/usr/bin/env python</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
+<span class="c"># -*- coding: latin1 -*-</span>
+
+
+<span class="n">__author__</span> <span class="o">=</span> <span class="s">&#39;Herbert OLiveira Rocha&#39;</span>
+
+<span class="c"># From Python</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">commands</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">argparse</span>
+
+
+<div class="viewcode-block" id="RunTests"><a class="viewcode-back" href="../api_doc/run_test_cases.html#run_test_cases.RunTests">[docs]</a><span class="k">class</span> <span class="nc">RunTests</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">actualProgram</span> <span class="o">=</span> <span class="s">&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pathJfortes</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="s">&quot;jfortes.py&quot;</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="RunTests.load_dir_and_run_recursive"><a class="viewcode-back" href="../api_doc/run_test_cases.html#run_test_cases.RunTests.load_dir_and_run_recursive">[docs]</a>    <span class="k">def</span> <span class="nf">load_dir_and_run_recursive</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_pathdir</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">root</span><span class="p">,</span> <span class="n">dirs</span><span class="p">,</span> <span class="n">files</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="n">_pathdir</span><span class="p">):</span>
+            <span class="k">for</span> <span class="nb">file</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
+                <span class="k">if</span> <span class="nb">file</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s">&quot;.java&quot;</span><span class="p">):</span>
+                    <span class="n">get_path_program</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="nb">file</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">actualProgram</span> <span class="o">=</span> <span class="n">get_path_program</span>
+                    <span class="c">#print(get_path_program)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">run_test_in_jfortes</span><span class="p">(</span><span class="n">get_path_program</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="RunTests.run_test_in_jfortes"><a class="viewcode-back" href="../api_doc/run_test_cases.html#run_test_cases.RunTests.run_test_in_jfortes">[docs]</a>    <span class="k">def</span> <span class="nf">run_test_in_jfortes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_pathjavafile</span><span class="p">):</span>
+        <span class="n">saveresult</span> <span class="o">=</span> <span class="n">commands</span><span class="o">.</span><span class="n">getoutput</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pathJfortes</span><span class="o">+</span><span class="s">&quot; -t &quot;</span><span class="o">+</span><span class="n">_pathjavafile</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">saveresult</span><span class="p">)</span>
+
+
+
+<span class="c"># -------------------------------------------------</span>
+<span class="c"># Main JFORTES program</span>
+<span class="c"># -------------------------------------------------</span>
+</div></div>
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="c">#-------------- Parse args options</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s">&#39;Run experiment using JFORTES v1&#39;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="n">dest</span><span class="o">=</span><span class="s">&#39;dirTestCasesDir&#39;</span><span class="p">,</span> <span class="n">metavar</span><span class="o">=</span><span class="s">&#39;program_directory&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s">&#39;Directory with the test cases in directories to be analyzed&#39;</span><span class="p">)</span>
+
+    <span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+
+    <span class="c">#---------------Check options in the args</span>
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">dirTestCasesDir</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">dirTestCasesDir</span><span class="p">):</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">&#39;Error: unable to open find the dir (</span><span class="si">%s</span><span class="s">)&#39;</span> <span class="o">%</span> <span class="n">args</span><span class="o">.</span><span class="n">dirTestCasesDir</span><span class="p">)</span>
+            <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">([</span><span class="s">&#39;-h&#39;</span><span class="p">])</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">executeTests</span> <span class="o">=</span> <span class="n">RunTests</span><span class="p">()</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">&quot;Program ; NOT translation ; INCOMPLETE translation ; FAILED translation ; OKAY translation ; Total Number of Claims&quot;</span><span class="p">)</span>
+            <span class="n">executeTests</span><span class="o">.</span><span class="n">load_dir_and_run_recursive</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">dirTestCasesDir</span><span class="p">)</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../index.html">JFORTES 1 documentation</a> &raquo;</li>
+          <li><a href="index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, Herbert Rocha.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>
