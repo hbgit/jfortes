@@ -96,8 +96,26 @@
 
 
 <div class="viewcode-block" id="Jfortes"><a class="viewcode-back" href="../api_doc/jfortes.html#jfortes.Jfortes">[docs]</a><span class="k">class</span> <span class="nc">Jfortes</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Jfortes class is adopted as a main start point of the tool.</span>
+<span class="sd">    In this class is controlled the flow of the JFORTES method, which has the</span>
+<span class="sd">    following steps:</span>
+<span class="sd">    </span>
+<span class="sd">    * **(1)** Execution of ESC/JAVA;</span>
+<span class="sd">    * **(2)** Beatify code (preprocesing);</span>
+<span class="sd">    * **(3)** Execution of ESC/JAVA (this is to keep the track the original line number);</span>
+<span class="sd">    * **(4)** Properties translation that is executed to convert the assertions from ESC/JAVA to assertion to be\</span>
+<span class="sd">      executed in java programs;</span>
+<span class="sd">    * **(5)** Test cases creation that is set the properties translate in asserts according to framework adopted by the user;</span>
+<span class="sd">    * **(6)** Apply the unit test framework model (TestNG, JCUTE, or only java asserts) choose by the user</span>
+<span class="sd">    * **(7)** Execution the tests</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This method has the main function to initialize the attributes of the Jfortes class</span>
+<span class="sd">        :return: void</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ABS_PATH</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">__file__</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">javaFilePath</span> <span class="o">=</span> <span class="s">&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">javaClassPath</span> <span class="o">=</span> <span class="s">&quot;&quot;</span>
@@ -112,8 +130,14 @@
 <div class="viewcode-block" id="Jfortes.load_java_path"><a class="viewcode-back" href="../api_doc/jfortes.html#jfortes.Jfortes.load_java_path">[docs]</a>    <span class="k">def</span> <span class="nf">load_java_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">javafile</span><span class="p">,</span> <span class="n">javaClassPath</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        This method loads the java file to run ESC/Java</span>
-<span class="sd">        :param javafile: The path of the java file</span>
-<span class="sd">        :return : The result of the ESC/Java execution</span>
+
+<span class="sd">        :param javafile: The path of the java file.</span>
+<span class="sd">        :type javafile: str</span>
+<span class="sd">        :param javaClassPath: Java class path to run java programs.</span>
+<span class="sd">        :type javaClassPath: str</span>
+<span class="sd">        :returns: The file path that has the ESC/Java execution execution.</span>
+
+<span class="sd">        &gt;&gt;&gt; runJfortes.load_java_path(os.path.abspath(&quot;/tests/Bag.java&quot;), &quot;/usr/lib/java/jdk1.5.0_22/bin/java&quot;)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">javaFilePath</span> <span class="o">=</span> <span class="n">javafile</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">javaClassPath</span> <span class="o">=</span> <span class="n">javaClassPath</span>
@@ -134,6 +158,15 @@
 
 </div>
 <div class="viewcode-block" id="Jfortes.pre_processing"><a class="viewcode-back" href="../api_doc/jfortes.html#jfortes.Jfortes.pre_processing">[docs]</a>    <span class="k">def</span> <span class="nf">pre_processing</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_javafile</span><span class="p">,</span> <span class="n">_pathtoprefile</span><span class="p">,</span> <span class="n">_mode</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">        :param _javafile: The path of the java file</span>
+<span class="sd">        :param _pathtoprefile: The path to save the java file preprocessed</span>
+<span class="sd">        :param _mode: True to write the code preprocessed</span>
+<span class="sd">        :type _mode: bool</span>
+<span class="sd">        :return: void, this because this method only write the code preprocessed in a new file</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
         <span class="n">run_pre</span> <span class="o">=</span> <span class="n">RunPreprocessor</span><span class="o">.</span><span class="n">CodeBeautify</span><span class="p">()</span>
         <span class="n">run_pre</span><span class="o">.</span><span class="n">runBeatifyTool</span><span class="p">(</span><span class="n">_javafile</span><span class="p">,</span> <span class="n">_pathtoprefile</span><span class="p">,</span> <span class="n">_mode</span><span class="p">)</span>
 
@@ -141,9 +174,15 @@
 <div class="viewcode-block" id="Jfortes.run_esc_java"><a class="viewcode-back" href="../api_doc/jfortes.html#jfortes.Jfortes.run_esc_java">[docs]</a>    <span class="k">def</span> <span class="nf">run_esc_java</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_javafile</span><span class="p">,</span> <span class="n">_nameextension</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        This method executes the ESC/Java that receives as input the javafile,</span>
-<span class="sd">        and then it saves the ESC/Java output in the file.escout</span>
-<span class="sd">        :param javafile: The path of the java file</span>
-<span class="sd">        :return outPathEscJava: The ESC/Java output saved in the file</span>
+<span class="sd">        and then it saves the ESC/Java output in the &lt;file&gt;.escout</span>
+
+<span class="sd">        :param _javafile: The path of the java file</span>
+<span class="sd">        :type: __javafile: str</span>
+<span class="sd">        :param _nameextension: The file extension where the ESC/JAVA output will be java</span>
+<span class="sd">        :type: __nameextension: str</span>
+<span class="sd">        :returns: The the path file that has the ESC/Java output</span>
+
+<span class="sd">        &gt;&gt;&gt; self.run_esc_java(os.path.abspath(&quot;/tests/Bag.java&quot;),&quot;.escout&quot;)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c"># WARNNING to run ESCJ</span>
 	    <span class="c"># Set also in the bashrc</span>
@@ -165,8 +204,14 @@
 <div class="viewcode-block" id="Jfortes.gather_data_claims"><a class="viewcode-back" href="../api_doc/jfortes.html#jfortes.Jfortes.gather_data_claims">[docs]</a>    <span class="k">def</span> <span class="nf">gather_data_claims</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_escJavaOutPut</span><span class="p">,</span><span class="n">_nameextension</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Gather the data from claims generated by ESC/Java</span>
-<span class="sd">        :param escJavaOutPut: The output from ESC/Java</span>
-<span class="sd">        :return: File with the data gathered from ESC/Java output</span>
+
+<span class="sd">        :param _escJavaOutPut: The output from ESC/Java</span>
+<span class="sd">        :type _escJavaOutPut: str</span>
+<span class="sd">        :param _nameextension: The file extension where the data gathered will be saved</span>
+<span class="sd">        :type _nameextension: str</span>
+<span class="sd">        :return: The CSV file with the data gathered from ESC/Java output</span>
+
+<span class="sd">        &gt;&gt;&gt; self.gather_data_claims(&quot;/tmp/file.escout&quot;,&quot;_before_pre_claims.csv&quot;)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c"># Gather the data claim</span>
         <span class="n">getData</span> <span class="o">=</span> <span class="n">GetDataClaims</span><span class="o">.</span><span class="n">GetDataClaims</span><span class="p">()</span>
@@ -189,6 +234,14 @@
 
 </div>
 <div class="viewcode-block" id="Jfortes.translate_claims"><a class="viewcode-back" href="../api_doc/jfortes.html#jfortes.Jfortes.translate_claims">[docs]</a>    <span class="k">def</span> <span class="nf">translate_claims</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">claimsFile</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This method translated the properties generated by ESC/JAVA. This translation</span>
+<span class="sd">        is to generate an assertion to be executed in java code out of the ESC/JAVA flow.</span>
+
+<span class="sd">        :param claimsFile: The path of the file with the ESC/JAVA properties</span>
+<span class="sd">        :type claimsFile: str</span>
+<span class="sd">        :return: The file path with the properties translated</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">translateCl</span> <span class="o">=</span> <span class="n">ClaimsTranslate</span><span class="o">.</span><span class="n">IsolateDataClaim</span><span class="p">()</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">setTranslationTest</span><span class="p">:</span>
@@ -224,6 +277,19 @@
 
 </div>
 <div class="viewcode-block" id="Jfortes.generate_data2input"><a class="viewcode-back" href="../api_doc/jfortes.html#jfortes.Jfortes.generate_data2input">[docs]</a>    <span class="k">def</span> <span class="nf">generate_data2input</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_javafile</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This method call our java parser that identifies the attributes and</span>
+<span class="sd">        the input args of the methods in the analyzed program, and then</span>
+<span class="sd">        the parser creates a list that has: (1) the variables name;</span>
+<span class="sd">        (2) the type of the variables; and (3) the line number where the variable is located</span>
+<span class="sd">        in the code.</span>
+
+<span class="sd">        :param _javafile: The file path to analyzed program</span>
+<span class="sd">        :type _javafile: str</span>
+<span class="sd">        :return:</span>
+
+<span class="sd">        &gt;&gt;&gt; runJfortes.generate_data2input(os.path.abspath(&quot;tests/Bag.java&quot;))</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="c">#os.system(&quot;java -jar &quot;+JAVA_PARSER+&quot; &quot;+_javafile)</span>
         <span class="c">#sys.exit()</span>
         <span class="n">rec_output</span> <span class="o">=</span> <span class="n">commands</span><span class="o">.</span><span class="n">getoutput</span><span class="p">(</span><span class="s">&quot;java -jar &quot;</span><span class="o">+</span><span class="n">JAVA_PARSER</span><span class="o">+</span><span class="s">&quot; &quot;</span><span class="o">+</span><span class="n">_javafile</span><span class="p">)</span>
@@ -239,6 +305,18 @@
 
 </div>
 <div class="viewcode-block" id="Jfortes.insert_claims"><a class="viewcode-back" href="../api_doc/jfortes.html#jfortes.Jfortes.insert_claims">[docs]</a>    <span class="k">def</span> <span class="nf">insert_claims</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_javafile</span><span class="p">,</span> <span class="n">_claimstranslatedfile</span><span class="p">,</span> <span class="n">_datainputfile</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This method creates a new instance of the analyzed program, and then</span>
+<span class="sd">        it adds in this new instance asserts with properties generated by ESC/JAVA.</span>
+<span class="sd">        It is woth noting that in this point the variable self.dic_model_unit_test was</span>
+<span class="sd">        defined with the name of the framework that user choose.</span>
+
+
+<span class="sd">        :param _javafile: The file path to the analyzed program</span>
+<span class="sd">        :param _claimstranslatedfile: The file path to the translated properties</span>
+<span class="sd">        :param _datainputfile: The csv file path generated by the method generate_data2input</span>
+<span class="sd">        :return: void, this because the method only generates the new program</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
 
         <span class="n">readjavafile</span> <span class="o">=</span> <span class="n">ReadJavaFile</span><span class="o">.</span><span class="n">ReadJavaFile</span><span class="p">()</span>
@@ -268,6 +346,12 @@
 
 </div>
 <div class="viewcode-block" id="Jfortes.delete_tmp_files"><a class="viewcode-back" href="../api_doc/jfortes.html#jfortes.Jfortes.delete_tmp_files">[docs]</a>    <span class="k">def</span> <span class="nf">delete_tmp_files</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This method remove all temporary files generated</span>
+<span class="sd">        by Jfortes class that are saved in the global var self.list_tmp_files</span>
+
+<span class="sd">        :return: void, the method only remove the files</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">for</span> <span class="n">pathFile</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">list_tmp_files</span><span class="p">:</span>
             <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">pathFile</span><span class="p">)</span>
 

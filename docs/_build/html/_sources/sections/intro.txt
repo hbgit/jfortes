@@ -13,11 +13,17 @@ JFORTES  (Java FORmal unit TESt generation) is a method that aims to extract the
 by ESC/JAVA [#f1]_ to generate automatically test cases using the rich set of assertions provided by Unit Test
 frameworks, such as: TestNG [#f2]_ and JCUTE [#f3]_ . The integration of these two environments aims to ensure software
 quality by exploiting formal verification and tests. JFORTES is a extension of FORTES [#f5]_ to Java programs.
+:ref:`fig-flow-jfortes` shows a flow structure of the JFORTES method.
 We advocate that exploiting the integration between a testing framework and formal verification allows
 us to go deeper into the Java program verification.
 
+.. _fig-flow-jfortes:
+.. figure:: /imgs/jfortes_flow.png
+   :scale: 100%
+   :alt: Flow structure of the JFORTES
+   :align: center
 
-.. TODO: Show the JFORTES flow
+   Figure 1: JFORTES Flow
 
 
 .. rubric:: References

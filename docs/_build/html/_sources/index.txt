@@ -13,6 +13,7 @@ Contents:
 
    sections/intro
    sections/tutorial
+   sections/limitations
 
 
 
