@@ -149,45 +149,134 @@ and also to apply the transformation rule</p>
 <dt id="modules.get_data_claims.GetDataClaims.GetDataClaims">
 <em class="property">class </em><tt class="descclassname">modules.get_data_claims.GetDataClaims.</tt><tt class="descname">GetDataClaims</tt><a class="reference internal" href="../_modules/modules/get_data_claims/GetDataClaims.html#GetDataClaims"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modules.get_data_claims.GetDataClaims.GetDataClaims" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>This program aims to gather the data in output from ESC/JAVA.</p>
 <dl class="method">
 <dt id="modules.get_data_claims.GetDataClaims.GetDataClaims.getClaim">
 <tt class="descname">getClaim</tt><big>(</big><em>lineClaim</em><big>)</big><a class="reference internal" href="../_modules/modules/get_data_claims/GetDataClaims.html#GetDataClaims.getClaim"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modules.get_data_claims.GetDataClaims.GetDataClaims.getClaim" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Apply regex to get the assertion/property of line in the output text of the ESC/JAVA.
+Fisrt of all, we check if the claim has inside in a loop statement, in negative case we get
+the assertion/property.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>lineClaim</strong> (<em>str</em>) &#8211; the text line from the ESC/JAVA output with the assertion/property</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">only the assertion/property</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="method">
 <dt id="modules.get_data_claims.GetDataClaims.GetDataClaims.getCommentInClaim">
 <tt class="descname">getCommentInClaim</tt><big>(</big><em>lineClaim</em><big>)</big><a class="reference internal" href="../_modules/modules/get_data_claims/GetDataClaims.html#GetDataClaims.getCommentInClaim"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modules.get_data_claims.GetDataClaims.GetDataClaims.getCommentInClaim" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Apply regex to get the comments about the ESC/JAVA assertion/property</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>lineClaim</strong> (<em>str</em>) &#8211; the text line from the ESC/JAVA output with the comment of the assertion/property</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the comment about the assertion/property</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="method">
 <dt id="modules.get_data_claims.GetDataClaims.GetDataClaims.getDataClaims">
 <tt class="descname">getDataClaims</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/modules/get_data_claims/GetDataClaims.html#GetDataClaims.getDataClaims"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modules.get_data_claims.GetDataClaims.GetDataClaims.getDataClaims" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>This method read the ESC/Java out saved in the list self.list_lines_file, then
+it is applied a set of REGEX to identify spefic pattern in the output to gather
+the assertions/properties point out by ESC/JAVA.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">the list self.list_claims_translated that has list of list where each list is a line
+in csv format with the data of the assertions/properties from ESC/JAVA.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="method">
 <dt id="modules.get_data_claims.GetDataClaims.GetDataClaims.getNumLineInClaim">
 <tt class="descname">getNumLineInClaim</tt><big>(</big><em>lineClaim</em><big>)</big><a class="reference internal" href="../_modules/modules/get_data_claims/GetDataClaims.html#GetDataClaims.getNumLineInClaim"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modules.get_data_claims.GetDataClaims.GetDataClaims.getNumLineInClaim" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Apply regex to get the number of line in the assertion/property</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>lineClaim</strong> (<em>str</em>) &#8211; the text line from the ESC/JAVA output with the line number of the assertion/property</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the line number the assertion/property</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="method">
 <dt id="modules.get_data_claims.GetDataClaims.GetDataClaims.getTagFromCommentCl">
 <tt class="descname">getTagFromCommentCl</tt><big>(</big><em>comment</em><big>)</big><a class="reference internal" href="../_modules/modules/get_data_claims/GetDataClaims.html#GetDataClaims.getTagFromCommentCl"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modules.get_data_claims.GetDataClaims.GetDataClaims.getTagFromCommentCl" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Apply regex to get the TAG comments, i.e., an identifier the type of the ESC/JAVA assertion/property</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>comment</strong> (<em>str</em>) &#8211; the text line from the ESC/JAVA output with the TAG of the assertion/property</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the TAG comment of the assertion/property</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="method">
 <dt id="modules.get_data_claims.GetDataClaims.GetDataClaims.prinFile">
 <tt class="descname">prinFile</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/modules/get_data_claims/GetDataClaims.html#GetDataClaims.prinFile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modules.get_data_claims.GetDataClaims.GetDataClaims.prinFile" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Adopted only to debug code modification.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">void</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="method">
 <dt id="modules.get_data_claims.GetDataClaims.GetDataClaims.readFile">
 <tt class="descname">readFile</tt><big>(</big><em>pathFile</em><big>)</big><a class="reference internal" href="../_modules/modules/get_data_claims/GetDataClaims.html#GetDataClaims.readFile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modules.get_data_claims.GetDataClaims.GetDataClaims.readFile" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>To read the java file and save the lines of the file in the
+list self.list_lines_file</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>pathFile</strong> (<em>str</em>) &#8211; path of the java file</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">void</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="method">
 <dt id="modules.get_data_claims.GetDataClaims.GetDataClaims.writeHeader2Csv">
 <tt class="descname">writeHeader2Csv</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/modules/get_data_claims/GetDataClaims.html#GetDataClaims.writeHeader2Csv"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modules.get_data_claims.GetDataClaims.GetDataClaims.writeHeader2Csv" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Write the header of the CSV file generated by this class</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">a text with the header defined to the CSV with the data from assertion/property.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 </dd></dl>
 

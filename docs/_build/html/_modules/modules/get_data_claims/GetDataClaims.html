@@ -53,15 +53,6 @@
 <span class="n">__author__</span> <span class="o">=</span> <span class="s">&#39;Herbert OLiveira Rocha&#39;</span>
 
 
-<span class="c">#----------------------------------------------------------</span>
-<span class="c"># Goal: This program aims to gather the data in output from</span>
-<span class="c">#       the ESC/JAVA.</span>
-<span class="c">#</span>
-<span class="c"># Status: [DONE]</span>
-<span class="c">#----------------------------------------------------------</span>
-
-
-
 <span class="c"># From Python</span>
 <span class="kn">import</span> <span class="nn">sys</span>
 <span class="kn">import</span> <span class="nn">os.path</span>
@@ -70,6 +61,9 @@
 
 
 <div class="viewcode-block" id="GetDataClaims"><a class="viewcode-back" href="../../../api_doc/modules.get_data_claims.html#modules.get_data_claims.GetDataClaims.GetDataClaims">[docs]</a><span class="k">class</span> <span class="nc">GetDataClaims</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This program aims to gather the data in output from ESC/JAVA.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">list_lines_file</span> <span class="o">=</span> <span class="p">[]</span>
@@ -78,6 +72,14 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">list_claims_translated</span> <span class="o">=</span> <span class="p">[]</span>
 
 <div class="viewcode-block" id="GetDataClaims.readFile"><a class="viewcode-back" href="../../../api_doc/modules.get_data_claims.html#modules.get_data_claims.GetDataClaims.GetDataClaims.readFile">[docs]</a>    <span class="k">def</span> <span class="nf">readFile</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pathFile</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        To read the java file and save the lines of the file in the</span>
+<span class="sd">        list self.list_lines_file</span>
+
+<span class="sd">        :param pathFile: path of the java file</span>
+<span class="sd">        :type pathFile: str</span>
+<span class="sd">        :return: void</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="c"># Testing if the path file is correct</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">pathFile</span><span class="p">):</span>
@@ -92,11 +94,24 @@
 
 </div>
 <div class="viewcode-block" id="GetDataClaims.prinFile"><a class="viewcode-back" href="../../../api_doc/modules.get_data_claims.html#modules.get_data_claims.GetDataClaims.GetDataClaims.prinFile">[docs]</a>    <span class="k">def</span> <span class="nf">prinFile</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Adopted only to debug code modification.</span>
+
+<span class="sd">        :return: void</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">list_lines_file</span><span class="p">:</span>
             <span class="k">print</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">)</span>
 
 </div>
 <div class="viewcode-block" id="GetDataClaims.getDataClaims"><a class="viewcode-back" href="../../../api_doc/modules.get_data_claims.html#modules.get_data_claims.GetDataClaims.GetDataClaims.getDataClaims">[docs]</a>    <span class="k">def</span> <span class="nf">getDataClaims</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This method read the ESC/Java out saved in the list self.list_lines_file, then</span>
+<span class="sd">        it is applied a set of REGEX to identify spefic pattern in the output to gather</span>
+<span class="sd">        the assertions/properties point out by ESC/JAVA.</span>
+
+<span class="sd">        :return: the list self.list_claims_translated that has list of list where each list is a line</span>
+<span class="sd">                 in csv format with the data of the assertions/properties from ESC/JAVA.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="n">flagNextBlock</span> <span class="o">=</span> <span class="bp">False</span>
         <span class="c"># Identify begin block, e.g., -----------------</span>
@@ -228,19 +243,39 @@
 
 </div>
 <div class="viewcode-block" id="GetDataClaims.getNumLineInClaim"><a class="viewcode-back" href="../../../api_doc/modules.get_data_claims.html#modules.get_data_claims.GetDataClaims.GetDataClaims.getNumLineInClaim">[docs]</a>    <span class="k">def</span> <span class="nf">getNumLineInClaim</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lineClaim</span><span class="p">):</span>
-        <span class="c"># Apply regex to get the  number of line i the claim</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Apply regex to get the number of line in the assertion/property</span>
+
+<span class="sd">        :param lineClaim: the text line from the ESC/JAVA output with the line number of the assertion/property</span>
+<span class="sd">        :type lineClaim: str</span>
+<span class="sd">        :return: the line number the assertion/property</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">matchNumLine</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s">r&#39;java:([0-9]+)&#39;</span><span class="p">,</span> <span class="n">lineClaim</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">matchNumLine</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">matchNumLine</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 
 </div>
 <div class="viewcode-block" id="GetDataClaims.getCommentInClaim"><a class="viewcode-back" href="../../../api_doc/modules.get_data_claims.html#modules.get_data_claims.GetDataClaims.GetDataClaims.getCommentInClaim">[docs]</a>    <span class="k">def</span> <span class="nf">getCommentInClaim</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lineClaim</span><span class="p">):</span>
-        <span class="c"># Apply regex to get the  number of line i the claim</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Apply regex to get the comments about the ESC/JAVA assertion/property</span>
+
+<span class="sd">        :param lineClaim: the text line from the ESC/JAVA output with the comment of the assertion/property</span>
+<span class="sd">        :type lineClaim: str</span>
+<span class="sd">        :return: the comment about the assertion/property</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">matchNumLine</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s">r&#39;Warning:(.+)&#39;</span><span class="p">,</span> <span class="n">lineClaim</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">matchNumLine</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">matchNumLine</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-            </div>
+
+</div>
 <div class="viewcode-block" id="GetDataClaims.getTagFromCommentCl"><a class="viewcode-back" href="../../../api_doc/modules.get_data_claims.html#modules.get_data_claims.GetDataClaims.GetDataClaims.getTagFromCommentCl">[docs]</a>    <span class="k">def</span> <span class="nf">getTagFromCommentCl</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">comment</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Apply regex to get the TAG comments, i.e., an identifier the type of the ESC/JAVA assertion/property</span>
+
+<span class="sd">        :param comment: the text line from the ESC/JAVA output with the TAG of the assertion/property</span>
+<span class="sd">        :type comment: str</span>
+<span class="sd">        :return: the TAG comment of the assertion/property</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">matchTag</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s">r&#39;\((.[^ ]+)\)$&#39;</span><span class="p">,</span> <span class="n">comment</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">matchTag</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">matchTag</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
@@ -248,8 +283,16 @@
     
 </div>
 <div class="viewcode-block" id="GetDataClaims.getClaim"><a class="viewcode-back" href="../../../api_doc/modules.get_data_claims.html#modules.get_data_claims.GetDataClaims.GetDataClaims.getClaim">[docs]</a>    <span class="k">def</span> <span class="nf">getClaim</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lineClaim</span><span class="p">):</span>
-        <span class="c"># Apply regex to get the claim of line i the claim</span>
-        <span class="c"># Fisrt of all, we check if the claim has inside in a loop statement</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Apply regex to get the assertion/property of line in the output text of the ESC/JAVA.</span>
+<span class="sd">        Fisrt of all, we check if the claim has inside in a loop statement, in negative case we get</span>
+<span class="sd">        the assertion/property.</span>
+
+<span class="sd">        :param lineClaim: the text line from the ESC/JAVA output with the assertion/property</span>
+<span class="sd">        :type lineClaim: str</span>
+<span class="sd">        :return: only the assertion/property</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
         <span class="n">matchFor</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s">r&#39;for[ ]*[\(]&#39;</span><span class="p">,</span> <span class="n">lineClaim</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">matchFor</span><span class="p">:</span>
             <span class="c"># The replace is cuz the next step adopting CSV format file</span>
@@ -264,6 +307,11 @@
 
 </div>
 <div class="viewcode-block" id="GetDataClaims.writeHeader2Csv"><a class="viewcode-back" href="../../../api_doc/modules.get_data_claims.html#modules.get_data_claims.GetDataClaims.GetDataClaims.writeHeader2Csv">[docs]</a>    <span class="k">def</span> <span class="nf">writeHeader2Csv</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Write the header of the CSV file generated by this class</span>
+
+<span class="sd">        :return: a text with the header defined to the CSV with the data from assertion/property.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">head</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;Number of Line&#39;</span><span class="p">,</span><span class="s">&#39;Comments&#39;</span><span class="p">,</span><span class="s">&#39;Tag&#39;</span><span class="p">,</span><span class="s">&#39;Claim&#39;</span><span class="p">,</span><span class="s">&#39;Point Data&#39;</span><span class="p">,</span><span class="s">&#39;Annoted&#39;</span><span class="p">,</span><span class="s">&#39;Annoted Point&#39;</span><span class="p">]</span>
         <span class="n">recFormatCsv</span> <span class="o">=</span> <span class="s">&#39;;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">head</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">recFormatCsv</span><span class="o">+</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span>
