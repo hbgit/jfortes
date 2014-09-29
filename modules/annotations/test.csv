@@ -1,0 +1,3 @@
+annot_name;atrrName;attrArgs;attrSequence;attrSeqConstr
+getSequenceConstructor;Bag;b;1;none
+getSequenceMethod;extractMin;none;2;1
