@@ -1,6 +1,12 @@
 #!/usr/bin/env python
 # -*- coding: latin1 -*-
 
+"""
+This program is adopted to check and define the prerequisites for installing the JFORTES.
+All data and its options about the frameworks adopted, as well as, its version is saved in
+the file settings.cfg
+"""
+
 from __future__ import print_function
 import commands
 import re

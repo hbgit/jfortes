@@ -56,20 +56,37 @@
 <em class="property">class </em><tt class="descclassname">modules.get_data_claims.ClaimsTranslate.</tt><tt class="descname">IsolateDataClaim</tt><a class="reference internal" href="../_modules/modules/get_data_claims/ClaimsTranslate.html#IsolateDataClaim"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modules.get_data_claims.ClaimsTranslate.IsolateDataClaim" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
 <p>This class has as main function isolate the variable or structure
-related in the claim, and then apply its respective translation.</p>
+related in the properties that has been identified by ESC/JAVA, and then
+it applies the respective translation to each type of property.</p>
 <dl class="method">
 <dt id="modules.get_data_claims.ClaimsTranslate.IsolateDataClaim.check_translated_is_empty">
 <tt class="descname">check_translated_is_empty</tt><big>(</big><em>_string</em><big>)</big><a class="reference internal" href="../_modules/modules/get_data_claims/ClaimsTranslate.html#IsolateDataClaim.check_translated_is_empty"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modules.get_data_claims.ClaimsTranslate.IsolateDataClaim.check_translated_is_empty" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="modules.get_data_claims.ClaimsTranslate.IsolateDataClaim.generateScopeByLineNumber">
-<tt class="descname">generateScopeByLineNumber</tt><big>(</big><em>cfile</em><big>)</big><a class="reference internal" href="../_modules/modules/get_data_claims/ClaimsTranslate.html#IsolateDataClaim.generateScopeByLineNumber"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modules.get_data_claims.ClaimsTranslate.IsolateDataClaim.generateScopeByLineNumber" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
+<dd><p>This is a simple checking where is identified if it was possible to translate
+the property, in negative case the text of the translated property is a empty string.</p>
+<table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>cfile</strong> &#8211; the path of the C program file</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>_string</strong> &#8211; the text of the translated property</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Type:</th><td class="field-body">_string: str</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">True if is empty and False otherwise.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="modules.get_data_claims.ClaimsTranslate.IsolateDataClaim.generateScopeByLineNumber">
+<tt class="descname">generateScopeByLineNumber</tt><big>(</big><em>_javafile</em><big>)</big><a class="reference internal" href="../_modules/modules/get_data_claims/ClaimsTranslate.html#IsolateDataClaim.generateScopeByLineNumber"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modules.get_data_claims.ClaimsTranslate.IsolateDataClaim.generateScopeByLineNumber" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate the data about the scope of the java program analyzed, i.e., it is
+identified where the class and method start and finish based on the its line numbers.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>_javafile</strong> (<em>str</em>) &#8211; the path of the C program file</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Return void:</th><td class="field-body">the method set in the atributes of the class to
 values related to number line of begin and end of the functions
@@ -82,37 +99,104 @@ in the analyzed program</td>
 <dl class="method">
 <dt id="modules.get_data_claims.ClaimsTranslate.IsolateDataClaim.getObjectInClaim">
 <tt class="descname">getObjectInClaim</tt><big>(</big><em>lineNumber</em>, <em>tagComm</em>, <em>claim</em>, <em>_commentCl</em>, <em>indexPointed</em>, <em>annoted</em><big>)</big><a class="reference internal" href="../_modules/modules/get_data_claims/ClaimsTranslate.html#IsolateDataClaim.getObjectInClaim"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modules.get_data_claims.ClaimsTranslate.IsolateDataClaim.getObjectInClaim" title="Permalink to this definition">¶</a></dt>
-<dd><p>Method to gather the object pointed in the claim</p>
+<dd><p>Method to gather the object pointed in the property, and then apply the translation rule according
+to its TAG property.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>lineNumber</strong> (<em>str</em>) &#8211; the line number where it was identified the property</li>
+<li><strong>tagComm</strong> (<em>str</em>) &#8211; the identifier of the property identified, e.g., IndexTooBig to possible upper bound violation</li>
+<li><strong>claim</strong> (<em>str</em>) &#8211; the assertion/property definied by ESC/JAVA</li>
+<li><strong>_commentCl</strong> (<em>str</em>) &#8211; the comments about the property identified</li>
+<li><strong>indexPointed</strong> &#8211; the index of the object that is related to the property violation in the assertion</li>
+<li><strong>annoted</strong> &#8211; extra comments, in most cases related to code annotation.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">the text of the property translated (self.claim_translated) in the JFORTES format</p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="modules.get_data_claims.ClaimsTranslate.IsolateDataClaim.getObjectPointed">
 <tt class="descname">getObjectPointed</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/modules/get_data_claims/ClaimsTranslate.html#IsolateDataClaim.getObjectPointed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modules.get_data_claims.ClaimsTranslate.IsolateDataClaim.getObjectPointed" title="Permalink to this definition">¶</a></dt>
 <dd><p>This method is related to get the object pointed by
-identifier in the claim</p>
+identifier (^) in the property, and then translate the property to JFORTES format.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The list with all properties translated in self.claim_list_translated</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="modules.get_data_claims.ClaimsTranslate.IsolateDataClaim.getOnlyVarName">
 <tt class="descname">getOnlyVarName</tt><big>(</big><em>var</em><big>)</big><a class="reference internal" href="../_modules/modules/get_data_claims/ClaimsTranslate.html#IsolateDataClaim.getOnlyVarName"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modules.get_data_claims.ClaimsTranslate.IsolateDataClaim.getOnlyVarName" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Gather only the name of the variable that has been analyzed.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>var</strong> (<em>str</em>) &#8211; a text with the variable that has been analyzed.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the name of the variable in matchVar.group(1)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="method">
 <dt id="modules.get_data_claims.ClaimsTranslate.IsolateDataClaim.getTagsFromComments">
 <tt class="descname">getTagsFromComments</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/modules/get_data_claims/ClaimsTranslate.html#IsolateDataClaim.getTagsFromComments"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modules.get_data_claims.ClaimsTranslate.IsolateDataClaim.getTagsFromComments" title="Permalink to this definition">¶</a></dt>
-<dd><p>This tag will help to apply the rules to get the objects pointed in the claim
-and also to apply the transformation rule</p>
+<dd><p>Gather the TAG property (a identifier) from the comments. This tag will help to apply the rules
+to get the objects pointed in the claim and also to apply the transformation rule.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="modules.get_data_claims.ClaimsTranslate.IsolateDataClaim.getValueFromReturn">
 <tt class="descname">getValueFromReturn</tt><big>(</big><em>indexList</em><big>)</big><a class="reference internal" href="../_modules/modules/get_data_claims/ClaimsTranslate.html#IsolateDataClaim.getValueFromReturn"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modules.get_data_claims.ClaimsTranslate.IsolateDataClaim.getValueFromReturn" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Gather the value point out in the funtion return</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>indexList</strong> (<em>int</em>) &#8211; the index of the the current method analyzed from the Java program</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the value of the return in matchReturn.group(1)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="method">
 <dt id="modules.get_data_claims.ClaimsTranslate.IsolateDataClaim.loadDataFromCsv">
 <tt class="descname">loadDataFromCsv</tt><big>(</big><em>csvFileClaims</em>, <em>javaFile</em><big>)</big><a class="reference internal" href="../_modules/modules/get_data_claims/ClaimsTranslate.html#IsolateDataClaim.loadDataFromCsv"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modules.get_data_claims.ClaimsTranslate.IsolateDataClaim.loadDataFromCsv" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Load data from csv file spliting the data by delimiter &#8216;;&#8217;. Additionally the method
+create a dictionary where the keys are the name columns of the csv file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>csvFileClaims</strong> (<em>str</em>) &#8211; CSV file path</li>
+<li><strong>javaFile</strong> (<em>str</em>) &#8211; Java file path</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Assign the values to dictionary self.columns_csv</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="method">
 <dt id="modules.get_data_claims.ClaimsTranslate.IsolateDataClaim.reset_var_claims">
@@ -123,22 +207,40 @@ and also to apply the transformation rule</p>
 <dl class="method">
 <dt id="modules.get_data_claims.ClaimsTranslate.IsolateDataClaim.setData2Lists">
 <tt class="descname">setData2Lists</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/modules/get_data_claims/ClaimsTranslate.html#IsolateDataClaim.setData2Lists"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modules.get_data_claims.ClaimsTranslate.IsolateDataClaim.setData2Lists" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>This method based on the values extracted from csv file in the method
+loadDataFromCsv(self, csvFileClaims, javaFile) creates for each column
+a list that are attributes of this class.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="modules.get_data_claims.ClaimsTranslate.IsolateDataClaim.set_debug_flag">
 <tt class="descname">set_debug_flag</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/modules/get_data_claims/ClaimsTranslate.html#IsolateDataClaim.set_debug_flag"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modules.get_data_claims.ClaimsTranslate.IsolateDataClaim.set_debug_flag" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Define True to flag self.DEBUG_STATUS to debugging the code.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="modules.get_data_claims.ClaimsTranslate.IsolateDataClaim.set_testing_flag">
 <tt class="descname">set_testing_flag</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/modules/get_data_claims/ClaimsTranslate.html#IsolateDataClaim.set_testing_flag"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modules.get_data_claims.ClaimsTranslate.IsolateDataClaim.set_testing_flag" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Define True to flag self.TESTING_STATUS to enable option to monitor the testing execution.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="modules.get_data_claims.ClaimsTranslate.IsolateDataClaim.whatIsTheScope">
 <tt class="descname">whatIsTheScope</tt><big>(</big><em>lineNum</em><big>)</big><a class="reference internal" href="../_modules/modules/get_data_claims/ClaimsTranslate.html#IsolateDataClaim.whatIsTheScope"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modules.get_data_claims.ClaimsTranslate.IsolateDataClaim.whatIsTheScope" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Identify the scope based where the analyzed line number is located in the Java program.
+It is worth noting that we adopt IDs based in the index of a list the has the data about the
+methods.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>lineNum</strong> (<em>int</em>) &#8211; the number line of the program</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the index in the list self.list_num_* that has the data about the methods in the java program.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 </dd></dl>
 

@@ -76,7 +76,8 @@
 <div class="viewcode-block" id="IsolateDataClaim"><a class="viewcode-back" href="../../../api_doc/modules.get_data_claims.html#modules.get_data_claims.ClaimsTranslate.IsolateDataClaim">[docs]</a><span class="k">class</span> <span class="nc">IsolateDataClaim</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    This class has as main function isolate the variable or structure</span>
-<span class="sd">    related in the claim, and then apply its respective translation.</span>
+<span class="sd">    related in the properties that has been identified by ESC/JAVA, and then</span>
+<span class="sd">    it applies the respective translation to each type of property.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -122,15 +123,31 @@
 
 
 <div class="viewcode-block" id="IsolateDataClaim.set_debug_flag"><a class="viewcode-back" href="../../../api_doc/modules.get_data_claims.html#modules.get_data_claims.ClaimsTranslate.IsolateDataClaim.set_debug_flag">[docs]</a>    <span class="k">def</span> <span class="nf">set_debug_flag</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Define True to flag self.DEBUG_STATUS to debugging the code.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">DEBUG_STATUS</span> <span class="o">=</span> <span class="bp">True</span>
 
 </div>
 <div class="viewcode-block" id="IsolateDataClaim.set_testing_flag"><a class="viewcode-back" href="../../../api_doc/modules.get_data_claims.html#modules.get_data_claims.ClaimsTranslate.IsolateDataClaim.set_testing_flag">[docs]</a>    <span class="k">def</span> <span class="nf">set_testing_flag</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Define True to flag self.TESTING_STATUS to enable option to monitor the testing execution.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">TESTING_STATUS</span> <span class="o">=</span> <span class="bp">True</span>
 
 
 </div>
 <div class="viewcode-block" id="IsolateDataClaim.loadDataFromCsv"><a class="viewcode-back" href="../../../api_doc/modules.get_data_claims.html#modules.get_data_claims.ClaimsTranslate.IsolateDataClaim.loadDataFromCsv">[docs]</a>    <span class="k">def</span> <span class="nf">loadDataFromCsv</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">csvFileClaims</span><span class="p">,</span> <span class="n">javaFile</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Load data from csv file spliting the data by delimiter &#39;;&#39;. Additionally the method</span>
+<span class="sd">        create a dictionary where the keys are the name columns of the csv file.</span>
+
+<span class="sd">        :param csvFileClaims: CSV file path</span>
+<span class="sd">        :type csvFileClaims: str</span>
+<span class="sd">        :param javaFile: Java file path</span>
+<span class="sd">        :type javaFile: str</span>
+<span class="sd">        :return: Assign the values to dictionary self.columns_csv</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">pathCsvFile</span> <span class="o">=</span> <span class="n">csvFileClaims</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">pathJavaFile</span> <span class="o">=</span> <span class="n">javaFile</span>
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pathCsvFile</span><span class="p">)</span> <span class="k">as</span> <span class="n">csvFileClaims</span><span class="p">:</span>
@@ -144,6 +161,11 @@
 
 </div>
 <div class="viewcode-block" id="IsolateDataClaim.setData2Lists"><a class="viewcode-back" href="../../../api_doc/modules.get_data_claims.html#modules.get_data_claims.ClaimsTranslate.IsolateDataClaim.setData2Lists">[docs]</a>    <span class="k">def</span> <span class="nf">setData2Lists</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This method based on the values extracted from csv file in the method</span>
+<span class="sd">        loadDataFromCsv(self, csvFileClaims, javaFile) creates for each column</span>
+<span class="sd">        a list that are attributes of this class.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">for</span> <span class="n">line</span><span class="p">,</span><span class="n">comm</span><span class="p">,</span><span class="n">claim</span><span class="p">,</span><span class="n">pt_data</span><span class="p">,</span><span class="n">tag</span><span class="p">,</span><span class="n">annoted</span><span class="p">,</span><span class="n">annoted_pt</span> <span class="ow">in</span> \
                 <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">columns_csv</span><span class="p">[</span><span class="s">&#39;Number of Line&#39;</span><span class="p">],</span><span class="bp">self</span><span class="o">.</span><span class="n">columns_csv</span><span class="p">[</span><span class="s">&#39;Comments&#39;</span><span class="p">],</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">columns_csv</span><span class="p">[</span><span class="s">&#39;Claim&#39;</span><span class="p">],</span><span class="bp">self</span><span class="o">.</span><span class="n">columns_csv</span><span class="p">[</span><span class="s">&#39;Point Data&#39;</span><span class="p">],</span><span class="bp">self</span><span class="o">.</span><span class="n">columns_csv</span><span class="p">[</span><span class="s">&#39;Tag&#39;</span><span class="p">],</span>
@@ -176,8 +198,8 @@
 </div>
 <div class="viewcode-block" id="IsolateDataClaim.getTagsFromComments"><a class="viewcode-back" href="../../../api_doc/modules.get_data_claims.html#modules.get_data_claims.ClaimsTranslate.IsolateDataClaim.getTagsFromComments">[docs]</a>    <span class="k">def</span> <span class="nf">getTagsFromComments</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        This tag will help to apply the rules to get the objects pointed in the claim</span>
-<span class="sd">        and also to apply the transformation rule</span>
+<span class="sd">        Gather the TAG property (a identifier) from the comments. This tag will help to apply the rules</span>
+<span class="sd">        to get the objects pointed in the claim and also to apply the transformation rule.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">for</span> <span class="n">eachComm</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">claim_list_comments</span><span class="p">:</span>
             <span class="n">matchTag</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s">r&#39;\((.[^ ]*)\)$&#39;</span><span class="p">,</span> <span class="n">eachComm</span><span class="p">)</span>
@@ -188,7 +210,9 @@
 <div class="viewcode-block" id="IsolateDataClaim.getObjectPointed"><a class="viewcode-back" href="../../../api_doc/modules.get_data_claims.html#modules.get_data_claims.ClaimsTranslate.IsolateDataClaim.getObjectPointed">[docs]</a>    <span class="k">def</span> <span class="nf">getObjectPointed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        This method is related to get the object pointed by</span>
-<span class="sd">        identifier in the claim</span>
+<span class="sd">        identifier (^) in the property, and then translate the property to JFORTES format.</span>
+
+<span class="sd">        :returns: The list with all properties translated in self.claim_list_translated</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">id</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="c">#if not self.DEBUG_STATUS and not self.TESTING_STATUS:</span>
@@ -248,13 +272,26 @@
                   <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">test_num_total_cl</span><span class="p">))</span>
 
 
-        <span class="c"># A list with the claims given as input translated to JFORTES</span>
+        <span class="c"># A list with the properties translated</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">claim_list_translated</span>
 
 </div>
 <div class="viewcode-block" id="IsolateDataClaim.getObjectInClaim"><a class="viewcode-back" href="../../../api_doc/modules.get_data_claims.html#modules.get_data_claims.ClaimsTranslate.IsolateDataClaim.getObjectInClaim">[docs]</a>    <span class="k">def</span> <span class="nf">getObjectInClaim</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lineNumber</span><span class="p">,</span> <span class="n">tagComm</span><span class="p">,</span> <span class="n">claim</span><span class="p">,</span> <span class="n">_commentCl</span><span class="p">,</span> <span class="n">indexPointed</span><span class="p">,</span> <span class="n">annoted</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Method to gather the object pointed in the claim</span>
+<span class="sd">        Method to gather the object pointed in the property, and then apply the translation rule according</span>
+<span class="sd">        to its TAG property.</span>
+
+<span class="sd">        :param lineNumber: the line number where it was identified the property</span>
+<span class="sd">        :type lineNumber: str</span>
+<span class="sd">        :param tagComm: the identifier of the property identified, e.g., IndexTooBig to possible upper bound violation</span>
+<span class="sd">        :type tagComm: str</span>
+<span class="sd">        :param claim: the assertion/property definied by ESC/JAVA</span>
+<span class="sd">        :type claim: str</span>
+<span class="sd">        :param _commentCl: the comments about the property identified</span>
+<span class="sd">        :type _commentCl: str</span>
+<span class="sd">        :param indexPointed: the index of the object that is related to the property violation in the assertion</span>
+<span class="sd">        :param annoted: extra comments, in most cases related to code annotation.</span>
+<span class="sd">        :return: the text of the property translated (self.claim_translated) in the JFORTES format</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">claim_translated</span> <span class="o">=</span> <span class="s">&#39;&#39;</span>
 
@@ -626,6 +663,14 @@
 
 </div>
 <div class="viewcode-block" id="IsolateDataClaim.check_translated_is_empty"><a class="viewcode-back" href="../../../api_doc/modules.get_data_claims.html#modules.get_data_claims.ClaimsTranslate.IsolateDataClaim.check_translated_is_empty">[docs]</a>    <span class="k">def</span> <span class="nf">check_translated_is_empty</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_string</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This is a simple checking where is identified if it was possible to translate</span>
+<span class="sd">        the property, in negative case the text of the translated property is a empty string.</span>
+
+<span class="sd">        :param _string: the text of the translated property</span>
+<span class="sd">        :type: _string: str</span>
+<span class="sd">        :return: True if is empty and False otherwise.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">_string</span> <span class="o">==</span> <span class="s">&quot;&quot;</span> <span class="ow">or</span> <span class="n">_string</span><span class="o">.</span><span class="n">isspace</span><span class="p">():</span>
             <span class="k">return</span> <span class="bp">True</span>
         <span class="k">else</span><span class="p">:</span>
@@ -633,6 +678,13 @@
 
             </div>
 <div class="viewcode-block" id="IsolateDataClaim.getOnlyVarName"><a class="viewcode-back" href="../../../api_doc/modules.get_data_claims.html#modules.get_data_claims.ClaimsTranslate.IsolateDataClaim.getOnlyVarName">[docs]</a>    <span class="k">def</span> <span class="nf">getOnlyVarName</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">var</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Gather only the name of the variable that has been analyzed.</span>
+
+<span class="sd">        :param var: a text with the variable that has been analyzed.</span>
+<span class="sd">        :type var: str</span>
+<span class="sd">        :return: the name of the variable in matchVar.group(1)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="c">#print(var)</span>
         <span class="n">matchVar</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s">r&#39;([a-zA-Z0-9\_]*).*&#39;</span><span class="p">,</span> <span class="n">var</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">matchVar</span><span class="p">:</span>
@@ -640,6 +692,13 @@
 
     </div>
 <div class="viewcode-block" id="IsolateDataClaim.getValueFromReturn"><a class="viewcode-back" href="../../../api_doc/modules.get_data_claims.html#modules.get_data_claims.ClaimsTranslate.IsolateDataClaim.getValueFromReturn">[docs]</a>    <span class="k">def</span> <span class="nf">getValueFromReturn</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">indexList</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Gather the value point out in the funtion return</span>
+
+<span class="sd">        :param indexList: the index of the the current method analyzed from the Java program</span>
+<span class="sd">        :type indexList: int</span>
+<span class="sd">        :return: the value of the return in matchReturn.group(1)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">cprogram</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pathJavaFile</span><span class="p">,</span> <span class="s">&quot;r&quot;</span><span class="p">)</span>
         <span class="n">lines_from_program</span> <span class="o">=</span> <span class="n">cprogram</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
         <span class="n">cprogram</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
@@ -655,6 +714,16 @@
 
     </div>
 <div class="viewcode-block" id="IsolateDataClaim.whatIsTheScope"><a class="viewcode-back" href="../../../api_doc/modules.get_data_claims.html#modules.get_data_claims.ClaimsTranslate.IsolateDataClaim.whatIsTheScope">[docs]</a>    <span class="k">def</span> <span class="nf">whatIsTheScope</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lineNum</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Identify the scope based where the analyzed line number is located in the Java program.</span>
+<span class="sd">        It is worth noting that we adopt IDs based in the index of a list the has the data about the</span>
+<span class="sd">        methods.</span>
+
+<span class="sd">        :param lineNum: the number line of the program</span>
+<span class="sd">        :type lineNum: int</span>
+<span class="sd">        :return: the index in the list self.list_num_* that has the data about the methods in the java program.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
         <span class="k">for</span> <span class="n">index</span><span class="p">,</span><span class="n">startLine</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">list_num_start_func</span><span class="p">):</span>
             <span class="c">#print(self.list_num_end_func[index]+&quot; &lt;= &quot;+lineNum+&quot; and &quot;+lineNum+&quot; &gt;= &quot;+startLine)</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">list_num_end_func</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">lineNum</span> <span class="ow">and</span> <span class="n">lineNum</span> <span class="o">&gt;=</span> <span class="n">startLine</span><span class="p">:</span>                
@@ -670,21 +739,25 @@
             
     
     </div>
-<div class="viewcode-block" id="IsolateDataClaim.generateScopeByLineNumber"><a class="viewcode-back" href="../../../api_doc/modules.get_data_claims.html#modules.get_data_claims.ClaimsTranslate.IsolateDataClaim.generateScopeByLineNumber">[docs]</a>    <span class="k">def</span> <span class="nf">generateScopeByLineNumber</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cfile</span><span class="p">):</span>
+<div class="viewcode-block" id="IsolateDataClaim.generateScopeByLineNumber"><a class="viewcode-back" href="../../../api_doc/modules.get_data_claims.html#modules.get_data_claims.ClaimsTranslate.IsolateDataClaim.generateScopeByLineNumber">[docs]</a>    <span class="k">def</span> <span class="nf">generateScopeByLineNumber</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_javafile</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        :param cfile: the path of the C program file</span>
+<span class="sd">        Generate the data about the scope of the java program analyzed, i.e., it is</span>
+<span class="sd">        identified where the class and method start and finish based on the its line numbers.</span>
+
+<span class="sd">        :param _javafile: the path of the C program file</span>
+<span class="sd">        :type _javafile: str</span>
 <span class="sd">        :return void: the method set in the atributes of the class to</span>
 <span class="sd">                      values related to number line of begin and end of the functions</span>
 <span class="sd">                      in the analyzed program</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c">#print()</span>
         <span class="c">#print(&quot;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&quot;)</span>
-        <span class="n">cprogram</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">cfile</span><span class="p">,</span> <span class="s">&quot;r&quot;</span><span class="p">)</span>
+        <span class="n">cprogram</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">_javafile</span><span class="p">,</span> <span class="s">&quot;r&quot;</span><span class="p">)</span>
         <span class="n">lines_from_program</span> <span class="o">=</span> <span class="n">cprogram</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
         <span class="n">cprogram</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
         
         <span class="c"># Gettting the name of the functions</span>
-        <span class="n">get_start_data_method</span> <span class="o">=</span> <span class="n">commands</span><span class="o">.</span><span class="n">getoutput</span><span class="p">(</span><span class="s">&quot;ctags --sort=NO -x --c-kinds=f &quot;</span><span class="o">+</span><span class="n">cfile</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">)</span>
+        <span class="n">get_start_data_method</span> <span class="o">=</span> <span class="n">commands</span><span class="o">.</span><span class="n">getoutput</span><span class="p">(</span><span class="s">&quot;ctags --sort=NO -x --c-kinds=f &quot;</span><span class="o">+</span><span class="n">_javafile</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">get_start_data_method</span><span class="p">:</span>
             <span class="c">#print(line)</span>
             <span class="n">matchDataMethod</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s">r&#39;([a-zA-Z0-9\_\(\)\[\]]*)[ ]*([a-zA-Z0-9]*)[ ]*([0-9]*)&#39;</span><span class="p">,</span> <span class="n">line</span><span class="p">)</span>
@@ -698,7 +771,7 @@
                     <span class="c"># &gt;&gt; If the method is only a Decl, e.g., public int m(int i);</span>
                     <span class="n">matchDeclMethod</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s">r&#39;;&#39;</span><span class="p">,</span> <span class="n">lines_from_program</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">matchDataMethod</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
                     <span class="k">if</span> <span class="ow">not</span> <span class="n">matchDeclMethod</span><span class="p">:</span>
-                        <span class="n">getEndLineFunction</span> <span class="o">=</span> <span class="n">commands</span><span class="o">.</span><span class="n">getoutput</span><span class="p">(</span><span class="s">&quot;awk </span><span class="se">\&#39;</span><span class="s">NR &gt; first &amp;&amp; /[ ]*}/ { print NR; exit }</span><span class="se">\&#39;</span><span class="s"> first=&quot;</span><span class="o">+</span><span class="n">matchDataMethod</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">+</span><span class="s">&quot; &quot;</span><span class="o">+</span><span class="n">cfile</span><span class="p">)</span>
+                        <span class="n">getEndLineFunction</span> <span class="o">=</span> <span class="n">commands</span><span class="o">.</span><span class="n">getoutput</span><span class="p">(</span><span class="s">&quot;awk </span><span class="se">\&#39;</span><span class="s">NR &gt; first &amp;&amp; /[ ]*}/ { print NR; exit }</span><span class="se">\&#39;</span><span class="s"> first=&quot;</span><span class="o">+</span><span class="n">matchDataMethod</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">+</span><span class="s">&quot; &quot;</span><span class="o">+</span><span class="n">_javafile</span><span class="p">)</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">list_num_end_func</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">getEndLineFunction</span><span class="p">)</span>
                     <span class="k">else</span><span class="p">:</span>
                         <span class="c"># Is a decl, therefore the start == end</span>

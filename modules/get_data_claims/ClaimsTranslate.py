@@ -27,7 +27,8 @@ from collections import defaultdict
 class IsolateDataClaim(object):
     """
     This class has as main function isolate the variable or structure
-    related in the claim, and then apply its respective translation.
+    related in the properties that has been identified by ESC/JAVA, and then
+    it applies the respective translation to each type of property.
     """
 
     def __init__(self):
@@ -73,15 +74,31 @@ class IsolateDataClaim(object):
 
 
     def set_debug_flag(self):
+        """
+        Define True to flag self.DEBUG_STATUS to debugging the code.
+        """
         self.DEBUG_STATUS = True
 
 
     def set_testing_flag(self):
+        """
+        Define True to flag self.TESTING_STATUS to enable option to monitor the testing execution.
+        """
         self.TESTING_STATUS = True
 
 
 
     def loadDataFromCsv(self, csvFileClaims, javaFile):
+        """
+        Load data from csv file spliting the data by delimiter ';'. Additionally the method
+        create a dictionary where the keys are the name columns of the csv file.
+
+        :param csvFileClaims: CSV file path
+        :type csvFileClaims: str
+        :param javaFile: Java file path
+        :type javaFile: str
+        :return: Assign the values to dictionary self.columns_csv
+        """
         self.pathCsvFile = csvFileClaims
         self.pathJavaFile = javaFile
         with open(self.pathCsvFile) as csvFileClaims:
@@ -95,6 +112,11 @@ class IsolateDataClaim(object):
 
 
     def setData2Lists(self):
+        """
+        This method based on the values extracted from csv file in the method
+        loadDataFromCsv(self, csvFileClaims, javaFile) creates for each column
+        a list that are attributes of this class.
+        """
         for line,comm,claim,pt_data,tag,annoted,annoted_pt in \
                 zip(self.columns_csv['Number of Line'],self.columns_csv['Comments'],
                     self.columns_csv['Claim'],self.columns_csv['Point Data'],self.columns_csv['Tag'],
@@ -127,8 +149,8 @@ class IsolateDataClaim(object):
 
     def getTagsFromComments(self):
         """
-        This tag will help to apply the rules to get the objects pointed in the claim
-        and also to apply the transformation rule
+        Gather the TAG property (a identifier) from the comments. This tag will help to apply the rules
+        to get the objects pointed in the claim and also to apply the transformation rule.
         """
         for eachComm in self.claim_list_comments:
             matchTag = re.search(r'\((.[^ ]*)\)$', eachComm)
@@ -139,7 +161,9 @@ class IsolateDataClaim(object):
     def getObjectPointed(self):
         """
         This method is related to get the object pointed by
-        identifier in the claim
+        identifier (^) in the property, and then translate the property to JFORTES format.
+
+        :returns: The list with all properties translated in self.claim_list_translated
         """
         id = 0
         #if not self.DEBUG_STATUS and not self.TESTING_STATUS:
@@ -199,13 +223,26 @@ class IsolateDataClaim(object):
                   str(self.test_num_total_cl))
 
 
-        # A list with the claims given as input translated to JFORTES
+        # A list with the properties translated
         return self.claim_list_translated
 
 
     def getObjectInClaim(self, lineNumber, tagComm, claim, _commentCl, indexPointed, annoted):
         """
-        Method to gather the object pointed in the claim
+        Method to gather the object pointed in the property, and then apply the translation rule according
+        to its TAG property.
+
+        :param lineNumber: the line number where it was identified the property
+        :type lineNumber: str
+        :param tagComm: the identifier of the property identified, e.g., IndexTooBig to possible upper bound violation
+        :type tagComm: str
+        :param claim: the assertion/property definied by ESC/JAVA
+        :type claim: str
+        :param _commentCl: the comments about the property identified
+        :type _commentCl: str
+        :param indexPointed: the index of the object that is related to the property violation in the assertion
+        :param annoted: extra comments, in most cases related to code annotation.
+        :return: the text of the property translated (self.claim_translated) in the JFORTES format
         """
         self.claim_translated = ''
 
@@ -577,6 +614,14 @@ class IsolateDataClaim(object):
 
 
     def check_translated_is_empty(self, _string):
+        """
+        This is a simple checking where is identified if it was possible to translate
+        the property, in negative case the text of the translated property is a empty string.
+
+        :param _string: the text of the translated property
+        :type: _string: str
+        :return: True if is empty and False otherwise.
+        """
         if _string == "" or _string.isspace():
             return True
         else:
@@ -584,6 +629,13 @@ class IsolateDataClaim(object):
 
             
     def getOnlyVarName(self, var):
+        """
+        Gather only the name of the variable that has been analyzed.
+
+        :param var: a text with the variable that has been analyzed.
+        :type var: str
+        :return: the name of the variable in matchVar.group(1)
+        """
         #print(var)
         matchVar = re.search(r'([a-zA-Z0-9\_]*).*', var)
         if matchVar:
@@ -591,6 +643,13 @@ class IsolateDataClaim(object):
 
     
     def getValueFromReturn(self, indexList):
+        """
+        Gather the value point out in the funtion return
+
+        :param indexList: the index of the the current method analyzed from the Java program
+        :type indexList: int
+        :return: the value of the return in matchReturn.group(1)
+        """
         cprogram = open(self.pathJavaFile, "r")
         lines_from_program = cprogram.readlines()
         cprogram.close()
@@ -606,6 +665,16 @@ class IsolateDataClaim(object):
 
     
     def whatIsTheScope(self, lineNum):
+        """
+        Identify the scope based where the analyzed line number is located in the Java program.
+        It is worth noting that we adopt IDs based in the index of a list the has the data about the
+        methods.
+
+        :param lineNum: the number line of the program
+        :type lineNum: int
+        :return: the index in the list self.list_num_* that has the data about the methods in the java program.
+        """
+
         for index,startLine in enumerate(self.list_num_start_func):
             #print(self.list_num_end_func[index]+" <= "+lineNum+" and "+lineNum+" >= "+startLine)
             if self.list_num_end_func[index] <= lineNum and lineNum >= startLine:                
@@ -621,21 +690,25 @@ class IsolateDataClaim(object):
             
     
     
-    def generateScopeByLineNumber(self, cfile):
+    def generateScopeByLineNumber(self, _javafile):
         """
-        :param cfile: the path of the C program file
+        Generate the data about the scope of the java program analyzed, i.e., it is
+        identified where the class and method start and finish based on the its line numbers.
+
+        :param _javafile: the path of the C program file
+        :type _javafile: str
         :return void: the method set in the atributes of the class to
                       values related to number line of begin and end of the functions
                       in the analyzed program
         """
         #print()
         #print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
-        cprogram = open(cfile, "r")
+        cprogram = open(_javafile, "r")
         lines_from_program = cprogram.readlines()
         cprogram.close()
         
         # Gettting the name of the functions
-        get_start_data_method = commands.getoutput("ctags --sort=NO -x --c-kinds=f "+cfile).split("\n")
+        get_start_data_method = commands.getoutput("ctags --sort=NO -x --c-kinds=f "+_javafile).split("\n")
         for line in get_start_data_method:
             #print(line)
             matchDataMethod = re.search(r'([a-zA-Z0-9\_\(\)\[\]]*)[ ]*([a-zA-Z0-9]*)[ ]*([0-9]*)', line)
@@ -649,7 +722,7 @@ class IsolateDataClaim(object):
                     # >> If the method is only a Decl, e.g., public int m(int i);
                     matchDeclMethod = re.search(r';', lines_from_program[int(matchDataMethod.group(3))-1])
                     if not matchDeclMethod:
-                        getEndLineFunction = commands.getoutput("awk \'NR > first && /[ ]*}/ { print NR; exit }\' first="+matchDataMethod.group(3)+" "+cfile)
+                        getEndLineFunction = commands.getoutput("awk \'NR > first && /[ ]*}/ { print NR; exit }\' first="+matchDataMethod.group(3)+" "+_javafile)
                         self.list_num_end_func.append(getEndLineFunction)
                     else:
                         # Is a decl, therefore the start == end
