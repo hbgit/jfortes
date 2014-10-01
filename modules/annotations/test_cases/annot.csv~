@@ -1,0 +1,2 @@
+10?Bag?//@getSequenceConstructor name = Bag, args = b, sequence = 1;
+16?Bag?//@getSequenceMethod name = extractMin, args = (a, none), sequence = 2, sequencebyconstructor = 1;

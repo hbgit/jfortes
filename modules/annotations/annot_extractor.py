@@ -35,14 +35,14 @@ class AnnotExtractor(object):
                 (3) the annotation.
 
         >>> runextractor.gather_annot(os.path.abspath('test_cases/Bag.java'))
-        >>> 10;Bag;//@ jfortes_getSequenceConstructor name = Bag, args = b, sequence = 1;
+        >>> 10?Bag?//@ jfortes_getSequenceConstructor name = Bag, args = b, sequence = 1;
         """
 
         javafile = open(_javaprogram,'r')
         javafilelines = javafile.readlines()
         javafile.close()
 
-        print("line_number;class_name;annotation")
+        print("line_number?class_name?annotation")
 
         for index, line in enumerate(javafilelines):
             # Identify the current class to be read
@@ -60,7 +60,7 @@ class AnnotExtractor(object):
                 # getting only the jfortes annotations
                 matchIsJfortesAnnot = re.search(r'(.*jfortes_.*)', line)
                 if matchIsJfortesAnnot:
-                    print(str(index+1) + ";" + self.actualclassname + ";" + matchIsJfortesAnnot.group(1).strip())
+                    print(str(index+1) + "?" + self.actualclassname + "?" + matchIsJfortesAnnot.group(1).strip())
 
 
 

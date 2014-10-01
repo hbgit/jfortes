@@ -66,11 +66,11 @@ number                      = Regex(r"([0-9]+)")
 string                      = OneOrMore(letter | letter + number)
 identifyAnnot               = Literal("//@")
 
-annotationName              = identifyAnnot + (Keyword("getSequenceConstructor").setResultsName('annot_name') |
-                                               Keyword("getSequenceMethod").setResultsName('annot_name'))
+annotationName              = identifyAnnot + (Keyword("jfortes_getSequenceConstructor").setResultsName('annot_name') |
+                                               Keyword("jfortes_getSequenceMethod").setResultsName('annot_name'))
 
 attrName                    = Literal("name") + Literal("=") + (string).setResultsName('atrrName')
-attrArgs                    = Literal("args") + Literal("=") + (string | "none").setResultsName('attrArgs')
+attrArgs                    = Literal("args") + Literal("=") + Literal("(")+OneOrMore(string | Literal(",") + string | "none").setResultsName('attrArgs')+Literal(")")
 attrSequence                = Literal("sequence") + Literal("=") + number.setResultsName('attrSequence')
 attrSequencebyconstructor   = Keyword("sequencebyconstructor") + Literal("=") + number.setResultsName('attrSeqConstr')
 
@@ -105,17 +105,18 @@ if __name__ == "__main__":
     list_nameclass_ANNOT = []
     list_txt_ANNOT = []
 
-    for lineClaim in annot_lines_csv:
+    for index, lineClaim in enumerate(annot_lines_csv):
 
-        tmp = re.split("\?",lineClaim)
+        if index > 0:
+            tmp = re.split("\?",lineClaim)
 
-        tmp[0] = tmp[0].replace(" ","")
-        tmp[1] = tmp[1].replace("^\s+","")
-        tmp[2] = tmp[2].replace("^\s+","")
+            tmp[0] = tmp[0].replace(" ","")
+            tmp[1] = tmp[1].replace("^\s+","")
+            tmp[2] = tmp[2].replace("^\s+","")
 
-        list_lines_ANNOT.append(tmp[0])
-        list_nameclass_ANNOT.append(tmp[1])
-        list_txt_ANNOT.append(tmp[2])
+            list_lines_ANNOT.append(tmp[0])
+            list_nameclass_ANNOT.append(tmp[1])
+            list_txt_ANNOT.append(tmp[2])
 
 
     # print the header csv file
@@ -137,9 +138,13 @@ if __name__ == "__main__":
 
             tmp_list = []
             for key, value in parsed_annot.items():
-                #print(key, '=>', value)
+                # print(key, '=>', value)
                 if type(value) == ParseResults:
-                    tmp_list.append(value[0])
+                    if len(value) > 1:
+                        strtemp = ''.join(value)
+                        tmp_list.append(strtemp)
+                    else:
+                        tmp_list.append(value[0])
                 else:
                     tmp_list.append(value)
 
