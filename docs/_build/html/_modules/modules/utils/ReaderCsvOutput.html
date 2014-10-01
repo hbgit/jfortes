@@ -56,8 +56,7 @@
 
 
 <span class="c">#----------------------------------------------------------</span>
-<span class="c"># Goal: This program aims to read the data gathered from</span>
-<span class="c">#       ESC/JAVA output.</span>
+<span class="c"># Goal:</span>
 <span class="c">#</span>
 <span class="c"># Status: [DOING]</span>
 <span class="c">#----------------------------------------------------------</span>
@@ -69,6 +68,9 @@
 
 
 <div class="viewcode-block" id="ReaderCsv"><a class="viewcode-back" href="../../../api_doc/modules.utils.html#modules.utils.ReaderCsvOutput.ReaderCsv">[docs]</a><span class="k">class</span> <span class="nc">ReaderCsv</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This Class aims to read a CSV file and the create a list for each column identify in the file.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">flag_csv_reader</span> <span class="o">=</span> <span class="bp">False</span>
@@ -76,6 +78,13 @@
 
 
 <div class="viewcode-block" id="ReaderCsv.loadCsvFile"><a class="viewcode-back" href="../../../api_doc/modules.utils.html#modules.utils.ReaderCsvOutput.ReaderCsv.loadCsvFile">[docs]</a>    <span class="k">def</span> <span class="nf">loadCsvFile</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pathCsvFile</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Read the csv file and split the csv column using the delimiter ; where each</span>
+<span class="sd">        csv column is added in separeted list.</span>
+
+<span class="sd">        :param pathCsvFile: path of the csv file</span>
+<span class="sd">        :type pathCsvFile: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">pathCsvFile</span><span class="p">)</span> <span class="k">as</span> <span class="nb">file</span><span class="p">:</span>
             <span class="n">reader</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">DictReader</span><span class="p">(</span><span class="nb">file</span><span class="p">,</span><span class="n">delimiter</span><span class="o">=</span><span class="s">&#39;;&#39;</span><span class="p">)</span>
@@ -87,10 +96,18 @@
 
 </div>
 <div class="viewcode-block" id="ReaderCsv.getCsvColummns"><a class="viewcode-back" href="../../../api_doc/modules.utils.html#modules.utils.ReaderCsvOutput.ReaderCsv.getCsvColummns">[docs]</a>    <span class="k">def</span> <span class="nf">getCsvColummns</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get all columns from a csv file where now each column were saved in a list.</span>
+
+<span class="sd">        :return: a list of lists where each list is a column from the csv file.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">columns</span>
 
 </div>
 <div class="viewcode-block" id="ReaderCsv.printAllCsv"><a class="viewcode-back" href="../../../api_doc/modules.utils.html#modules.utils.ReaderCsvOutput.ReaderCsv.printAllCsv">[docs]</a>    <span class="k">def</span> <span class="nf">printAllCsv</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Adopted to test the csv collector.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="s">&#39;Number_of_Line&#39;</span><span class="p">])</span>
         <span class="k">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="s">&#39;Comments&#39;</span><span class="p">])</span>
         <span class="k">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="s">&#39;Claim&#39;</span><span class="p">])</span>

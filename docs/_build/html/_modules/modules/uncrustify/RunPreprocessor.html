@@ -61,6 +61,11 @@
 
 <div class="viewcode-block" id="CodeBeautify"><a class="viewcode-back" href="../../../api_doc/modules.uncrustify.html#modules.uncrustify.RunPreprocessor.CodeBeautify">[docs]</a><span class="k">class</span> <span class="nc">CodeBeautify</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This class is to apply a preprocessing in the source code of the analyzed program, i.e.,</span>
+<span class="sd">    beautifier the code to define a set of code styles, such as: one command per line, and the block delimiters ({).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">path_tool</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="s">&#39;modules/uncrustify/uncrustify&#39;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">option_to_run_tool</span> <span class="o">=</span> <span class="s">&quot;-q -l C&quot;</span>
@@ -68,14 +73,37 @@
 
 
 <div class="viewcode-block" id="CodeBeautify.setOptions2Run"><a class="viewcode-back" href="../../../api_doc/modules.uncrustify.html#modules.uncrustify.RunPreprocessor.CodeBeautify.setOptions2Run">[docs]</a>    <span class="k">def</span> <span class="nf">setOptions2Run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">options</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set the option to uncrustify tool that performs the preprocessing.</span>
+<span class="sd">        The default option is -q -l C.</span>
+
+<span class="sd">        :param options: the options to perform the preprocessing by uncrustify tool.</span>
+<span class="sd">        :type options: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">option_to_run_tool</span> <span class="o">=</span> <span class="n">options</span>
 
 </div>
 <div class="viewcode-block" id="CodeBeautify.setConfigFile"><a class="viewcode-back" href="../../../api_doc/modules.uncrustify.html#modules.uncrustify.RunPreprocessor.CodeBeautify.setConfigFile">[docs]</a>    <span class="k">def</span> <span class="nf">setConfigFile</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filePath</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Define the file with option to perform the preprocessing by uncrustify tool.</span>
+
+<span class="sd">        :param filePath: the path of the config file</span>
+<span class="sd">        :type filePath: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">setFileConf</span> <span class="o">=</span> <span class="n">filePath</span>
 
 </div>
 <div class="viewcode-block" id="CodeBeautify.runBeatifyTool"><a class="viewcode-back" href="../../../api_doc/modules.uncrustify.html#modules.uncrustify.RunPreprocessor.CodeBeautify.runBeatifyTool">[docs]</a>    <span class="k">def</span> <span class="nf">runBeatifyTool</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pathJavaProgram</span><span class="p">,</span> <span class="n">_pathfiletosave</span><span class="p">,</span> <span class="n">_mode</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Execute the shell command to perform the preprocessing with uncrustify.</span>
+
+<span class="sd">        :param pathJavaProgram: path of the java file</span>
+<span class="sd">        :type pathJavaProgram: str</span>
+<span class="sd">        :param _pathfiletosave: path to save the output of the preprocessing code</span>
+<span class="sd">        :type _pathfiletosave: str</span>
+<span class="sd">        :param _mode: True to save the preprocessing output in a file or False to print the output in the screen.</span>
+<span class="sd">        :type _mode: bool</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">_mode</span><span class="p">:</span>
             <span class="n">cmdRun</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">path_tool</span><span class="o">+</span><span class="s">&quot; &quot;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">option_to_run_tool</span><span class="o">+</span><span class="s">&quot; -c &quot;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">setFileConf</span><span class="o">+</span><span class="s">&quot; -f &quot;</span><span class="o">+</span><span class="n">pathJavaProgram</span>
             <span class="c">#print(cmdRun)</span>

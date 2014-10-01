@@ -55,20 +55,55 @@
 <dt id="modules.uncrustify.RunPreprocessor.CodeBeautify">
 <em class="property">class </em><tt class="descclassname">modules.uncrustify.RunPreprocessor.</tt><tt class="descname">CodeBeautify</tt><a class="reference internal" href="../_modules/modules/uncrustify/RunPreprocessor.html#CodeBeautify"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modules.uncrustify.RunPreprocessor.CodeBeautify" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>This class is to apply a preprocessing in the source code of the analyzed program, i.e.,
+beautifier the code to define a set of code styles, such as: one command per line, and the block delimiters ({).</p>
 <dl class="method">
 <dt id="modules.uncrustify.RunPreprocessor.CodeBeautify.runBeatifyTool">
 <tt class="descname">runBeatifyTool</tt><big>(</big><em>pathJavaProgram</em>, <em>_pathfiletosave</em>, <em>_mode</em><big>)</big><a class="reference internal" href="../_modules/modules/uncrustify/RunPreprocessor.html#CodeBeautify.runBeatifyTool"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modules.uncrustify.RunPreprocessor.CodeBeautify.runBeatifyTool" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Execute the shell command to perform the preprocessing with uncrustify.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>pathJavaProgram</strong> (<em>str</em>) &#8211; path of the java file</li>
+<li><strong>_pathfiletosave</strong> (<em>str</em>) &#8211; path to save the output of the preprocessing code</li>
+<li><strong>_mode</strong> (<em>bool</em>) &#8211; True to save the preprocessing output in a file or False to print the output in the screen.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="method">
 <dt id="modules.uncrustify.RunPreprocessor.CodeBeautify.setConfigFile">
 <tt class="descname">setConfigFile</tt><big>(</big><em>filePath</em><big>)</big><a class="reference internal" href="../_modules/modules/uncrustify/RunPreprocessor.html#CodeBeautify.setConfigFile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modules.uncrustify.RunPreprocessor.CodeBeautify.setConfigFile" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Define the file with option to perform the preprocessing by uncrustify tool.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filePath</strong> (<em>str</em>) &#8211; the path of the config file</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="method">
 <dt id="modules.uncrustify.RunPreprocessor.CodeBeautify.setOptions2Run">
 <tt class="descname">setOptions2Run</tt><big>(</big><em>options</em><big>)</big><a class="reference internal" href="../_modules/modules/uncrustify/RunPreprocessor.html#CodeBeautify.setOptions2Run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#modules.uncrustify.RunPreprocessor.CodeBeautify.setOptions2Run" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Set the option to uncrustify tool that performs the preprocessing.
+The default option is -q -l C.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>options</strong> (<em>str</em>) &#8211; the options to perform the preprocessing by uncrustify tool.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 </dd></dl>
 

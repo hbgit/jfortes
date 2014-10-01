@@ -12,6 +12,14 @@ modules.annotations.annot_extractor module
     :undoc-members:
     :show-inheritance:
 
+modules.annotations.annot_grammar module
+----------------------------------------
+
+.. automodule:: modules.annotations.annot_grammar
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 
 Module contents
 ---------------

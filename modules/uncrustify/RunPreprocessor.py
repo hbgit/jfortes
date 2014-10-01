@@ -12,6 +12,11 @@ import commands
 
 class CodeBeautify(object):
 
+    """
+    This class is to apply a preprocessing in the source code of the analyzed program, i.e.,
+    beautifier the code to define a set of code styles, such as: one command per line, and the block delimiters ({).
+    """
+
     def __init__(self):
         self.path_tool = os.path.abspath('modules/uncrustify/uncrustify')
         self.option_to_run_tool = "-q -l C"
@@ -19,14 +24,37 @@ class CodeBeautify(object):
 
 
     def setOptions2Run(self, options):
+        """
+        Set the option to uncrustify tool that performs the preprocessing.
+        The default option is -q -l C.
+
+        :param options: the options to perform the preprocessing by uncrustify tool.
+        :type options: str
+        """
         self.option_to_run_tool = options
 
 
     def setConfigFile(self, filePath):
+        """
+        Define the file with option to perform the preprocessing by uncrustify tool.
+
+        :param filePath: the path of the config file
+        :type filePath: str
+        """
         self.setFileConf = filePath
 
 
     def runBeatifyTool(self, pathJavaProgram, _pathfiletosave, _mode):
+        """
+        Execute the shell command to perform the preprocessing with uncrustify.
+
+        :param pathJavaProgram: path of the java file
+        :type pathJavaProgram: str
+        :param _pathfiletosave: path to save the output of the preprocessing code
+        :type _pathfiletosave: str
+        :param _mode: True to save the preprocessing output in a file or False to print the output in the screen.
+        :type _mode: bool
+        """
         if _mode:
             cmdRun = self.path_tool+" "+self.option_to_run_tool+" -c "+self.setFileConf+" -f "+pathJavaProgram
             #print(cmdRun)

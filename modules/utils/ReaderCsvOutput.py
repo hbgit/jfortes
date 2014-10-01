@@ -7,8 +7,7 @@ __author__ = 'Herbert OLiveira Rocha'
 
 
 #----------------------------------------------------------
-# Goal: This program aims to read the data gathered from
-#       ESC/JAVA output.
+# Goal:
 #
 # Status: [DOING]
 #----------------------------------------------------------
@@ -20,6 +19,9 @@ import csv
 
 
 class ReaderCsv(object):
+    """
+    This Class aims to read a CSV file and the create a list for each column identify in the file.
+    """
 
     def __init__(self):
         self.flag_csv_reader = False
@@ -27,6 +29,13 @@ class ReaderCsv(object):
 
 
     def loadCsvFile(self, pathCsvFile):
+        """
+        Read the csv file and split the csv column using the delimiter ; where each
+        csv column is added in separeted list.
+
+        :param pathCsvFile: path of the csv file
+        :type pathCsvFile: str
+        """
 
         with open(pathCsvFile) as file:
             reader = csv.DictReader(file,delimiter=';')
@@ -38,10 +47,18 @@ class ReaderCsv(object):
 
 
     def getCsvColummns(self):
+        """
+        Get all columns from a csv file where now each column were saved in a list.
+
+        :return: a list of lists where each list is a column from the csv file.
+        """
         return self.columns
 
 
     def printAllCsv(self):
+        """
+        Adopted to test the csv collector.
+        """
         print(self.columns['Number_of_Line'])
         print(self.columns['Comments'])
         print(self.columns['Claim'])
