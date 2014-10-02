@@ -1,4 +1,0 @@
-line_number?class_name?annotation
-6?Conta?//@jfortes_getSequenceConstructor name = Conta, args = (none), sequence = 1;
-11?Conta?//@jfortes_getSequenceConstructor name = Bag, args = (novoNome, novoSaldo), sequence = 2;
-29?Conta?//@jfortes_getSequenceMethod name = setSaldo, args = (novoSaldo), sequence = 2, sequencebyconstructor = 1;
