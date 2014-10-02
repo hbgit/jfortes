@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
-# . documentation build configuration file, created by
-# sphinx-quickstart on Wed Oct  1 11:18:59 2014.
+# jfortes documentation build configuration file, created by
+# sphinx-quickstart on Thu Oct  2 10:15:05 2014.
 #
 # This file is execfile()d with the current directory set to its
 # containing dir.
@@ -46,7 +46,7 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'.'
+project = u'jfortes'
 copyright = u'2014, Author'
 
 # The version info for the project you're documenting, acts as replacement for
@@ -179,7 +179,7 @@ html_static_path = ['_static']
 #html_file_suffix = None
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'sphinxdoc'
+htmlhelp_basename = 'jfortesdoc'
 
 
 # -- Options for LaTeX output ---------------------------------------------
@@ -199,7 +199,7 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-  ('index', 'sphinx.tex', u'. Documentation',
+  ('index', 'jfortes.tex', u'jfortes Documentation',
    u'Author', 'manual'),
 ]
 
@@ -229,7 +229,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    ('index', 'sphinx', u'. Documentation',
+    ('index', 'jfortes', u'jfortes Documentation',
      [u'Author'], 1)
 ]
 
@@ -243,8 +243,8 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-  ('index', 'sphinx', u'. Documentation',
-   u'Author', 'sphinx', 'One line description of project.',
+  ('index', 'jfortes', u'jfortes Documentation',
+   u'Author', 'jfortes', 'One line description of project.',
    'Miscellaneous'),
 ]
 
@@ -264,13 +264,13 @@ texinfo_documents = [
 # -- Options for Epub output ----------------------------------------------
 
 # Bibliographic Dublin Core info.
-epub_title = u'.'
+epub_title = u'jfortes'
 epub_author = u'Author'
 epub_publisher = u'Author'
 epub_copyright = u'2014, Author'
 
 # The basename for the epub file. It defaults to the project name.
-#epub_basename = u'.'
+#epub_basename = u'jfortes'
 
 # The HTML theme for the epub output. Since the default themes are not optimized
 # for small screen space, using the same theme for HTML and epub output is

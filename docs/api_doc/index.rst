@@ -1,10 +1,10 @@
-.. . documentation master file, created by
-   sphinx-quickstart on Wed Oct  1 11:18:59 2014.
+.. jfortes documentation master file, created by
+   sphinx-quickstart on Thu Oct  2 10:15:05 2014.
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to .'s documentation!
-=============================
+Welcome to jfortes's documentation!
+===================================
 
 Contents:
 
@@ -12,6 +12,7 @@ Contents:
    :maxdepth: 4
 
    configure
+   generate_doc
    jfortes
    modules
    run_test_cases
