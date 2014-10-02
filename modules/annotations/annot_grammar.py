@@ -120,7 +120,8 @@ if __name__ == "__main__":
 
 
     # print the header csv file
-    print('annot_name;atrrName;attrArgs;attrSequence;attrSeqConstr')
+    csvheader = 'annot_name;atrrName;attrArgs;attrSequence;attrSeqConstr'
+    csvlistbody = []
 
     for index, eachannot in enumerate(list_txt_ANNOT):
 
@@ -152,16 +153,24 @@ if __name__ == "__main__":
             if len(tmp_list) == 4:
                 tmp_list.insert(len(tmp_list)+1,"none")
 
-            print(';'.join(tmp_list))
+            #print(';'.join(tmp_list))
+            csvlistbody.append(';'.join(tmp_list))
 
             #printout(str(parsed_annot.asList()), BLUE)
             #print("")
         ##--------------------Improve this
         except ParseBaseException, pe:
+            print()
+            print("ERROR. JFORTES syntax is not correct, as shown: ")
             printFLag = 1
             printout(str(pe.msg), RED)
             print("")
             printout(str(pe.pstr), RED)
             print("")
             print(" "*pe.loc+"^")
+            sys.exit()
 
+    # Print the output in csv format
+    print(csvheader)
+    for line in csvlistbody:
+        print(line)
