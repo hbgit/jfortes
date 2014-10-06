@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 from __future__ import print_function
+from os import sysconf
 
 """
 Author: Herbert O. Rocha
@@ -85,7 +86,8 @@ grammar                     = rule
 
 #---------------------------------------------------------------
 ########################################################################
-
+def hasNoDuplicates (lst):
+    return len( lst ) == len( set( lst ) )
 
 
 # -------------------------------------------------
@@ -93,6 +95,7 @@ grammar                     = rule
 # -------------------------------------------------
 if __name__ == "__main__":
     # CVS file to update
+    list_sequence = []
     annot_csv_file = open(sys.argv[1])
     annot_lines_csv = annot_csv_file.readlines()
     annot_csv_file.close()
@@ -137,6 +140,9 @@ if __name__ == "__main__":
            # print(parsed_annot)
 
 
+            list_sequence.append(parsed_annot['attrSequence'])
+
+
             tmp_list = []
             for key, value in parsed_annot.items():
                 # print(key, '=>', value)
@@ -171,6 +177,10 @@ if __name__ == "__main__":
             sys.exit()
 
     # Print the output in csv format
-    print(csvheader)
-    for line in csvlistbody:
-        print(line)
+    if not hasNoDuplicates(list_sequence):
+        print("ERROR. The sequence method are duplicated!")
+        for line in csvlistbody:
+            print(line)
+    else:
+        for line in csvlistbody:
+            print(line)
