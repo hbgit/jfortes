@@ -1,0 +1,15 @@
+ESC/Java version ESCJava-2.0.5
+/home/lbentes/Documentos/on_dev/jfortes/test_cases/primary_tests_no_main/Bag_pre.java: Caution: Using given file as the .java file, even though it is not the java file for Bag_pre on the classpath
+    [0.025 s 23938352 bytes]
+
+Bag ...
+/home/lbentes/Documentos/on_dev/jfortes/test_cases/primary_tests_no_main/Bag_pre.java:34: Error: Undefined variable 'aux'
+      System.out.print(aux);
+                       ^
+/home/lbentes/Documentos/on_dev/jfortes/test_cases/primary_tests_no_main/Bag_pre.java:34: Error: No method print(error) matching given argument types
+      System.out.print(aux);
+                 ^
+Caution: Turning off extended static checking due to type error(s)
+  [0.343 s 28440544 bytes total] (aborted)
+2 cautions
+2 errors

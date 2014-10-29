@@ -1,4 +1,4 @@
-generate_doc module
+generate_doc Module
 ===================
 
 .. automodule:: generate_doc

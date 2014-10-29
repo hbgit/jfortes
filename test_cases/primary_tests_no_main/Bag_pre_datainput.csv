@@ -1,0 +1,7 @@
+Line;Variable;From;Scope;Type
+7;nome;attribute;class;String
+8;a;attribute;class;int[]
+9;n;attribute;class;int
+10;teste;attribute;class;float
+11;input;method;Bag;int[]
+16;0NONE;method;extractMin;0NONE

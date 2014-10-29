@@ -1,5 +1,13 @@
-modules package
+modules Package
 ===============
+
+:mod:`modules` Package
+----------------------
+
+.. automodule:: modules
+    :members:
+    :undoc-members:
+    :show-inheritance:
 
 Subpackages
 -----------
@@ -12,10 +20,3 @@ Subpackages
     modules.uncrustify
     modules.utils
 
-Module contents
----------------
-
-.. automodule:: modules
-    :members:
-    :undoc-members:
-    :show-inheritance:

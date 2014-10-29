@@ -1,4 +1,4 @@
-configure module
+configure Module
 ================
 
 .. automodule:: configure

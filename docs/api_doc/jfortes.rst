@@ -1,4 +1,4 @@
-jfortes module
+jfortes Module
 ==============
 
 .. automodule:: jfortes

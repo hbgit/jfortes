@@ -1,22 +1,19 @@
-modules.utils package
-=====================
+utils Package
+=============
 
-Submodules
-----------
+:mod:`utils` Package
+--------------------
 
-modules.utils.ReaderCsvOutput module
-------------------------------------
+.. automodule:: modules.utils
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`ReaderCsvOutput` Module
+-----------------------------
 
 .. automodule:: modules.utils.ReaderCsvOutput
     :members:
     :undoc-members:
     :show-inheritance:
 
-
-Module contents
----------------
-
-.. automodule:: modules.utils
-    :members:
-    :undoc-members:
-    :show-inheritance:

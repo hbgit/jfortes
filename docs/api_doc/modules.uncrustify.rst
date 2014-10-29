@@ -1,22 +1,19 @@
-modules.uncrustify package
-==========================
+uncrustify Package
+==================
 
-Submodules
-----------
+:mod:`uncrustify` Package
+-------------------------
 
-modules.uncrustify.RunPreprocessor module
------------------------------------------
+.. automodule:: modules.uncrustify
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`RunPreprocessor` Module
+-----------------------------
 
 .. automodule:: modules.uncrustify.RunPreprocessor
     :members:
     :undoc-members:
     :show-inheritance:
 
-
-Module contents
----------------
-
-.. automodule:: modules.uncrustify
-    :members:
-    :undoc-members:
-    :show-inheritance:

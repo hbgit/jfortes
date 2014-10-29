@@ -1,4 +1,4 @@
-run_test_cases module
+run_test_cases Module
 =====================
 
 .. automodule:: run_test_cases

@@ -4,10 +4,11 @@
  * */
 
 class Bag {
-  int[] a;
-  int n;
-
-  Bag(int[] input) {
+	String nome;
+	int[] a;
+	int n;
+	float teste;
+  public Bag(int[] input) {
     n = input.length; a = new int[n];
     System.arraycopy(input, 0, a, 0, n);
   }
@@ -24,6 +25,7 @@ class Bag {
     }
     n--;
     a[mindex] = a[n];
+    System.out.print(aux);
     return m;
   }
 

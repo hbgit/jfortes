@@ -1,30 +1,27 @@
-modules.get_data_claims package
-===============================
+get_data_claims Package
+=======================
 
-Submodules
-----------
+:mod:`get_data_claims` Package
+------------------------------
 
-modules.get_data_claims.ClaimsTranslate module
-----------------------------------------------
+.. automodule:: modules.get_data_claims
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`ClaimsTranslate` Module
+-----------------------------
 
 .. automodule:: modules.get_data_claims.ClaimsTranslate
     :members:
     :undoc-members:
     :show-inheritance:
 
-modules.get_data_claims.GetDataClaims module
---------------------------------------------
+:mod:`GetDataClaims` Module
+---------------------------
 
 .. automodule:: modules.get_data_claims.GetDataClaims
     :members:
     :undoc-members:
     :show-inheritance:
 
-
-Module contents
----------------
-
-.. automodule:: modules.get_data_claims
-    :members:
-    :undoc-members:
-    :show-inheritance:

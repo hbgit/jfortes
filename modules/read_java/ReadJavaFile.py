@@ -109,6 +109,7 @@ class ReadJavaFile(object):
                 return list_new_program_inst
 
         elif modelToApply == "jcute":
+            print (_datafileinput)
             # verifiyng if there are differences of the claims file
             numclaimsegual = self.checkClaimsFileEgual(_claimsbeforeprecode, _csvPathFileToInst)
             if numclaimsegual:
@@ -341,6 +342,7 @@ class ReadJavaFile(object):
                     readCsvi = ReaderCsvOutput.ReaderCsv()
                     readCsvi.loadCsvFile(_datafileinput)
                     listOfCsvDataInput = readCsvi.getCsvColummns()
+                    #print(listOfCsvDataInput)
 
                     #Creating instance of the class
                     list_not_gen = []
@@ -374,8 +376,7 @@ class ReadJavaFile(object):
                         for classname in listclasses:
                             list_program_asserts.append(
                                         classname+" runJFORTES = new "
-                                        +classname+"( );")
-
+                                                +classname+"( );")
 
                     # DOING: Adding the attributes
                     for i, item in enumerate(listOfCsvDataInput['From']):
@@ -383,6 +384,7 @@ class ReadJavaFile(object):
                             # has array in input?
                             analysisInput = self.is_list_input(listOfCsvDataInput['Type'][i])
                             if analysisInput[0]:
+                                # Why we do not have all types here???
                                 genassignment = ''
                                 if analysisInput[1] == "int":
                                     if analysisInput[2] == 1:
@@ -392,14 +394,24 @@ class ReadJavaFile(object):
                                     if analysisInput[2] == 1:
                                         genassignment = 'runJFORTES.'+listOfCsvDataInput['Variable'][i].strip()+' = new Object [Cute.input.Object(".")];'
                                         list_program_asserts.append(genassignment)
+                                elif analysisInput[1] == "String":
+                                    if analysisInput[2] == 1:
+                                        genassignment = 'runJFORTES.'+listOfCsvDataInput['Variable'][i].strip()+' = new String [Cute.input.String(".")];'
+                                        list_program_asserts.append(genassignment)
                             else:
+
                                 if listOfCsvDataInput['Type'][i] == 'int':
                                     genassignment = 'runJFORTES.'+listOfCsvDataInput['Variable'][i].strip()+' = Cute.input.Integer();'
+                                    list_program_asserts.append(genassignment)
+                                elif listOfCsvDataInput['Type'][i] == 'String':
+                                    genassignment = 'runJFORTES.'+listOfCsvDataInput['Variable'][i].strip()+' = Cute.input.String();'
+                                    list_program_asserts.append(genassignment)
+                                elif listOfCsvDataInput['Type'][i] == 'float':
+                                    genassignment = 'runJFORTES.'+listOfCsvDataInput['Variable'][i].strip()+' = Cute.input.Float();'
                                     list_program_asserts.append(genassignment)
 
                                 #sys.exit()
                                 #
-
                     # DOING: Adding the methods
                     i = 0
                     while i < len(listOfCsvDataInput['From']):
@@ -435,7 +447,10 @@ class ReadJavaFile(object):
                                                 else:
                                                     if listOfCsvDataInput['Type'][i] == 'int':
                                                         list_args_input.append('Cute.input.Integer()')
-
+                                                    elif listOfCsvDataInput['Type'][i] == 'String':
+                                                        list_args_input.append('Cute.input.String()')
+                                                    elif listOfCsvDataInput['Type'][i] == 'float':
+                                                        list_args_input.append('Cute.input.Float')
                                                 i += 1
                                                 if not i+1 < len(listOfCsvDataInput['From']):
                                                     flag_walk = False
@@ -456,6 +471,10 @@ class ReadJavaFile(object):
                                                     else:
                                                         if listOfCsvDataInput['Type'][i] == 'int':
                                                             list_args_input.append('Cute.input.Integer()')
+                                                        elif listOfCsvDataInput['Type'][i] == 'String':
+                                                            list_args_input.append('Cute.input.String()')
+                                                        elif listOfCsvDataInput['Type'][i] == 'float':
+                                                            list_args_input.append('Cute.input.Float')
                                             else:
                                                 flag_walk = False
                                         genassignment = ','.join(list_args_input)

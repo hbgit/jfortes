@@ -1,30 +1,27 @@
-modules.annotations package
-===========================
+annotations Package
+===================
 
-Submodules
-----------
+:mod:`annotations` Package
+--------------------------
 
-modules.annotations.annot_extractor module
-------------------------------------------
+.. automodule:: modules.annotations
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`annot_extractor` Module
+-----------------------------
 
 .. automodule:: modules.annotations.annot_extractor
     :members:
     :undoc-members:
     :show-inheritance:
 
-modules.annotations.annot_grammar module
-----------------------------------------
+:mod:`annot_grammar` Module
+---------------------------
 
 .. automodule:: modules.annotations.annot_grammar
     :members:
     :undoc-members:
     :show-inheritance:
 
-
-Module contents
----------------
-
-.. automodule:: modules.annotations
-    :members:
-    :undoc-members:
-    :show-inheritance:
