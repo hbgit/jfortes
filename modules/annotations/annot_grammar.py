@@ -66,14 +66,21 @@ letter                      = Regex(r"([a-zA-Z_]+)")
 number                      = Regex(r"([0-9]+)")
 string                      = OneOrMore(letter | letter + number)
 identifyAnnot               = Literal("//@")
+booleano                    = ((Literal("true")) | (Literal("false")))
 
 annotationName              = identifyAnnot + (Keyword("jfortes_getSequenceConstructor").setResultsName('annot_name') |
-                                               Keyword("jfortes_getSequenceMethod").setResultsName('annot_name'))
+                                               Keyword("jfortes_getSequenceMethod").setResultsName('annot_name') |
+                                               Keyword("jfortes_getAttribute").setResultsName('annot_name'))
 
 attrName                    = Literal("name") + Literal("=") + (string).setResultsName('atrrName')
 attrArgs                    = Literal("args") + Literal("=") + Literal("(")+OneOrMore(string | Literal(",") + string | "none").setResultsName('attrArgs')+Literal(")")
 attrSequence                = Literal("sequence") + Literal("=") + number.setResultsName('attrSequence')
 attrSequencebyconstructor   = Keyword("sequencebyconstructor") + Literal("=") + number.setResultsName('attrSeqConstr')
+name                        = Literal ("name") + Literal("=") + (string).setResultsName('name')
+typeAttr                    = Literal ("type") + Literal ("=") + (string).setResultsName('typeAttr')
+initialize                  = Literal ("initialize")+ Literal ("=") + (booleano).setResultsName('initialize')
+sequence                    = Literal("sequence") + Literal("=") + number.setResultsName(('sequence'))
+constructor                 = Literal("constructor") + Literal("=") + number.setResultsName(('constructor'))
 
 jGetSequenceConstructor     = annotationName + attrName + Literal(",") + attrArgs + Literal(",") + \
                               attrSequence + Literal(";")
@@ -81,7 +88,10 @@ jGetSequenceConstructor     = annotationName + attrName + Literal(",") + attrArg
 jGetSequenceMethod          = annotationName + attrName + Literal(",") + attrArgs + Literal(",") + \
                               attrSequence + Literal(",") + attrSequencebyconstructor + Literal(";")
 
-rule                        = jGetSequenceConstructor | jGetSequenceMethod
+jgetAttribute               = annotationName + name + Literal(",") + typeAttr + Literal(",") + \
+                              initialize (";")
+
+rule                        = jGetSequenceConstructor | jGetSequenceMethod | jgetAttribute
 grammar                     = rule
 
 #---------------------------------------------------------------
@@ -115,7 +125,8 @@ if __name__ == "__main__":
 
             tmp[0] = tmp[0].replace(" ","")
             tmp[1] = tmp[1].replace("^\s+","")
-            tmp[2] = tmp[2].replace("^\s+","")
+            tmp[2] = tmp[2].replace("^\s+",
+                                    "")
 
             list_lines_ANNOT.append(tmp[0])
             list_nameclass_ANNOT.append(tmp[1])

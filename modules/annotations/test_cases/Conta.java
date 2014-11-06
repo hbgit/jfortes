@@ -1,4 +1,5 @@
 public class Conta{
+	//@jfortes_getAttribute name = nome, type = String, initialize = true, sequence = 1;
 	String nome;
 	double saldo;
 	int codigo;
@@ -8,13 +9,13 @@ public class Conta{
 		this.setSaldo(0);
 	}
 
-	//@jfortes_getSequenceConstructor name = Bag, args = (novoNome, novoSaldo), sequence = 2;
+	//@jfortes_getSequenceConstructor name = Conta, args = (novoNome, novoSaldo), sequence = 2;
 	Conta(String novoNome, double novoSaldo){
 		this.setNome(novoNome);
 		this.setSaldo(novoSaldo);
 	}
 
-	//@jfortes_getSequenceMethod name = setSaldo, args = (none), sequence = 3, sequencebyconstructor = 1;
+	//@jfortes_getSequenceMethod name = getNome, args = (none), sequence = 3, sequencebyconstructor = 1, constructor= 1;
 	public String getNome(){
 		return this.nome;
 	}
@@ -24,12 +25,12 @@ public class Conta{
 		this.nome = novoNome;
 	}
 	
-	//@jfortes_getSequenceMethod name = setSaldo, args = (none), sequence = 5, sequencebyconstructor = 3;
+	//@jfortes_getSequenceMethod name = getSaldo, args = (none), sequence = 5, sequencebyconstructor = 3;
 	public double getSaldo(){
 		return this.saldo;
 	}	
 
-	//@jfortes_getSequenceMethod name = getSaldo, args = (novoSaldo), sequence = 6, sequencebyconstructor = 4; 
+	//@jfortes_getSequenceMethod name = setSaldo, args = (novoSaldo), sequence = 6, sequencebyconstructor = 4; 
 	public void setSaldo(double novoSaldo){
 		this.saldo = novoSaldo;
 	}
