@@ -24,8 +24,7 @@ class Bag {
       }
     }
     n--;
-    a[mindex] = a[n];
-    System.out.print(aux);
+    a[mindex] = a[n];    
     return m;
   }
 

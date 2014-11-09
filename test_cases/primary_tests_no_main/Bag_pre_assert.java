@@ -12,6 +12,9 @@ class Bag {
    float teste;
    public Bag(int[] input)
    {
+// IN ORIGINAL CODE AT LINE: < 13  > 
+// COMMENT:  Possible null dereference (Null)
+Cute.Assert(  input != null && input.length > 0 ); 
       n = input.length;
       a = new int[n];
       System.arraycopy(input, 0, a, 0, n);
@@ -25,6 +28,12 @@ class Bag {
 
       for (int i = 1; i <= n; i++)
       {
+// IN ORIGINAL CODE AT LINE: < 26  > 
+// COMMENT:  Possible null dereference (Null)
+Cute.Assert(  a != null && a.length > 0 ); 
+// IN ORIGINAL CODE AT LINE: < 26  > 
+// COMMENT:  Array index possibly too large (IndexTooBig)
+Cute.Assert(  i < a.length ); 
          if (a[i] < m)
          {
             mindex = i;
@@ -32,17 +41,13 @@ class Bag {
          }
       }
       n--;
+// IN ORIGINAL CODE AT LINE: < 33  > 
+// COMMENT:  Possible null dereference (Null)
+Cute.Assert(  a != null && a.length > 0 ); 
+// IN ORIGINAL CODE AT LINE: < 33  > 
+// COMMENT:  Possible negative array index (IndexNegative)
+Cute.Assert(  n >= 0 ); 
       a[mindex] = a[n];
-      System.out.print(aux);
       return(m);
    }
-public static void main(String[] args){
-int[] arrJFORTES = new int [Cute.input.Integer()];
-Bag runJFORTES = new Bag( arrJFORTES );
-runJFORTES.nome = Cute.input.String();
-runJFORTES.a = new int [Cute.input.Integer()];
-runJFORTES.n = Cute.input.Integer();
-runJFORTES.teste = Cute.input.Float();
-runJFORTES.extractMin();
-}
 }

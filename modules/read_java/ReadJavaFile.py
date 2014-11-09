@@ -12,6 +12,8 @@ import re
 
 
 from modules.utils import ReaderCsvOutput
+from modules.annotations import annot_extractor
+from modules.annotations import annot_grammar
 
 
 class ReadJavaFile(object):
@@ -109,7 +111,7 @@ class ReadJavaFile(object):
                 return list_new_program_inst
 
         elif modelToApply == "jcute":
-            print (_datafileinput)
+            #print (_datafileinput)
             # verifiyng if there are differences of the claims file
             numclaimsegual = self.checkClaimsFileEgual(_claimsbeforeprecode, _csvPathFileToInst)
             if numclaimsegual:
@@ -333,12 +335,31 @@ class ReadJavaFile(object):
             if lenoffile == (index+1):
                 # Write a generic main to test the method
                 if not hasmain:
-                    #TODO:
+
+                    # Identifying and gathering the jfortes annotation to generate main,
+                    # if has no annotation the generic main to test the method IS NOT generated
+                    getannot = annot_extractor.AnnotExtractor()
+                    list_annots = getannot.gather_annot(_javaPathFile)
+
+
+                    if len(list_annots) == 1:
+                        # Stop the generic main generation
+                        list_program_asserts.append("}")
+                        return list_program_asserts
+
+                    result_parse_annot = annot_grammar.main_grammar(list_annots)
+
+                    # Reading CSV file with the data from code jfortes annotations
+                    readCsvAnnot = ReaderCsvOutput.ReaderCsv()
+                    readCsvAnnot.loadCsvFile(_datafileinput)
+                    listOfCsvDataAnnot = readCsvAnnot.getCsvColummns()
+
+
                     #Adding a new main based on data gathered form parser
                     #print(_datafileinput)
                     list_program_asserts.append("public static void main(String[] args){")
 
-                    # Reading CSV file with the claims translated
+                    # Reading CSV file with the data about program
                     readCsvi = ReaderCsvOutput.ReaderCsv()
                     readCsvi.loadCsvFile(_datafileinput)
                     listOfCsvDataInput = readCsvi.getCsvColummns()

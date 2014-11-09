@@ -42,7 +42,11 @@ class AnnotExtractor(object):
         javafilelines = javafile.readlines()
         javafile.close()
 
-        print("line_number?class_name?annotation")
+        #print("line_number?class_name?annotation")
+
+        # list of annotations
+        annot_list = []
+        annot_list.append("line_number?class_name?annotation")
 
         for index, line in enumerate(javafilelines):
             # Identify the current class to be read
@@ -60,7 +64,10 @@ class AnnotExtractor(object):
                 # getting only the jfortes annotations
                 matchIsJfortesAnnot = re.search(r'(.*jfortes_.*)', line)
                 if matchIsJfortesAnnot:
-                    print(str(index+1) + "?" + self.actualclassname + "?" + matchIsJfortesAnnot.group(1).strip())
+                    annot_list.append(str(index+1) + "?" + self.actualclassname + "?" + matchIsJfortesAnnot.group(1).strip())
+                    #print(str(index+1) + "?" + self.actualclassname + "?" + matchIsJfortesAnnot.group(1).strip())
+
+        return annot_list
 
 
 

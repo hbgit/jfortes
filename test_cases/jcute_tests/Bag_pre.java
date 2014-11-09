@@ -53,7 +53,7 @@ class Bag {
    }
 
 
-   //@ jfortes_method name = printN, from_constructors = {Bag_1}, sequence = 0;
+   //@ jfortes_method name = printN, from_constructors = {Bag_0,Bag_1}, sequence = 1;
    public void printN()
    {
       System.out.println(this.n);

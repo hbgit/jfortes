@@ -31,7 +31,6 @@ class Bag {
       }
       n--;
       a[mindex] = a[n];
-      System.out.print(aux);
       return(m);
    }
 }

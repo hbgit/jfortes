@@ -1,15 +1,50 @@
 ESC/Java version ESCJava-2.0.5
-/home/lbentes/Documentos/on_dev/jfortes/test_cases/primary_tests_no_main/Bag.java: Caution: Using given file as the .java file, even though it is not the java file for Bag on the classpath
-    [0.028 s 23930112 bytes]
+/home/nhb/Documents/ON_DEV/JFORTES/dev_/jfortes/test_cases/primary_tests_no_main/Bag.java: Caution: Using given file as the .java file, even though it is not the java file for Bag on the classpath
+    [0.021 s 20228928 bytes]
 
 Bag ...
-/home/lbentes/Documentos/on_dev/jfortes/test_cases/primary_tests_no_main/Bag.java:28: Error: Undefined variable 'aux'
-    System.out.print(aux);
-                     ^
-/home/lbentes/Documentos/on_dev/jfortes/test_cases/primary_tests_no_main/Bag.java:28: Error: No method print(error) matching given argument types
-    System.out.print(aux);
-               ^
-Caution: Turning off extended static checking due to type error(s)
-  [0.293 s 28439192 bytes total] (aborted)
-2 cautions
-2 errors
+  Prover started:0.017 s 44980544 bytes
+    [1.138 s 46259432 bytes]
+
+Bag: Bag(int[]) ...
+------------------------------------------------------------------------
+/home/nhb/Documents/ON_DEV/JFORTES/dev_/jfortes/test_cases/primary_tests_no_main/Bag.java:12: Warning: Possible null dereference (Null)
+    n = input.length; a = new int[n];
+             ^
+------------------------------------------------------------------------
+    [1.022 s 56464712 bytes]  failed
+
+Bag: extractMin() ...
+------------------------------------------------------------------------
+/home/nhb/Documents/ON_DEV/JFORTES/dev_/jfortes/test_cases/primary_tests_no_main/Bag.java:21: Warning: Possible null dereference (Null)
+      if (a[i] < m) {
+           ^
+Execution trace information:
+    Reached top of loop after 0 iterations in "/home/nhb/Documents/ON_DEV/JFORTES/dev_/jfortes/test_cases/primary_tests_no_main/Bag.java", line 20, col 4.
+
+------------------------------------------------------------------------
+/home/nhb/Documents/ON_DEV/JFORTES/dev_/jfortes/test_cases/primary_tests_no_main/Bag.java:21: Warning: Array index possibly too large (IndexTooBig)
+      if (a[i] < m) {
+           ^
+Execution trace information:
+    Reached top of loop after 0 iterations in "/home/nhb/Documents/ON_DEV/JFORTES/dev_/jfortes/test_cases/primary_tests_no_main/Bag.java", line 20, col 4.
+
+------------------------------------------------------------------------
+/home/nhb/Documents/ON_DEV/JFORTES/dev_/jfortes/test_cases/primary_tests_no_main/Bag.java:27: Warning: Possible null dereference (Null)
+    a[mindex] = a[n];    
+                 ^
+Execution trace information:
+    Reached top of loop after 0 iterations in "/home/nhb/Documents/ON_DEV/JFORTES/dev_/jfortes/test_cases/primary_tests_no_main/Bag.java", line 20, col 4.
+
+------------------------------------------------------------------------
+/home/nhb/Documents/ON_DEV/JFORTES/dev_/jfortes/test_cases/primary_tests_no_main/Bag.java:27: Warning: Possible negative array index (IndexNegative)
+    a[mindex] = a[n];    
+                 ^
+Execution trace information:
+    Reached top of loop after 0 iterations in "/home/nhb/Documents/ON_DEV/JFORTES/dev_/jfortes/test_cases/primary_tests_no_main/Bag.java", line 20, col 4.
+
+------------------------------------------------------------------------
+    [0.205 s 59015848 bytes]  failed
+  [2.366 s 59015848 bytes total]
+1 caution
+5 warnings

@@ -2,21 +2,39 @@
 [DONE->PROJECT] Updated the annotations structure
     - Constructor -> call -> methods
 [DONE->PROJECT] Updated the annotations grammar
+[DONE->FILE:jfortes.py] Added annotation extractor into the project
+[DONE->PROJECT] Rewrote the annotations
 
-[TODO->FILE:jfortes.py] Adding annotation extractor into the project
 
-[TODO->PROJECT] Rewrite the annotations
-
-[TODO->PROJECT] Planning to adopt the annotation to generate main in the jcute model
+[DOING->PROJECT] Planning to adopt the annotation to generate main in the jcute model
     ==> Actual data:
         - datainput, e.g:
             Line;Variable;From;Scope;Type
             7;a;attribute;class;int[]
         - annotations, e.g:
             (is not in the same line of the method)
-            //@ jfortes_getSequenceConstructor name = Bag, args = b, sequence = 1;
+            //@ jfortes_constructor name = Bag, args = b, sequence = 1;
 
         - WARNNING: The data that will be adopted from annotation are join with data gathered runJfortes.generate_data2input
     ==> FLOW:
+        HIP1:
         (1) Get data from code (method and attributes)
         (2) Generate data from code annotations, only if the program has no main method
+        (3) The code generation should be based on annotations and the additional data from generate_data2input
+            (3.1) Running the generate_data2input from each method save the line number and the method name
+            [--> generating all constructors]
+                [--> generating all class attributes for that constructor]
+                [--> generating all class method for that constructor]
+            (3.2) For each attribute identify if is a jfortes_attribute and then generate code for each attribute
+                  method with from_constructors taking as base sequence from annotations
+            (3.3) For each method name identify if is a jfortes_constructor and then generate code for each method
+                  with from_constructors taking as base sequence from annotations
+
+
+
+
+
+[DOING->PROJECT] Merging generate_data2input with data annotations - 351
+
+
+

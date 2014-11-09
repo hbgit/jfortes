@@ -108,12 +108,14 @@ def hasNoDuplicates (lst):
 # -------------------------------------------------
 # Main python program
 # -------------------------------------------------
-if __name__ == "__main__":
+#if __name__ == "__main__":
+def main_grammar(_annot_list):
     # CVS file to update
     list_sequence = []
-    annot_csv_file = open(sys.argv[1])
-    annot_lines_csv = annot_csv_file.readlines()
-    annot_csv_file.close()
+    #annot_csv_file = open(sys.argv[1])
+    #annot_lines_csv = annot_csv_file.readlines()
+    annot_lines_csv = _annot_list
+    #annot_csv_file.close()
 
     """
     Variables gathing from input csv file
@@ -218,6 +220,13 @@ if __name__ == "__main__":
     #     for line in csvlistbody:
     #         print(line)
     # else:
-    print(csvheader)
+    #write the parse result
+    parseresultfile = open("/tmp/jfortes_parseresult.tmp_j","w")
+    parseresultfile.write(csvheader+"\n")
+    #print(csvheader)
     for line in csvlistbody:
-        print(line)
+        #print(line)
+        parseresultfile.write(line+"\n")
+    parseresultfile.close()
+
+    return "/tmp/jfortes_parseresult.tmp_j"

@@ -9,14 +9,14 @@ ESC/Java version ESCJava-2.0.5
         //@ jfortes_method name = extractMin, from_constructors = {Bag ...
             ^
 /home/nhb/Documents/ON_DEV/JFORTES/dev_/jfortes/test_cases/jcute_tests/Bag.java:47: Error: Unrecognized pragma: "jfortes_method"
-    //@ jfortes_method name = printN, from_constructors = {Bag_1}, seq ...
+    //@ jfortes_method name = printN, from_constructors = {Bag_0,Bag_1 ...
         ^
 /home/nhb/Documents/ON_DEV/JFORTES/dev_/jfortes/test_cases/jcute_tests/Bag.java: Caution: Using given file as the .java file, even though it is not the java file for Bag on the classpath
-    [0.026 s 20223856 bytes]
+    [0.026 s 20229992 bytes]
 
 Bag ...
-  Prover started:0.294 s 44984632 bytes
-    [2.749 s 46291992 bytes]
+  Prover started:0.015 s 46270632 bytes
+    [0.958 s 47577904 bytes]
 
 Bag: Bag(int[]) ...
 ------------------------------------------------------------------------
@@ -24,7 +24,7 @@ Bag: Bag(int[]) ...
                 n = input.length; a = new int[n];
                          ^
 ------------------------------------------------------------------------
-    [2.615 s 43438232 bytes]  failed
+    [2.414 s 69265336 bytes]  failed
 
 Bag: Bag(int[], java.lang.String) ...
 ------------------------------------------------------------------------
@@ -32,7 +32,7 @@ Bag: Bag(int[], java.lang.String) ...
                 n = input.length; a = new int[n];
                          ^
 ------------------------------------------------------------------------
-    [2.629 s 45197200 bytes]  failed
+    [2.65 s 44767568 bytes]  failed
 
 Bag: extractMin() ...
 ------------------------------------------------------------------------
@@ -64,11 +64,11 @@ Execution trace information:
     Reached top of loop after 0 iterations in "/home/nhb/Documents/ON_DEV/JFORTES/dev_/jfortes/test_cases/jcute_tests/Bag.java", line 36, col 2.
 
 ------------------------------------------------------------------------
-    [0.139 s 48408664 bytes]  failed
+    [0.162 s 47318672 bytes]  failed
 
 Bag: printN() ...
-    [0.048 s 51620080 bytes]  passed
-  [8.181 s 51620080 bytes total]
+    [0.053 s 51146656 bytes]  passed
+  [6.238 s 51146656 bytes total]
 1 caution
 6 warnings
 4 errors

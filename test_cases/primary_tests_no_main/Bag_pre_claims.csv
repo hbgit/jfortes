@@ -1,1 +1,6 @@
 Number of Line;Comments;Tag;Claim;Point Data;Annoted;Annoted Point
+13; Possible null dereference (Null);Null;      n = input.length;               ^;NO;NO
+26; Possible null dereference (Null);Null;         if (a[i] < m);              ^;NO;NO
+26; Array index possibly too large (IndexTooBig);IndexTooBig;         if (a[i] < m);              ^;NO;NO
+33; Possible null dereference (Null);Null;      a[mindex] = a[n];                   ^;NO;NO
+33; Possible negative array index (IndexNegative);IndexNegative;      a[mindex] = a[n];                   ^;NO;NO
