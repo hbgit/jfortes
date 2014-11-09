@@ -1,0 +1,22 @@
+[DONE->FILE:jfortes.py] Created a flow to generate main in the jcute model based on the annotations
+[DONE->PROJECT] Updated the annotations structure
+    - Constructor -> call -> methods
+[DONE->PROJECT] Updated the annotations grammar
+
+[TODO->FILE:jfortes.py] Adding annotation extractor into the project
+
+[TODO->PROJECT] Rewrite the annotations
+
+[TODO->PROJECT] Planning to adopt the annotation to generate main in the jcute model
+    ==> Actual data:
+        - datainput, e.g:
+            Line;Variable;From;Scope;Type
+            7;a;attribute;class;int[]
+        - annotations, e.g:
+            (is not in the same line of the method)
+            //@ jfortes_getSequenceConstructor name = Bag, args = b, sequence = 1;
+
+        - WARNNING: The data that will be adopted from annotation are join with data gathered runJfortes.generate_data2input
+    ==> FLOW:
+        (1) Get data from code (method and attributes)
+        (2) Generate data from code annotations, only if the program has no main method

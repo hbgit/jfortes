@@ -46,7 +46,7 @@ if __name__ == "__main__":
             print("  >> Please install JAVA 1.5")
             print("  >> In case you already have the JAVA 1.5 installed, \n"
                   "     please manually set the JAVA path in the [JAVA_path] of the { settings.cfg } file")
-            sys.exit()
+            #sys.exit()
 
 
      #-------------------------------------------------------

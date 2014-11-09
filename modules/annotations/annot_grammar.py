@@ -7,7 +7,7 @@ from os import sysconf
 Author: Herbert O. Rocha
 Email: herberthb12@gmail.com
 Year: 2014
-Version: 1
+Version: 2
 """
 
 from pyparsing import *
@@ -64,34 +64,39 @@ Grammar to JFORTES code annotation
 
 letter                      = Regex(r"([a-zA-Z_]+)")
 number                      = Regex(r"([0-9]+)")
-string                      = OneOrMore(letter | letter + number)
+value2id                    = Regex(r"([a-zA-Z_0-9]+)")
+string                      = OneOrMore(letter + number | letter )
 identifyAnnot               = Literal("//@")
-booleano                    = ((Literal("true")) | (Literal("false")))
+#booleano                    = ((Literal("true")) | (Literal("false")))
 
-annotationName              = identifyAnnot + (Keyword("jfortes_getSequenceConstructor").setResultsName('annot_name') |
-                                               Keyword("jfortes_getSequenceMethod").setResultsName('annot_name') |
-                                               Keyword("jfortes_getAttribute").setResultsName('annot_name'))
+annotationName              = identifyAnnot + (Keyword("jfortes_constructor").setResultsName('annot_name') |
+                                               Keyword("jfortes_method").setResultsName('annot_name') |
+                                               Keyword("jfortes_attribute").setResultsName('annot_name'))
 
 attrName                    = Literal("name") + Literal("=") + (string).setResultsName('atrrName')
-attrArgs                    = Literal("args") + Literal("=") + Literal("(")+OneOrMore(string | Literal(",") + string | "none").setResultsName('attrArgs')+Literal(")")
+#attrArgs                    = Literal("args") + Literal("=") + Literal("(")+OneOrMore(string | Literal(",") + string | "none").setResultsName('attrArgs')+Literal(")")
 attrSequence                = Literal("sequence") + Literal("=") + number.setResultsName('attrSequence')
-attrSequencebyconstructor   = Keyword("sequencebyconstructor") + Literal("=") + number.setResultsName('attrSeqConstr')
-name                        = Literal ("name") + Literal("=") + (string).setResultsName('name')
-typeAttr                    = Literal ("type") + Literal ("=") + (string).setResultsName('typeAttr')
-initialize                  = Literal ("initialize")+ Literal ("=") + (booleano).setResultsName('initialize')
-sequence                    = Literal("sequence") + Literal("=") + number.setResultsName(('sequence'))
-constructor                 = Literal("constructor") + Literal("=") + number.setResultsName(('constructor'))
+attrId                      = Literal("id") + Literal("=") + (value2id).setResultsName('attrId')
+#attrSequencebyconstructor   = Keyword("sequencebyconstructor") + Literal("=") + number.setResultsName('attrSeqConstr')
+#name                        = Literal ("name") + Literal("=") + (string).setResultsName('name')
+#typeAttr                    = Literal ("type") + Literal ("=") + (string).setResultsName('typeAttr')
+#initialize                  = Literal ("initialize")+ Literal ("=") + (booleano).setResultsName('initialize')
+#sequence                    = Literal("sequence") + Literal("=") + number.setResultsName(('sequence'))
+#constructor                 = Literal("constructor") + Literal("=") + number.setResultsName(('constructor'))
 
-jGetSequenceConstructor     = annotationName + attrName + Literal(",") + attrArgs + Literal(",") + \
+attrFromConstructors           = Literal("from_constructors") + Literal("=") + Literal("{") + (OneOrMore(value2id | Literal(",") + value2id)).setResultsName('attrFromConstr') + Literal("}")
+
+
+# TODO: The annotations should be flexible to write the attributes in any place
+annotation2Constructor      = annotationName + attrName + Literal(",") + attrId + Literal(",") + attrSequence + Literal(";")
+
+annotation2Method           = annotationName + attrName + Literal(",") + attrFromConstructors + Literal(",") + \
+                              attrSequence  + Literal(";")
+
+annotation2Attribute        = annotationName + attrName + Literal(",") + attrFromConstructors + Literal(",") + \
                               attrSequence + Literal(";")
 
-jGetSequenceMethod          = annotationName + attrName + Literal(",") + attrArgs + Literal(",") + \
-                              attrSequence + Literal(",") + attrSequencebyconstructor + Literal(";")
-
-jgetAttribute               = annotationName + name + Literal(",") + typeAttr + Literal(",") + \
-                              initialize (";")
-
-rule                        = jGetSequenceConstructor | jGetSequenceMethod | jgetAttribute
+rule                        = annotation2Constructor | annotation2Method | annotation2Attribute
 grammar                     = rule
 
 #---------------------------------------------------------------
@@ -134,7 +139,7 @@ if __name__ == "__main__":
 
 
     # print the header csv file
-    csvheader = 'annot_name;atrrName;attrArgs;attrSequence;attrSeqConstr'
+    csvheader = 'annot_name;atrrName;attrID;attrSequence;attrFromConstructors'
     csvlistbody = []
 
     for index, eachannot in enumerate(list_txt_ANNOT):
@@ -148,27 +153,46 @@ if __name__ == "__main__":
             #text = parsed_annot.values()
             #print(';'.join(text))
 
-           # print(parsed_annot)
+            #print(parsed_annot)
 
 
             list_sequence.append(parsed_annot['attrSequence'])
 
 
             tmp_list = []
+            count_columns = 0
+            annotname = ''
             for key, value in parsed_annot.items():
-                # print(key, '=>', value)
+                #print(key, '=>', value)
+                if count_columns == 0:
+                    annotname = value
+
                 if type(value) == ParseResults:
                     if len(value) > 1:
                         strtemp = ''.join(value)
+                        if count_columns == 2 and (annotname == 'jfortes_method' or annotname == 'jfortes_attribute'):
+                            tmp_list.append("JFORTES_NONE")
                         tmp_list.append(strtemp)
                     else:
+                        if count_columns == 2 and (annotname == 'jfortes_method' or annotname == 'jfortes_attribute'):
+                            tmp_list.append("JFORTES_NONE")
                         tmp_list.append(value[0])
                 else:
+                    if count_columns == 2 and (annotname == 'jfortes_method' or annotname == 'jfortes_attribute'):
+                        tmp_list.append("JFORTES_NONE")
                     tmp_list.append(value)
 
+                count_columns += 1
+
+
+            if annotname == 'jfortes_constructor':
+                tmp_list.append("JFORTES_NONE")
+
+
+
             # Check if tmp_list == 4. True
-            if len(tmp_list) == 4:
-                tmp_list.insert(len(tmp_list)+1,"none")
+            #if len(tmp_list) == 4:
+            #    tmp_list.insert(len(tmp_list)+1,"none")
 
             #print(';'.join(tmp_list))
             csvlistbody.append(';'.join(tmp_list))
@@ -188,10 +212,12 @@ if __name__ == "__main__":
             sys.exit()
 
     # Print the output in csv format
-    if not hasNoDuplicates(list_sequence):
-        print("ERROR. The sequence method are duplicated!")
-        for line in csvlistbody:
-            print(line)
-    else:
-        for line in csvlistbody:
-            print(line)
+    # TODO: rewrite this in function of the new structure
+    # if not hasNoDuplicates(list_sequence):
+    #     print("ERROR. The sequence method are duplicated!")
+    #     for line in csvlistbody:
+    #         print(line)
+    # else:
+    print(csvheader)
+    for line in csvlistbody:
+        print(line)

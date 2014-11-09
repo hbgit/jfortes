@@ -1,0 +1,74 @@
+ESC/Java version ESCJava-2.0.5
+/home/nhb/Documents/ON_DEV/JFORTES/dev_/jfortes/test_cases/jcute_tests/Bag.java:17: Error: Unrecognized pragma: "jfortes_constructor"
+        //@ jfortes_constructor name = Bag, id = Bag_0, sequence = 0; 
+            ^
+/home/nhb/Documents/ON_DEV/JFORTES/dev_/jfortes/test_cases/jcute_tests/Bag.java:24: Error: Unrecognized pragma: "jfortes_constructor"
+    //@ jfortes_constructor name = Bag, id = Bag_1, sequence = 1; 
+        ^
+/home/nhb/Documents/ON_DEV/JFORTES/dev_/jfortes/test_cases/jcute_tests/Bag.java:31: Error: Unrecognized pragma: "jfortes_method"
+        //@ jfortes_method name = extractMin, from_constructors = {Bag ...
+            ^
+/home/nhb/Documents/ON_DEV/JFORTES/dev_/jfortes/test_cases/jcute_tests/Bag.java:47: Error: Unrecognized pragma: "jfortes_method"
+    //@ jfortes_method name = printN, from_constructors = {Bag_1}, seq ...
+        ^
+/home/nhb/Documents/ON_DEV/JFORTES/dev_/jfortes/test_cases/jcute_tests/Bag.java: Caution: Using given file as the .java file, even though it is not the java file for Bag on the classpath
+    [0.026 s 20223856 bytes]
+
+Bag ...
+  Prover started:0.294 s 44984632 bytes
+    [2.749 s 46291992 bytes]
+
+Bag: Bag(int[]) ...
+------------------------------------------------------------------------
+/home/nhb/Documents/ON_DEV/JFORTES/dev_/jfortes/test_cases/jcute_tests/Bag.java:20: Warning: Possible null dereference (Null)
+                n = input.length; a = new int[n];
+                         ^
+------------------------------------------------------------------------
+    [2.615 s 43438232 bytes]  failed
+
+Bag: Bag(int[], java.lang.String) ...
+------------------------------------------------------------------------
+/home/nhb/Documents/ON_DEV/JFORTES/dev_/jfortes/test_cases/jcute_tests/Bag.java:27: Warning: Possible null dereference (Null)
+                n = input.length; a = new int[n];
+                         ^
+------------------------------------------------------------------------
+    [2.629 s 45197200 bytes]  failed
+
+Bag: extractMin() ...
+------------------------------------------------------------------------
+/home/nhb/Documents/ON_DEV/JFORTES/dev_/jfortes/test_cases/jcute_tests/Bag.java:37: Warning: Possible null dereference (Null)
+                        if (a[i] < m) {
+                             ^
+Execution trace information:
+    Reached top of loop after 0 iterations in "/home/nhb/Documents/ON_DEV/JFORTES/dev_/jfortes/test_cases/jcute_tests/Bag.java", line 36, col 2.
+
+------------------------------------------------------------------------
+/home/nhb/Documents/ON_DEV/JFORTES/dev_/jfortes/test_cases/jcute_tests/Bag.java:37: Warning: Array index possibly too large (IndexTooBig)
+                        if (a[i] < m) {
+                             ^
+Execution trace information:
+    Reached top of loop after 0 iterations in "/home/nhb/Documents/ON_DEV/JFORTES/dev_/jfortes/test_cases/jcute_tests/Bag.java", line 36, col 2.
+
+------------------------------------------------------------------------
+/home/nhb/Documents/ON_DEV/JFORTES/dev_/jfortes/test_cases/jcute_tests/Bag.java:43: Warning: Possible null dereference (Null)
+                a[mindex] = a[n];
+                             ^
+Execution trace information:
+    Reached top of loop after 0 iterations in "/home/nhb/Documents/ON_DEV/JFORTES/dev_/jfortes/test_cases/jcute_tests/Bag.java", line 36, col 2.
+
+------------------------------------------------------------------------
+/home/nhb/Documents/ON_DEV/JFORTES/dev_/jfortes/test_cases/jcute_tests/Bag.java:43: Warning: Possible negative array index (IndexNegative)
+                a[mindex] = a[n];
+                             ^
+Execution trace information:
+    Reached top of loop after 0 iterations in "/home/nhb/Documents/ON_DEV/JFORTES/dev_/jfortes/test_cases/jcute_tests/Bag.java", line 36, col 2.
+
+------------------------------------------------------------------------
+    [0.139 s 48408664 bytes]  failed
+
+Bag: printN() ...
+    [0.048 s 51620080 bytes]  passed
+  [8.181 s 51620080 bytes total]
+1 caution
+6 warnings
+4 errors

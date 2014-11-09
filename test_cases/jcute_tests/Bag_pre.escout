@@ -1,0 +1,74 @@
+ESC/Java version ESCJava-2.0.5
+/home/nhb/Documents/ON_DEV/JFORTES/dev_/jfortes/test_cases/jcute_tests/Bag_pre.java:17: Error: Unrecognized pragma: "jfortes_constructor"
+   //@ jfortes_constructor name = Bag, id = Bag_0, sequence = 0;
+       ^
+/home/nhb/Documents/ON_DEV/JFORTES/dev_/jfortes/test_cases/jcute_tests/Bag_pre.java:26: Error: Unrecognized pragma: "jfortes_constructor"
+   //@ jfortes_constructor name = Bag, id = Bag_1, sequence = 1;
+       ^
+/home/nhb/Documents/ON_DEV/JFORTES/dev_/jfortes/test_cases/jcute_tests/Bag_pre.java:35: Error: Unrecognized pragma: "jfortes_method"
+   //@ jfortes_method name = extractMin, from_constructors = {Bag_0},  ...
+       ^
+/home/nhb/Documents/ON_DEV/JFORTES/dev_/jfortes/test_cases/jcute_tests/Bag_pre.java:56: Error: Unrecognized pragma: "jfortes_method"
+   //@ jfortes_method name = printN, from_constructors = {Bag_1}, sequ ...
+       ^
+/home/nhb/Documents/ON_DEV/JFORTES/dev_/jfortes/test_cases/jcute_tests/Bag_pre.java: Caution: Using given file as the .java file, even though it is not the java file for Bag_pre on the classpath
+    [0.026 s 20264840 bytes]
+
+Bag ...
+  Prover started:0.015 s 46294120 bytes
+    [0.917 s 46294120 bytes]
+
+Bag: Bag(int[]) ...
+------------------------------------------------------------------------
+/home/nhb/Documents/ON_DEV/JFORTES/dev_/jfortes/test_cases/jcute_tests/Bag_pre.java:21: Warning: Possible null dereference (Null)
+      n = input.length;
+               ^
+------------------------------------------------------------------------
+    [2.373 s 69329840 bytes]  failed
+
+Bag: Bag(int[], java.lang.String) ...
+------------------------------------------------------------------------
+/home/nhb/Documents/ON_DEV/JFORTES/dev_/jfortes/test_cases/jcute_tests/Bag_pre.java:30: Warning: Possible null dereference (Null)
+      n = input.length;
+               ^
+------------------------------------------------------------------------
+    [2.476 s 43648792 bytes]  failed
+
+Bag: extractMin() ...
+------------------------------------------------------------------------
+/home/nhb/Documents/ON_DEV/JFORTES/dev_/jfortes/test_cases/jcute_tests/Bag_pre.java:44: Warning: Possible null dereference (Null)
+         if (a[i] < m)
+              ^
+Execution trace information:
+    Reached top of loop after 0 iterations in "/home/nhb/Documents/ON_DEV/JFORTES/dev_/jfortes/test_cases/jcute_tests/Bag_pre.java", line 42, col 6.
+
+------------------------------------------------------------------------
+/home/nhb/Documents/ON_DEV/JFORTES/dev_/jfortes/test_cases/jcute_tests/Bag_pre.java:44: Warning: Array index possibly too large (IndexTooBig)
+         if (a[i] < m)
+              ^
+Execution trace information:
+    Reached top of loop after 0 iterations in "/home/nhb/Documents/ON_DEV/JFORTES/dev_/jfortes/test_cases/jcute_tests/Bag_pre.java", line 42, col 6.
+
+------------------------------------------------------------------------
+/home/nhb/Documents/ON_DEV/JFORTES/dev_/jfortes/test_cases/jcute_tests/Bag_pre.java:51: Warning: Possible null dereference (Null)
+      a[mindex] = a[n];
+                   ^
+Execution trace information:
+    Reached top of loop after 0 iterations in "/home/nhb/Documents/ON_DEV/JFORTES/dev_/jfortes/test_cases/jcute_tests/Bag_pre.java", line 42, col 6.
+
+------------------------------------------------------------------------
+/home/nhb/Documents/ON_DEV/JFORTES/dev_/jfortes/test_cases/jcute_tests/Bag_pre.java:51: Warning: Possible negative array index (IndexNegative)
+      a[mindex] = a[n];
+                   ^
+Execution trace information:
+    Reached top of loop after 0 iterations in "/home/nhb/Documents/ON_DEV/JFORTES/dev_/jfortes/test_cases/jcute_tests/Bag_pre.java", line 42, col 6.
+
+------------------------------------------------------------------------
+    [0.087 s 47479912 bytes]  failed
+
+Bag: printN() ...
+    [0.047 s 50031072 bytes]  passed
+  [5.901 s 50031072 bytes total]
+1 caution
+6 warnings
+4 errors

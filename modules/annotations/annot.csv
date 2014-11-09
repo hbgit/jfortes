@@ -1,0 +1,5 @@
+line_number?class_name?annotation
+17?Bag?//@ jfortes_constructor name = Bag, id = Bag_0, sequence = 0;
+24?Bag?//@ jfortes_constructor name = Bag, id = Bag_1, sequence = 1;
+31?Bag?//@ jfortes_method name = extractMin, from_constructors = {Bag_0}, sequence = 0;
+47?Bag?//@ jfortes_method name = printN, from_constructors = {Bag_0,Bag_1}, sequence = 1;
