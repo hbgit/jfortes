@@ -1,74 +1,74 @@
 ESC/Java version ESCJava-2.0.5
-/home/nhb/Documents/ON_DEV/JFORTES/dev_/jfortes/test_cases/jcute_tests/Bag_pre.java:17: Error: Unrecognized pragma: "jfortes_constructor"
+/home/hrocha/Documents/Projects_DEV/Samsung/JFORTES_git/jfortes/test_cases/jcute_tests/Bag_pre.java:17: Error: Unrecognized pragma: "jfortes_constructor"
    //@ jfortes_constructor name = Bag, id = Bag_0, sequence = 0;
        ^
-/home/nhb/Documents/ON_DEV/JFORTES/dev_/jfortes/test_cases/jcute_tests/Bag_pre.java:26: Error: Unrecognized pragma: "jfortes_constructor"
+/home/hrocha/Documents/Projects_DEV/Samsung/JFORTES_git/jfortes/test_cases/jcute_tests/Bag_pre.java:26: Error: Unrecognized pragma: "jfortes_constructor"
    //@ jfortes_constructor name = Bag, id = Bag_1, sequence = 1;
        ^
-/home/nhb/Documents/ON_DEV/JFORTES/dev_/jfortes/test_cases/jcute_tests/Bag_pre.java:35: Error: Unrecognized pragma: "jfortes_method"
+/home/hrocha/Documents/Projects_DEV/Samsung/JFORTES_git/jfortes/test_cases/jcute_tests/Bag_pre.java:35: Error: Unrecognized pragma: "jfortes_method"
    //@ jfortes_method name = extractMin, from_constructors = {Bag_0},  ...
        ^
-/home/nhb/Documents/ON_DEV/JFORTES/dev_/jfortes/test_cases/jcute_tests/Bag_pre.java:56: Error: Unrecognized pragma: "jfortes_method"
+/home/hrocha/Documents/Projects_DEV/Samsung/JFORTES_git/jfortes/test_cases/jcute_tests/Bag_pre.java:56: Error: Unrecognized pragma: "jfortes_method"
    //@ jfortes_method name = printN, from_constructors = {Bag_0,Bag_1} ...
        ^
-/home/nhb/Documents/ON_DEV/JFORTES/dev_/jfortes/test_cases/jcute_tests/Bag_pre.java: Caution: Using given file as the .java file, even though it is not the java file for Bag_pre on the classpath
-    [0.025 s 20240288 bytes]
+/home/hrocha/Documents/Projects_DEV/Samsung/JFORTES_git/jfortes/test_cases/jcute_tests/Bag_pre.java: Caution: Using given file as the .java file, even though it is not the java file for Bag_pre on the classpath
+    [0.025 s 19859664 bytes]
 
 Bag ...
-  Prover started:0.016 s 46273136 bytes
-    [0.987 s 47580408 bytes]
+  Prover started:0.033 s 47265392 bytes
+    [1.698 s 47871984 bytes]
 
 Bag: Bag(int[]) ...
 ------------------------------------------------------------------------
-/home/nhb/Documents/ON_DEV/JFORTES/dev_/jfortes/test_cases/jcute_tests/Bag_pre.java:21: Warning: Possible null dereference (Null)
+/home/hrocha/Documents/Projects_DEV/Samsung/JFORTES_git/jfortes/test_cases/jcute_tests/Bag_pre.java:21: Warning: Possible null dereference (Null)
       n = input.length;
                ^
 ------------------------------------------------------------------------
-    [2.189 s 69267784 bytes]  failed
+    [3.816 s 48150880 bytes]  failed
 
 Bag: Bag(int[], java.lang.String) ...
 ------------------------------------------------------------------------
-/home/nhb/Documents/ON_DEV/JFORTES/dev_/jfortes/test_cases/jcute_tests/Bag_pre.java:30: Warning: Possible null dereference (Null)
+/home/hrocha/Documents/Projects_DEV/Samsung/JFORTES_git/jfortes/test_cases/jcute_tests/Bag_pre.java:30: Warning: Possible null dereference (Null)
       n = input.length;
                ^
 ------------------------------------------------------------------------
-    [2.457 s 44926384 bytes]  failed
+    [4.172 s 79686624 bytes]  failed
 
 Bag: extractMin() ...
 ------------------------------------------------------------------------
-/home/nhb/Documents/ON_DEV/JFORTES/dev_/jfortes/test_cases/jcute_tests/Bag_pre.java:44: Warning: Possible null dereference (Null)
+/home/hrocha/Documents/Projects_DEV/Samsung/JFORTES_git/jfortes/test_cases/jcute_tests/Bag_pre.java:44: Warning: Possible null dereference (Null)
          if (a[i] < m)
               ^
 Execution trace information:
-    Reached top of loop after 0 iterations in "/home/nhb/Documents/ON_DEV/JFORTES/dev_/jfortes/test_cases/jcute_tests/Bag_pre.java", line 42, col 6.
+    Reached top of loop after 0 iterations in "/home/hrocha/Documents/Projects_DEV/Samsung/JFORTES_git/jfortes/test_cases/jcute_tests/Bag_pre.java", line 42, col 6.
 
 ------------------------------------------------------------------------
-/home/nhb/Documents/ON_DEV/JFORTES/dev_/jfortes/test_cases/jcute_tests/Bag_pre.java:44: Warning: Array index possibly too large (IndexTooBig)
+/home/hrocha/Documents/Projects_DEV/Samsung/JFORTES_git/jfortes/test_cases/jcute_tests/Bag_pre.java:44: Warning: Array index possibly too large (IndexTooBig)
          if (a[i] < m)
               ^
 Execution trace information:
-    Reached top of loop after 0 iterations in "/home/nhb/Documents/ON_DEV/JFORTES/dev_/jfortes/test_cases/jcute_tests/Bag_pre.java", line 42, col 6.
+    Reached top of loop after 0 iterations in "/home/hrocha/Documents/Projects_DEV/Samsung/JFORTES_git/jfortes/test_cases/jcute_tests/Bag_pre.java", line 42, col 6.
 
 ------------------------------------------------------------------------
-/home/nhb/Documents/ON_DEV/JFORTES/dev_/jfortes/test_cases/jcute_tests/Bag_pre.java:51: Warning: Possible null dereference (Null)
+/home/hrocha/Documents/Projects_DEV/Samsung/JFORTES_git/jfortes/test_cases/jcute_tests/Bag_pre.java:51: Warning: Possible null dereference (Null)
       a[mindex] = a[n];
                    ^
 Execution trace information:
-    Reached top of loop after 0 iterations in "/home/nhb/Documents/ON_DEV/JFORTES/dev_/jfortes/test_cases/jcute_tests/Bag_pre.java", line 42, col 6.
+    Reached top of loop after 0 iterations in "/home/hrocha/Documents/Projects_DEV/Samsung/JFORTES_git/jfortes/test_cases/jcute_tests/Bag_pre.java", line 42, col 6.
 
 ------------------------------------------------------------------------
-/home/nhb/Documents/ON_DEV/JFORTES/dev_/jfortes/test_cases/jcute_tests/Bag_pre.java:51: Warning: Possible negative array index (IndexNegative)
+/home/hrocha/Documents/Projects_DEV/Samsung/JFORTES_git/jfortes/test_cases/jcute_tests/Bag_pre.java:51: Warning: Possible negative array index (IndexNegative)
       a[mindex] = a[n];
                    ^
 Execution trace information:
-    Reached top of loop after 0 iterations in "/home/nhb/Documents/ON_DEV/JFORTES/dev_/jfortes/test_cases/jcute_tests/Bag_pre.java", line 42, col 6.
+    Reached top of loop after 0 iterations in "/home/hrocha/Documents/Projects_DEV/Samsung/JFORTES_git/jfortes/test_cases/jcute_tests/Bag_pre.java", line 42, col 6.
 
 ------------------------------------------------------------------------
-    [0.083 s 47477456 bytes]  failed
+    [0.172 s 83324584 bytes]  failed
 
 Bag: printN() ...
-    [0.056 s 51304144 bytes]  passed
-  [5.773 s 51304144 bytes total]
+    [0.068 s 85749864 bytes]  passed
+  [9.926 s 85749864 bytes total]
 1 caution
 6 warnings
 4 errors

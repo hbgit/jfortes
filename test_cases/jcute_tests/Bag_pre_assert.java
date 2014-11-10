@@ -80,13 +80,8 @@ Cute.Assert(  n >= 0 );
    }
 public static void main(String[] args){
 int[] arrJFORTES = new int [Cute.input.Integer()];
-Bag runJFORTES = new Bag( arrJFORTES );
+Bag runJFORTES_0 = new Bag( arrJFORTES );
 int[] arrJFORTES = new int [Cute.input.Integer()];
-Bag runJFORTES = new Bag( arrJFORTES );
-Bag runJFORTES = new Bag( );
-runJFORTES.a = new int [Cute.input.Integer()];
-runJFORTES.n = Cute.input.Integer();
-runJFORTES.extractMin();
-runJFORTES.printN();
+Bag runJFORTES_1 = new Bag( arrJFORTES, Cute.input.String(".") );
 }
 }

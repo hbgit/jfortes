@@ -6,6 +6,9 @@
 [DONE->PROJECT] Rewrote the annotations
 
 
+[DOING->PROJECT] Generating constructors to annotations --> LOC 382
+
+
 [DOING->PROJECT] Planning to adopt the annotation to generate main in the jcute model
     ==> Actual data:
         - datainput, e.g:
@@ -20,9 +23,13 @@
         HIP1:
         (1) Get data from code (method and attributes)
         (2) Generate data from code annotations, only if the program has no main method
-        (3) The code generation should be based on annotations and the additional data from generate_data2input
+        (3) The code generation should be based on annotations and the additional data
+        from generate_data2input
             (3.1) Running the generate_data2input from each method save the line number and the method name
             [--> generating all constructors]
+                (3.1.1) Search in the annotations data by all jfortes_constructor with the same method name
+                 and then generate the method constructor
+                (3.1.2) Save the "id" of constructor in data annotations
                 [--> generating all class attributes for that constructor]
                 [--> generating all class method for that constructor]
             (3.2) For each attribute identify if is a jfortes_attribute and then generate code for each attribute
