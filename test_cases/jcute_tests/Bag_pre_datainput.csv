@@ -2,7 +2,7 @@ Line;Variable;From;Scope;Type
 8;a;attribute;class;int[]
 9;n;attribute;class;int
 18;input;method;Bag;int[]
-25;input;method;Bag;int[]
-25;name;method;Bag;String
-32;0NONE;method;extractMin;0NONE
-48;0NONE;method;printN;0NONE
+18;name;method;Bag;String
+26;input;method;Bag;int[]
+34;0NONE;method;extractMin;0NONE
+50;0NONE;method;printN;0NONE

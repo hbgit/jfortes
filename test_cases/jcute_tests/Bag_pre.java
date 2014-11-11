@@ -14,6 +14,16 @@ class Bag {
    // jfortes_attribute name = a, from_constructors = {Bag_0}, sequence = 1;
    //int[] a;
 
+   //@ jfortes_constructor name = Bag, id = Bag_1, sequence = 1;
+   Bag(int[] input, String name)
+   {
+      System.out.println("In Bag: " + name);
+      n = input.length;
+      a = new int[n];
+      System.arraycopy(input, 0, a, 0, n);
+   }
+
+
    //@ jfortes_constructor name = Bag, id = Bag_0, sequence = 0;
    Bag(int[] input)
    {
@@ -23,14 +33,6 @@ class Bag {
       System.arraycopy(input, 0, a, 0, n);
    }
 
-   //@ jfortes_constructor name = Bag, id = Bag_1, sequence = 1;
-   Bag(int[] input, String name)
-   {
-      System.out.println("In Bag: " + name);
-      n = input.length;
-      a = new int[n];
-      System.arraycopy(input, 0, a, 0, n);
-   }
 
    //@ jfortes_method name = extractMin, from_constructors = {Bag_0}, sequence = 0;
    public int extractMin()
