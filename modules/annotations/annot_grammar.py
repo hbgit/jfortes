@@ -13,6 +13,7 @@ Version: 2
 from pyparsing import *
 import sys
 import re
+import operator
 
 #Utils
 BLACK, RED, GREEN, YELLOW, BLUE, MAGENTA, CYAN, WHITE = range(8)
@@ -73,7 +74,7 @@ annotationName              = identifyAnnot + (Keyword("jfortes_constructor").se
                                                Keyword("jfortes_method").setResultsName('annot_name') |
                                                Keyword("jfortes_attribute").setResultsName('annot_name'))
 
-attrName                    = Literal("name") + Literal("=") + (string).setResultsName('atrrName')
+attrName                    = Literal("name") + Literal("=") + (string).setResultsName('attrName')
 #attrArgs                    = Literal("args") + Literal("=") + Literal("(")+OneOrMore(string | Literal(",") + string | "none").setResultsName('attrArgs')+Literal(")")
 attrSequence                = Literal("sequence") + Literal("=") + number.setResultsName('attrSequence')
 attrId                      = Literal("id") + Literal("=") + (value2id).setResultsName('attrId')
@@ -111,10 +112,10 @@ def hasNoDuplicates (lst):
 #if __name__ == "__main__":
 def main_grammar(_annot_list):
     # CVS file to update
-    list_sequence = []
     #annot_csv_file = open(sys.argv[1])
     #annot_lines_csv = annot_csv_file.readlines()
     annot_lines_csv = _annot_list
+    #print(annot_lines_csv)
     #annot_csv_file.close()
 
     """
@@ -141,25 +142,27 @@ def main_grammar(_annot_list):
 
 
     # print the header csv file
-    csvheader = 'annot_name;atrrName;attrID;attrSequence;attrFromConstructors'
+    csvheader = 'seq;annot_name;attrName;attrID;attrSequence;attrFromConstructors'
     csvlistbody = []
+
+    lldata = []
+    head_dict = {}
 
     for index, eachannot in enumerate(list_txt_ANNOT):
 
         # The parse moment
         #print(eachannot)
         try:
+            indexList = len(lldata)
             parsed_annot = grammar.parseString( eachannot ).asDict()
+
+            head_dict[parsed_annot['attrName'][0]] = [int(parsed_annot['attrSequence']),indexList]
 
             # print the context csv file
             #text = parsed_annot.values()
             #print(';'.join(text))
 
             #print(parsed_annot)
-
-
-            list_sequence.append(parsed_annot['attrSequence'])
-
 
             tmp_list = []
             count_columns = 0
@@ -190,18 +193,20 @@ def main_grammar(_annot_list):
             if annotname == 'jfortes_constructor':
                 tmp_list.append("JFORTES_NONE")
 
-
+            lldata.append(tmp_list)
 
             # Check if tmp_list == 4. True
             #if len(tmp_list) == 4:
             #    tmp_list.insert(len(tmp_list)+1,"none")
 
             #print(';'.join(tmp_list))
-            csvlistbody.append(';'.join(tmp_list))
+            #csvlistbody.append(';'.join(tmp_list))
 
             #printout(str(parsed_annot.asList()), BLUE)
             #print("")
-        ##--------------------Improve this
+        ##--------------------Improve thi
+
+
         except ParseBaseException, pe:
             print()
             print("ERROR. JFORTES syntax is not correct, as shown: ")
@@ -212,6 +217,20 @@ def main_grammar(_annot_list):
             print("")
             print(" "*pe.loc+"^")
             sys.exit()
+    
+    head_dict = sorted(head_dict.items(), key = operator.itemgetter(1))
+
+    n = len(head_dict)
+    for i in range(0, n):
+        seq = head_dict[i][1][0]
+        #print (seq)
+        lldata[i].insert(0, str(seq))
+        if len(lldata[i])!= 0:
+            #print (';'.join(lldata[i]))
+            csvlistbody.append(';'.join(lldata[i]))
+        #lldataindex = lldata[head_dict[i][1][1]]
+        #data_csv = str(lldataindex)
+    #print(csvlistbody)
 
     # Print the output in csv format
     # TODO: rewrite this in function of the new structure
@@ -225,8 +244,8 @@ def main_grammar(_annot_list):
     parseresultfile.write(csvheader+"\n")
     #print(csvheader)
     for line in csvlistbody:
-        #print(line)
-        parseresultfile.write(line+"\n")
+
+        parseresultfile.write(str(line)+"\n")
     parseresultfile.close()
 
     return "/tmp/jfortes_parseresult.tmp_j"

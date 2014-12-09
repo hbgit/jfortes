@@ -5,14 +5,14 @@
 
 class Bag {
    // no relation
-   int[] a;
-   int n;
+   //int[] a;
+   //int n;
 
    //with relation
-   // jfortes_attribute name = n, from_constructors = {Bag_0}, sequence = 0;
-   //int n;
-   // jfortes_attribute name = a, from_constructors = {Bag_0}, sequence = 1;
-   //int[] a;
+   //@ jfortes_attribute name = n, from_constructors = {Bag_0}, sequence = 0;
+   int n;
+   //@ jfortes_attribute name = a, from_constructors = {Bag_0}, sequence = 1;
+   int[] a;
 
    //@ jfortes_constructor name = Bag, id = Bag_1, sequence = 1;
    Bag(int[] input, String name)

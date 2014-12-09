@@ -1,6 +1,6 @@
 Line;Variable;From;Scope;Type
-8;a;attribute;class;int[]
-9;n;attribute;class;int
+13;n;attribute;class;int
+15;a;attribute;class;int[]
 18;input;method;Bag;int[]
 18;name;method;Bag;String
 26;input;method;Bag;int[]
