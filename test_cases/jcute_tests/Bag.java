@@ -9,9 +9,9 @@ class Bag {
 	//int n;
     
     //with relation    
-    //@ jfortes_attribute name = n, from_constructors = {Bag_0}, sequence = 0;
+    //@ jfortes_attribute name = n, from_constructors = {Bag_0,Bag_1}, sequence = 0;
 	int n;
-    //@ jfortes_attribute name = a, from_constructors = {Bag_0}, sequence = 1;
+    //@ jfortes_attribute name = a, from_constructors = {Bag_0,Bag_1}, sequence = 1;
     	int[] a;
     
     //@ jfortes_constructor name = Bag, id = Bag_1, sequence = 1; 

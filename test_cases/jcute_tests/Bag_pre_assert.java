@@ -11,9 +11,9 @@ class Bag {
    //int n;
 
    //with relation
-   //@ jfortes_attribute name = n, from_constructors = {Bag_0}, sequence = 0;
+   //@ jfortes_attribute name = n, from_constructors = {Bag_0,Bag_1}, sequence = 0;
    int n;
-   //@ jfortes_attribute name = a, from_constructors = {Bag_0}, sequence = 1;
+   //@ jfortes_attribute name = a, from_constructors = {Bag_0,Bag_1}, sequence = 1;
    int[] a;
 
    //@ jfortes_constructor name = Bag, id = Bag_1, sequence = 1;
@@ -65,6 +65,8 @@ class Bag {
 public static void main(String[] args){
 int[] arrJFORTES = new int [Cute.input.Integer()]; 
 Bag runJFORTES_0 = new Bag( arrJFORTES, Cute.input.String(".") );
+ runJFORTES_0.n= Cute.input.Integer();
+ runJFORTES_0.a= new int [Cute.input.Integer()];
 Bag runJFORTES_1 = new Bag( Cute.input.String(".") );
  runJFORTES_1.n= Cute.input.Integer();
  runJFORTES_1.a= new int [Cute.input.Integer()];
