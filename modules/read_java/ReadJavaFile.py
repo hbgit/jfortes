@@ -578,8 +578,10 @@ class ReadJavaFile(object):
 
 
                                     #print(listOfCsvDataAnnot['attrFromConstructors'])
-                                    for attrFromConstr in listOfCsvDataAnnot['attrFromConstructors']:
-                                        if attrFromConstr == ID:
+                                    list = listOfCsvDataAnnot['attrFromConstructors'][i2].split(",")
+                                    print(list)
+                                    for itemf in list:
+                                        if itemf == ID:
 
                                             actual_linenum_method = ''
                                             cont_di = 0

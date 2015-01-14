@@ -109,14 +109,14 @@ def hasNoDuplicates (lst):
 # -------------------------------------------------
 # Main python program
 # -------------------------------------------------
-#if __name__ == "__main__":
-def main_grammar(_annot_list):
+if __name__ == "__main__":
+#def main_grammar(_annot_list):
     # CVS file to update
-    #annot_csv_file = open(sys.argv[1])
-    #annot_lines_csv = annot_csv_file.readlines()
-    annot_lines_csv = _annot_list
+    annot_csv_file = open(sys.argv[1])
+    annot_lines_csv = annot_csv_file.readlines()
+    #annot_lines_csv = _annot_list
     #print(annot_lines_csv)
-    #annot_csv_file.close()
+    annot_csv_file.close()
 
     """
     Variables gathing from input csv file
@@ -147,7 +147,9 @@ def main_grammar(_annot_list):
 
     lldata = []
     head_dict = {}
+    idC = 0
 
+    head_dict['constructors'] = []
     for index, eachannot in enumerate(list_txt_ANNOT):
 
         # The parse moment
@@ -155,8 +157,18 @@ def main_grammar(_annot_list):
         try:
             indexList = len(lldata)
             parsed_annot = grammar.parseString( eachannot ).asDict()
+            #idC = idC + 1
+            #if parsed_annot['annot_name'] == "jfortes_constructor":
+            #    constructor = parsed_annot['attrName'] + str(idC)
 
-            head_dict[parsed_annot['attrName'][0]] = [int(parsed_annot['attrSequence']),indexList]
+            listC = []
+            #BUG
+            if parsed_annot['annot_name'] == "jfortes_constructor":
+                listC = [parsed_annot['attrName'], [int(parsed_annot['attrSequence']),indexList]]
+                head_dict['constructors'].append(listC)
+
+            else:
+                head_dict[parsed_annot['attrName'][0]] = [int(parsed_annot['attrSequence']),indexList]
 
             # print the context csv file
             #text = parsed_annot.values()
@@ -195,6 +207,7 @@ def main_grammar(_annot_list):
 
             lldata.append(tmp_list)
 
+
             # Check if tmp_list == 4. True
             #if len(tmp_list) == 4:
             #    tmp_list.insert(len(tmp_list)+1,"none")
@@ -217,20 +230,26 @@ def main_grammar(_annot_list):
             print("")
             print(" "*pe.loc+"^")
             sys.exit()
-    
+
+    print(head_dict)
+    contConst = 0
     head_dict = sorted(head_dict.items(), key = operator.itemgetter(1))
 
     n = len(head_dict)
     for i in range(0, n):
-        seq = head_dict[i][1][0]
-        #print (seq)
-        lldata[i].insert(0, str(seq))
+        if lldata[i][0] == "jfortes_constructor":
+            seq = head_dict['constructors'][contConst][1][0]
+
+            lldata[i].insert(0, str(seq))
+            contConst = contConst + 1
+        else:
+            seq = head_dict[i][1][0]
+            lldata[i].insert(0, str(seq))
         if len(lldata[i])!= 0:
             #print (';'.join(lldata[i]))
             csvlistbody.append(';'.join(lldata[i]))
         #lldataindex = lldata[head_dict[i][1][1]]
         #data_csv = str(lldataindex)
-    #print(csvlistbody)
 
     # Print the output in csv format
     # TODO: rewrite this in function of the new structure
@@ -248,4 +267,4 @@ def main_grammar(_annot_list):
         parseresultfile.write(str(line)+"\n")
     parseresultfile.close()
 
-    return "/tmp/jfortes_parseresult.tmp_j"
+    #return "/tmp/jfortes_parseresult.tmp_j"
