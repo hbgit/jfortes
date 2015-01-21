@@ -13,7 +13,7 @@ Version: 2
 from pyparsing import *
 import sys
 import re
-from operator import itemgetter
+import operator
 
 #Utils
 BLACK, RED, GREEN, YELLOW, BLUE, MAGENTA, CYAN, WHITE = range(8)
@@ -145,91 +145,69 @@ if __name__ == "__main__":
     csvheader = 'seq;annot_name;attrName;attrID;attrSequence;attrFromConstructors'
     csvlistbody = []
 
-    # lldata = []
-    # head_dict = {}
-    # idC = 0
+    lldata = []
+    head_dict = {}
+    idC = 0
 
-    listl_all_annot = []  # list of lists ll = [[],[]]
+    head_dict['constructors'] = []
     for index, eachannot in enumerate(list_txt_ANNOT):
-        dic_info = {}
-        list_actual_annot = []
 
         # The parse moment
+        #print("eachannot",eachannot)
         try:
+            indexList = len(lldata)
             parsed_annot = grammar.parseString( eachannot ).asDict()
+            #idC = idC + 1
+            #if parsed_annot['annot_name'] == "jfortes_constructor":
+            #    constructor = parsed_annot['attrName'] + str(idC)
+            print("parsed_annot", parsed_annot)
+            sys.exit()
 
-            for key, value in parsed_annot.items():
-                if type(value) is ParseResults:
-                    txt = ' '.join(value)
-                else:
-                    txt = value
-
-                dic_info[key] = txt
-
-                #print("--", key, value)
+            listC = []
+            #BUG
             if parsed_annot['annot_name'] == "jfortes_constructor":
-                list_actual_annot.append(dic_info['attrSequence'])
-                list_actual_annot.append(dic_info['annot_name'])
-                list_actual_annot.append(dic_info['attrName'])
-                list_actual_annot.append(dic_info['attrId'])
-                list_actual_annot.append(dic_info['attrSequence'])
-                list_actual_annot.append("JFORTES_NONE")
+                listC = [parsed_annot['attrName'], [int(parsed_annot['attrSequence']),indexList]]
+                head_dict['constructors'].append(listC)
+
             else:
-                list_actual_annot.append(dic_info['attrSequence'])
-                list_actual_annot.append(dic_info['annot_name'])
-                list_actual_annot.append(dic_info['attrName'])
-                list_actual_annot.append("JFORTES_NONE")
-                list_actual_annot.append(dic_info['attrSequence'])
-                list_actual_annot.append(dic_info['attrFromConstr'])
+                head_dict[parsed_annot['attrName'][0]] = [int(parsed_annot['attrSequence']),indexList]
+
+            # print the context csv file
+            #text = parsed_annot.values()
+            #print(';'.join(text))
+
+            #print(parsed_annot)
+
+            tmp_list = []
+            count_columns = 0
+            annotname = ''
+            for key, value in parsed_annot.items():
+                #print(key, '=>', value)
+                if count_columns == 0:
+                    annotname = value
+
+                if type(value) == ParseResults:
+                    if len(value) > 1:
+                        strtemp = ''.join(value)
+                        if count_columns == 2 and (annotname == 'jfortes_method' or annotname == 'jfortes_attribute'):
+                            tmp_list.append("JFORTES_NONE")
+                        tmp_list.append(strtemp)
+                    else:
+                        if count_columns == 2 and (annotname == 'jfortes_method' or annotname == 'jfortes_attribute'):
+                            tmp_list.append("JFORTES_NONE")
+                        tmp_list.append(value[0])
+                else:
+                    if count_columns == 2 and (annotname == 'jfortes_method' or annotname == 'jfortes_attribute'):
+                        tmp_list.append("JFORTES_NONE")
+                    tmp_list.append(value)
+
+                count_columns += 1
 
 
-            listl_all_annot.append(list_actual_annot)
+            if annotname == 'jfortes_constructor':
+                tmp_list.append("JFORTES_NONE")
 
-
-#             #BUG
-#             if parsed_annot['annot_name'] == "jfortes_constructor":
-#                 listC = [parsed_annot['attrName'], [int(parsed_annot['attrSequence']),indexList]]
-#                 head_dict['constructors'].append(listC)
-#
-#             else:
-#                 head_dict[parsed_annot['attrName'][0]] = [int(parsed_annot['attrSequence']),indexList]
-#
-#             # print the context csv file
-#             #text = parsed_annot.values()
-#             #print(';'.join(text))
-#
-#             #print(parsed_annot)
-#
-#             tmp_list = []
-#             count_columns = 0
-#             annotname = ''
-#             for key, value in parsed_annot.items():
-#                 #print(key, '=>', value)
-#                 if count_columns == 0:
-#                     annotname = value
-#
-#                 if type(value) == ParseResults:
-#                     if len(value) > 1:
-#                         strtemp = ''.join(value)
-#                         if count_columns == 2 and (annotname == 'jfortes_method' or annotname == 'jfortes_attribute'):
-#                             tmp_list.append("JFORTES_NONE")
-#                         tmp_list.append(strtemp)
-#                     else:
-#                         if count_columns == 2 and (annotname == 'jfortes_method' or annotname == 'jfortes_attribute'):
-#                             tmp_list.append("JFORTES_NONE")
-#                         tmp_list.append(value[0])
-#                 else:
-#                     if count_columns == 2 and (annotname == 'jfortes_method' or annotname == 'jfortes_attribute'):
-#                         tmp_list.append("JFORTES_NONE")
-#                     tmp_list.append(value)
-#
-#                 count_columns += 1
-#
-#
-#             if annotname == 'jfortes_constructor':
-#                 tmp_list.append("JFORTES_NONE")
-#
-#             lldata.append(tmp_list)
+            lldata.append(tmp_list)
 
 
             # Check if tmp_list == 4. True
@@ -241,7 +219,8 @@ if __name__ == "__main__":
 
             #printout(str(parsed_annot.asList()), BLUE)
             #print("")
-        ##--------------------Improve this
+        ##--------------------Improve thi
+
 
         except ParseBaseException, pe:
             print()
@@ -255,21 +234,18 @@ if __name__ == "__main__":
             sys.exit()
 
 
-    sorted_annot = sorted(listl_all_annot, key=itemgetter(0))
-    print(sorted_annot)
-    #
-    # contConst = 0
-    # auxDic = {}
-    # keysOrder = list(head_dict.keys())
-    # keysOrder.sort()
-    # for key in keysOrder:
-    #     auxDic[key] = head_dict[key]
-    #
-    #
-    #
-    # #head_dict = sorted(head_dict.items(), key = operator.itemgetter(1))
-    #
-    # n = len(head_dict)
+    contConst = 0
+    auxDic = {}
+    keysOrder = list(head_dict.keys())
+    keysOrder.sort()
+    for key in keysOrder:
+        auxDic[key] = head_dict[key]
+
+
+
+    #head_dict = sorted(head_dict.items(), key = operator.itemgetter(1))
+
+    n = len(head_dict)
 #    for i in range(0, n):
 #        if lldata[i][0] == "jfortes_constructor":
 #            seq = head_dict['constructors'][contConst][1][0]
