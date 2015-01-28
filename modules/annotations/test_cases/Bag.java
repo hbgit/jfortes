@@ -5,14 +5,14 @@
 
 class Bag {
     // no relation
-	int[] a;
-	int n;
+	//int[] a;
+	//int n;
     
     //with relation    
-    // jfortes_attribute name = n, from_constructors = {Bag_0}, sequence = 0;
-	//int n;
-    // jfortes_attribute name = a, from_constructors = {Bag_0}, sequence = 1;
-    //int[] a;
+    //@ jfortes_attribute name = n, from_constructors = {Bag_0,Bag_1}, sequence = {0, 0};
+	int n;
+    //@ jfortes_attribute name = a, from_constructors = {Bag_0,Bag_1}, sequence = {1, 1};
+    int[] a;
     
     //@ jfortes_constructor name = Bag, id = Bag_1, sequence = 1; 
 	Bag(int[] input, String name) {
@@ -30,7 +30,7 @@ class Bag {
 	}    
     
 
-	//@ jfortes_method name = extractMin, from_constructors = {Bag_0}, sequence = 0; 
+	//@ jfortes_method name = extractMin, from_constructors = {Bag_0}, sequence = {0}; 
 	public int extractMin() {
 		int z, x, k;
 		int m = Integer.MAX_VALUE;
@@ -46,7 +46,7 @@ class Bag {
 		return m;
 	}
     
-    //@ jfortes_method name = printN, from_constructors = {Bag_0,Bag_1}, sequence = 1; 
+    //@ jfortes_method name = printN, from_constructors = {Bag_0,Bag_1}, sequence = {1, 0}; 
     public void printN(){
         System.out.println(this.n);
     }

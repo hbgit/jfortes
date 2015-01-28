@@ -76,7 +76,8 @@ annotationName              = identifyAnnot + (Keyword("jfortes_constructor").se
 
 attrName                    = Literal("name") + Literal("=") + (string).setResultsName('attrName')
 #attrArgs                    = Literal("args") + Literal("=") + Literal("(")+OneOrMore(string | Literal(",") + string | "none").setResultsName('attrArgs')+Literal(")")
-attrSequence                = Literal("sequence") + Literal("=") + number.setResultsName('attrSequence')
+#attrSequence                = Literal("sequence") + Literal("=") + number.setResultsName('attrSequence')
+attrSequence                = Literal("sequence") + Literal("=") + (number.setResultsName('attrSequence') | Literal("{") + (OneOrMore(number | Literal(",") + number)).setResultsName('attrSequence') + Literal("}"))
 attrId                      = Literal("id") + Literal("=") + (value2id).setResultsName('attrId')
 #attrSequencebyconstructor   = Keyword("sequencebyconstructor") + Literal("=") + number.setResultsName('attrSeqConstr')
 #name                        = Literal ("name") + Literal("=") + (string).setResultsName('name')
@@ -109,14 +110,14 @@ def hasNoDuplicates (lst):
 # -------------------------------------------------
 # Main python program
 # -------------------------------------------------
-if __name__ == "__main__":
-#def main_grammar(_annot_list):
+#if __name__ == "__main__":
+def main_grammar(_annot_list):
     # CVS file to update
-    annot_csv_file = open(sys.argv[1])
-    annot_lines_csv = annot_csv_file.readlines()
-    #annot_lines_csv = _annot_list
-    #print(annot_lines_csv)
-    annot_csv_file.close()
+    #annot_csv_file = open(sys.argv[1])
+    #annot_lines_csv = annot_csv_file.readlines()
+    annot_lines_csv = _annot_list
+    print(annot_lines_csv)
+    #annot_csv_file.close()
 
     """
     Variables gathing from input csv file
@@ -254,9 +255,9 @@ if __name__ == "__main__":
             print(" "*pe.loc+"^")
             sys.exit()
 
-
-    sorted_annot = sorted(listl_all_annot, key=itemgetter(0))
-    print(sorted_annot)
+    #print(listl_all_annot)
+    csvlistbody = sorted(listl_all_annot, key=itemgetter(0))
+    #print(csvlistbody)
     #
     # contConst = 0
     # auxDic = {}
@@ -301,4 +302,4 @@ if __name__ == "__main__":
         parseresultfile.write(str(line)+"\n")
     parseresultfile.close()
 
-    #return "/tmp/jfortes_parseresult.tmp_j"
+    return "/tmp/jfortes_parseresult.tmp_j"

@@ -12,7 +12,7 @@ class Bag {
     //@ jfortes_attribute name = n, from_constructors = {Bag_0,Bag_1}, sequence = 0;
 	int n;
     //@ jfortes_attribute name = a, from_constructors = {Bag_0,Bag_1}, sequence = 1;
-    	int[] a;
+    int[] a;
     
     //@ jfortes_constructor name = Bag, id = Bag_1, sequence = 1; 
 	Bag(int[] input, String name) {
