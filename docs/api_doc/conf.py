@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # jfortes documentation build configuration file, created by
-# sphinx-quickstart on Fri Oct 17 13:11:55 2014.
+# sphinx-quickstart on Wed Jan 28 13:13:35 2015.
 #
 # This file is execfile()d with the current directory set to its containing dir.
 #
@@ -41,7 +41,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'jfortes'
-copyright = u'2014, Author'
+copyright = u'2015, Author'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -248,7 +248,7 @@ texinfo_documents = [
 epub_title = u'jfortes'
 epub_author = u'Author'
 epub_publisher = u'Author'
-epub_copyright = u'2014, Author'
+epub_copyright = u'2015, Author'
 
 # The language of the text. It defaults to the language option
 # or en if the language is not set.

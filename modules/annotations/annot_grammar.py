@@ -116,7 +116,7 @@ def main_grammar(_annot_list):
     #annot_csv_file = open(sys.argv[1])
     #annot_lines_csv = annot_csv_file.readlines()
     annot_lines_csv = _annot_list
-    print(annot_lines_csv)
+    #print(annot_lines_csv)
     #annot_csv_file.close()
 
     """

@@ -17,6 +17,14 @@ annotations Package
     :undoc-members:
     :show-inheritance:
 
+:mod:`annot_grammar (cópia)` Module
+------------------------------------
+
+.. automodule:: modules.annotations.annot_grammar (cópia)
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 :mod:`annot_grammar` Module
 ---------------------------
 

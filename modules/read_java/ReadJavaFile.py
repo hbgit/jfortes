@@ -379,7 +379,7 @@ class ReadJavaFile(object):
                     list2visited_method = []
                     count2codegen = -1
                     list_last_sequence_constr = []
-
+                    #print(annot_name)
                     for ai, annot_name in enumerate(listOfCsvDataAnnot['annot_name']):
 
                         if annot_name == "jfortes_constructor":
@@ -579,7 +579,7 @@ class ReadJavaFile(object):
 
                                     #print(listOfCsvDataAnnot['attrFromConstructors'])
                                     list = listOfCsvDataAnnot['attrFromConstructors'][i2].split(",")
-                                    print(list)
+                                    #print(list)
                                     for itemf in list:
                                         if itemf == ID:
 
@@ -914,7 +914,7 @@ class ReadJavaFile(object):
         # Gettting the name of the functions
         get_start_data_method = commands.getoutput("ctags --sort=NO -x --c-kinds=f "+_javaPathFile).split("\n")
         for line in get_start_data_method:
-            #print(line)
+            print(line)
             matchDataMethod = re.search(r'([a-zA-Z0-9\_\(\)\[\]]*)[ ]*([a-zA-Z0-9]*)[ ]*([0-9]*)', line)
             if matchDataMethod:
                 if matchDataMethod.group(2) == "method":

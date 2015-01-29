@@ -1,5 +1,5 @@
 .. jfortes documentation master file, created by
-   sphinx-quickstart on Fri Oct 17 13:11:55 2014.
+   sphinx-quickstart on Wed Jan 28 13:13:35 2015.
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
