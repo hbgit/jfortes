@@ -350,11 +350,23 @@ class ReadJavaFile(object):
 
                     result_parse_annot = annot_grammar.main_grammar(list_annots)
 
+                    # -- lack of delimiters "}" -> {Bag_0, Bag_1}
+
+                    # -- BUG incorrect format o tmp file
+                    # seq;annot_name;attrName;attrID;attrSequence;attrFromConstructors
+                    # ['0', 'jfortes_constructor', 'Bag', 'Bag_0', '0', 'JFORTES_NONE']
+
+
+
                     # Reading CSV file with the data from code jfortes annotations
                     readCsvAnnot = ReaderCsvOutput.ReaderCsv()
                     readCsvAnnot.loadCsvFile(result_parse_annot)
                     listOfCsvDataAnnot = readCsvAnnot.getCsvColummns()
                     #print(listOfCsvDataAnnot)
+
+                    print("=============================")
+                    #print(listOfCsvDataAnnot)
+                    sys.exit()
 
 
                     #Adding a new main based on data gathered form parser

@@ -38,7 +38,7 @@ class ReaderCsv(object):
         """
 
         with open(pathCsvFile) as file:
-            reader = csv.DictReader(file,delimiter=';')
+            reader = csv.DictReader(file, delimiter=';')
             for row in reader:
                 #print(row)
                 for (k,v) in row.items():

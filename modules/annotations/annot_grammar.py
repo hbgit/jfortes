@@ -110,14 +110,14 @@ def hasNoDuplicates (lst):
 # -------------------------------------------------
 # Main python program
 # -------------------------------------------------
-#if __name__ == "__main__":
-def main_grammar(_annot_list):
+if __name__ == "__main__":
+#def main_grammar(_annot_list):
     # CVS file to update
-    #annot_csv_file = open(sys.argv[1])
-    #annot_lines_csv = annot_csv_file.readlines()
-    annot_lines_csv = _annot_list
+    annot_csv_file = open(sys.argv[1])
+    annot_lines_csv = annot_csv_file.readlines()
+    #annot_lines_csv = _annot_list
     #print(annot_lines_csv)
-    #annot_csv_file.close()
+    annot_csv_file.close()
 
     """
     Variables gathing from input csv file
@@ -237,8 +237,8 @@ def main_grammar(_annot_list):
             #if len(tmp_list) == 4:
             #    tmp_list.insert(len(tmp_list)+1,"none")
 
-            #print(';'.join(tmp_list))
-            #csvlistbody.append(';'.join(tmp_list))
+            #print(';'.join(list_actual_annot))
+            csvlistbody.append(';'.join(list_actual_annot))
 
             #printout(str(parsed_annot.asList()), BLUE)
             #print("")
@@ -256,9 +256,34 @@ def main_grammar(_annot_list):
             sys.exit()
 
     #print(listl_all_annot)
-    csvlistbody = sorted(listl_all_annot, key=itemgetter(0))
-    #print(csvlistbody)
-    #
+    listl_all_annot = sorted(listl_all_annot, key=itemgetter(0))
+    #for line in listl_all_annot:
+     #   print (line)
+
+    list_constr = []
+    order = []
+
+    for line in listl_all_annot:
+        annottype = line[1]
+        if annottype == "jfortes_constructor":
+            list_constr.append(line)
+            listl_all_annot.remove(line)
+
+    for constructor in list_constr:
+        order.append(constructor)
+        idConstr = constructor[3]
+        for line in listl_all_annot:
+            annottype = line[1]
+            if (annottype == "jfortes_attribute") and (idConstr in line[5]):
+                order.append(line)
+        for line in listl_all_annot:
+            annottype = line[1]
+            if annottype == "jfortes_method" and (idConstr in line[5]):
+                order.append(line)
+    for i in order:
+        print(i)
+
+
     # contConst = 0
     # auxDic = {}
     # keysOrder = list(head_dict.keys())
@@ -302,4 +327,4 @@ def main_grammar(_annot_list):
         parseresultfile.write(str(line)+"\n")
     parseresultfile.close()
 
-    return "/tmp/jfortes_parseresult.tmp_j"
+    #return "/tmp/jfortes_parseresult.tmp_j"
