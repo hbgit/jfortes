@@ -110,14 +110,14 @@ def hasNoDuplicates (lst):
 # -------------------------------------------------
 # Main python program
 # -------------------------------------------------
-if __name__ == "__main__":
-#def main_grammar(_annot_list):
+#if __name__ == "__main__":
+def main_grammar(_annot_list):
     # CVS file to update
-    annot_csv_file = open(sys.argv[1])
-    annot_lines_csv = annot_csv_file.readlines()
-    #annot_lines_csv = _annot_list
+    #annot_csv_file = open(sys.argv[1])
+    #annot_lines_csv = annot_csv_file.readlines()
+    annot_lines_csv = _annot_list
     #print(annot_lines_csv)
-    annot_csv_file.close()
+    #annot_csv_file.close()
 
     """
     Variables gathing from input csv file
@@ -238,7 +238,7 @@ if __name__ == "__main__":
             #    tmp_list.insert(len(tmp_list)+1,"none")
 
             #print(';'.join(list_actual_annot))
-            csvlistbody.append(';'.join(list_actual_annot))
+            #csvlistbody.append(';'.join(list_actual_annot))
 
             #printout(str(parsed_annot.asList()), BLUE)
             #print("")
@@ -281,7 +281,8 @@ if __name__ == "__main__":
             if annottype == "jfortes_method" and (idConstr in line[5]):
                 order.append(line)
     for i in order:
-        print(i)
+        #print(">>> " + str(i))
+        csvlistbody.append(';'.join(i))
 
 
     # contConst = 0
@@ -323,8 +324,7 @@ if __name__ == "__main__":
     parseresultfile.write(csvheader+"\n")
     #print(csvheader)
     for line in csvlistbody:
-
         parseresultfile.write(str(line)+"\n")
     parseresultfile.close()
 
-    #return "/tmp/jfortes_parseresult.tmp_j"
+    return "/tmp/jfortes_parseresult.tmp_j"

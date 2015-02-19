@@ -63,5 +63,8 @@ class Bag {
       System.out.println(this.n);
    }
 public static void main(String[] args){
+int[] arrJFORTES = new int [Cute.input.Integer()]; 
+Bag runJFORTES_0 = new Bag( arrJFORTES, Cute.input.String(".") );
+Bag runJFORTES_1 = new Bag( Cute.input.String(".") );
 }
 }
