@@ -373,8 +373,14 @@ class ReadJavaFile(object):
                     #for item in listOfCsvDataAnnot:
                     #    print(item)
 
+
                     annotation = annot_data.AnnotData(listOfCsvDataAnnot, self.listOfCsvDataInput)
-                    print(annotation.getMethods())
+
+                    print()
+                    print(">>>>>>>>>>>")
+                    annotation.print_annot()
+                    #annotation.getConstructors()
+                    #annotation.getAttributes()
 
                     sys.exit()
 

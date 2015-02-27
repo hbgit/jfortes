@@ -3,6 +3,6 @@ Line;Variable;From;Scope;Type
 15;a;attribute;class;int[]
 18;input;method;Bag;int[]
 18;name;method;Bag;String
-26;input;method;Bag;int[]
+26;input2;method;Bag;int[]
 34;0NONE;method;extractMin;0NONE
 50;0NONE;method;printN;0NONE

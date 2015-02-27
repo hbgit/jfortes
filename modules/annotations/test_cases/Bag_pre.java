@@ -9,12 +9,12 @@ class Bag {
    //int n;
 
    //with relation
-   //@ jfortes_attribute name = n, from_constructors = {Bag_0,Bag_1}, sequence = {0, 0};
+   //@ jfortes_attribute name = n, from_constructors = {Bag_0,Bag_1}, sequence = {0, 0}, line = 13;
    int n;
-   //@ jfortes_attribute name = a, from_constructors = {Bag_0,Bag_1}, sequence = {1, 1};
+   //@ jfortes_attribute name = a, from_constructors = {Bag_0,Bag_1}, sequence = {1, 1}, line = 15;
    int[] a;
 
-   //@ jfortes_constructor name = Bag, id = Bag_1, sequence = 1;
+   //@ jfortes_constructor name = Bag, id = Bag_1, sequence = 1, line = 18;
    Bag(int[] input, String name)
    {
       System.out.println("In Bag: " + name);
@@ -24,8 +24,8 @@ class Bag {
    }
 
 
-   //@ jfortes_constructor name = Bag, id = Bag_0, sequence = 0;
-   Bag(int[] input)
+   //@ jfortes_constructor name = Bag, id = Bag_0, sequence = 0, line = 26;
+   Bag(int[] input2)
    {
       System.out.println("In default Bag");
       n = input.length;
@@ -34,7 +34,7 @@ class Bag {
    }
 
 
-   //@ jfortes_method name = extractMin, from_constructors = {Bag_0}, sequence = {0};
+   //@ jfortes_method name = extractMin, from_constructors = {Bag_0}, sequence = {0}, line = 34;
    public int extractMin()
    {
       int z, x, k;
@@ -55,7 +55,7 @@ class Bag {
    }
 
 
-   //@ jfortes_method name = printN, from_constructors = {Bag_0,Bag_1}, sequence = {1, 0};
+   //@ jfortes_method name = printN, from_constructors = {Bag_0,Bag_1}, sequence = {1, 0}, line = 50;
    public void printN()
    {
       System.out.println(this.n);

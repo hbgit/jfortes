@@ -79,6 +79,7 @@ attrName                    = Literal("name") + Literal("=") + (string).setResul
 #attrSequence                = Literal("sequence") + Literal("=") + number.setResultsName('attrSequence')
 attrSequence                = Literal("sequence") + Literal("=") + (number.setResultsName('attrSequence') | Literal("{") + (OneOrMore(number | Literal(",") + number)).setResultsName('attrSequence') + Literal("}"))
 attrId                      = Literal("id") + Literal("=") + (value2id).setResultsName('attrId')
+attrLoc                     = Literal ("line") + Literal("=") + (number.setResultsName('attrLoc'))
 #attrSequencebyconstructor   = Keyword("sequencebyconstructor") + Literal("=") + number.setResultsName('attrSeqConstr')
 #name                        = Literal ("name") + Literal("=") + (string).setResultsName('name')
 #typeAttr                    = Literal ("type") + Literal ("=") + (string).setResultsName('typeAttr')
@@ -90,13 +91,13 @@ attrFromConstructors           = Literal("from_constructors") + Literal("=") + L
 
 
 # TODO: The annotations should be flexible to write the attributes in any place
-annotation2Constructor      = annotationName + attrName + Literal(",") + attrId + Literal(",") + attrSequence + Literal(";")
+annotation2Constructor      = annotationName + attrName + Literal(",") + attrId + Literal(",") + attrSequence + Literal(",") + attrLoc +Literal(";")
 
 annotation2Method           = annotationName + attrName + Literal(",") + attrFromConstructors + Literal(",") + \
-                              attrSequence  + Literal(";")
+                              attrSequence  + Literal(",") + attrLoc + Literal(";")
 
 annotation2Attribute        = annotationName + attrName + Literal(",") + attrFromConstructors + Literal(",") + \
-                              attrSequence + Literal(";")
+                              attrSequence + Literal(",") + attrLoc + Literal(";")
 
 rule                        = annotation2Constructor | annotation2Method | annotation2Attribute
 grammar                     = rule

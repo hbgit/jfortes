@@ -6,10 +6,10 @@ ESC/Java version ESCJava-2.0.5
    //@ jfortes_attribute name = a, from_constructors = {Bag_0,Bag_1},  ...
        ^
 /home/lbentes/Documentos/projeto_JFORTES_atual/jfortes/modules/annotations/test_cases/Bag_pre.java:17: Error: Unrecognized pragma: "jfortes_constructor"
-   //@ jfortes_constructor name = Bag, id = Bag_1, sequence = 1;
+   //@ jfortes_constructor name = Bag, id = Bag_1, sequence = 1, line  ...
        ^
 /home/lbentes/Documentos/projeto_JFORTES_atual/jfortes/modules/annotations/test_cases/Bag_pre.java:27: Error: Unrecognized pragma: "jfortes_constructor"
-   //@ jfortes_constructor name = Bag, id = Bag_0, sequence = 0;
+   //@ jfortes_constructor name = Bag, id = Bag_0, sequence = 0, line  ...
        ^
 /home/lbentes/Documentos/projeto_JFORTES_atual/jfortes/modules/annotations/test_cases/Bag_pre.java:37: Error: Unrecognized pragma: "jfortes_method"
    //@ jfortes_method name = extractMin, from_constructors = {Bag_0},  ...
@@ -18,7 +18,7 @@ ESC/Java version ESCJava-2.0.5
    //@ jfortes_method name = printN, from_constructors = {Bag_0,Bag_1} ...
        ^
 /home/lbentes/Documentos/projeto_JFORTES_atual/jfortes/modules/annotations/test_cases/Bag_pre.java: Caution: Using given file as the .java file, even though it is not the java file for Bag_pre on the classpath
-    [0.038 s 27762048 bytes]
+    [0.035 s 27789936 bytes]
 
 Bag ...
 /usr/lib/jvm/java-1.7.0-openjdk-1.7.0.65-2.5.2.5.fc20.x86_64/jre/lib/rt.jar:java/lang/String.class: Error: Modifier 'transient' not allowed on method declarations
@@ -45,6 +45,15 @@ Bag ...
 /usr/lib/jvm/java-1.7.0-openjdk-1.7.0.65-2.5.2.5.fc20.x86_64/jre/lib/rt.jar:java/io/PrintStream.class: Error: Different or incompatible return types on overridden(hidden) and overriding(hiding) methods
 /usr/lib/jvm/java-1.7.0-openjdk-1.7.0.65-2.5.2.5.fc20.x86_64/jre/lib/rt.jar:java/io/PrintStream.class: Error: Different or incompatible return types on overridden(hidden) and overriding(hiding) methods
 /usr/lib/jvm/java-1.7.0-openjdk-1.7.0.65-2.5.2.5.fc20.x86_64/jre/lib/rt.jar:java/io/PrintStream.class: Error: Different or incompatible return types on overridden(hidden) and overriding(hiding) methods
+/home/lbentes/Documentos/projeto_JFORTES_atual/jfortes/modules/annotations/test_cases/Bag_pre.java:31: Error: Cannot resolve variable access 'input.length'
+      n = input.length;
+          ^
+/home/lbentes/Documentos/projeto_JFORTES_atual/jfortes/modules/annotations/test_cases/Bag_pre.java:33: Error: Undefined variable 'input'
+      System.arraycopy(input, 0, a, 0, n);
+                       ^
+/home/lbentes/Documentos/projeto_JFORTES_atual/jfortes/modules/annotations/test_cases/Bag_pre.java:33: Error: No method arraycopy(error, int, int[], int, int) matching given argument types
+      System.arraycopy(input, 0, a, 0, n);
+             ^
 /home/lbentes/Documentos/tools/ESCJava/escspecs.jar:java/lang/Integer.jml:356: Error: Modifier 'volatile' not allowed on method declarations
     /*@ also
     ^
@@ -53,6 +62,6 @@ Bag ...
     ^
 /usr/lib/jvm/java-1.7.0-openjdk-1.7.0.65-2.5.2.5.fc20.x86_64/jre/lib/rt.jar:java/lang/Integer.class: Error: Modifier 'Unknown javafe GeneratedTag -1' not allowed on field declarations
 Caution: Turning off extended static checking due to type error(s)
-  [0.383 s 28602472 bytes total] (aborted)
+  [0.404 s 28855256 bytes total] (aborted)
 2 cautions
-29 errors
+32 errors
