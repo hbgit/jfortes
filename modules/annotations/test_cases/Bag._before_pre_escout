@@ -18,33 +18,9 @@ ESC/Java version ESCJava-2.0.5
     //@ jfortes_method name = printN, from_constructors = {Bag_0,Bag_1 ...
         ^
 /home/lbentes/Documentos/projeto_JFORTES_atual/jfortes/modules/annotations/test_cases/Bag.java: Caution: Using given file as the .java file, even though it is not the java file for Bag on the classpath
-    [0.038 s 27625784 bytes]
+    [0.099 s 18883128 bytes]
 
 Bag ...
-/usr/lib/jvm/java-1.7.0-openjdk-1.7.0.65-2.5.2.5.fc20.x86_64/jre/lib/rt.jar:java/lang/String.class: Error: Modifier 'transient' not allowed on method declarations
-/usr/lib/jvm/java-1.7.0-openjdk-1.7.0.65-2.5.2.5.fc20.x86_64/jre/lib/rt.jar:java/lang/String.class: Error: Modifier 'transient' not allowed on method declarations
-/home/lbentes/Documentos/tools/ESCJava/escspecs.jar:java/lang/String.spec:532: Error: Modifier 'volatile' not allowed on method declarations
-    /*@ also
-    ^
-/home/lbentes/Documentos/tools/ESCJava/escspecs.jar:java/lang/String.spec:532: Error: Modifier 'Unknown javafe GeneratedTag -1' not allowed on method declarations
-    /*@ also
-    ^
-/usr/lib/jvm/java-1.7.0-openjdk-1.7.0.65-2.5.2.5.fc20.x86_64/jre/lib/rt.jar:java/io/PrintStream.class: Error: Modifier 'transient' not allowed on method declarations
-/usr/lib/jvm/java-1.7.0-openjdk-1.7.0.65-2.5.2.5.fc20.x86_64/jre/lib/rt.jar:java/io/PrintStream.class: Error: Modifier 'transient' not allowed on method declarations
-/usr/lib/jvm/java-1.7.0-openjdk-1.7.0.65-2.5.2.5.fc20.x86_64/jre/lib/rt.jar:java/io/PrintStream.class: Error: Modifier 'transient' not allowed on method declarations
-/usr/lib/jvm/java-1.7.0-openjdk-1.7.0.65-2.5.2.5.fc20.x86_64/jre/lib/rt.jar:java/io/PrintStream.class: Error: Modifier 'transient' not allowed on method declarations
-/usr/lib/jvm/java-1.7.0-openjdk-1.7.0.65-2.5.2.5.fc20.x86_64/jre/lib/rt.jar:java/io/PrintStream.class: Error: Modifier 'volatile' not allowed on method declarations
-/usr/lib/jvm/java-1.7.0-openjdk-1.7.0.65-2.5.2.5.fc20.x86_64/jre/lib/rt.jar:java/io/PrintStream.class: Error: Modifier 'Unknown javafe GeneratedTag -1' not allowed on method declarations
-/usr/lib/jvm/java-1.7.0-openjdk-1.7.0.65-2.5.2.5.fc20.x86_64/jre/lib/rt.jar:java/io/PrintStream.class: Error: Duplicate declaration of method with same signature
-/usr/lib/jvm/java-1.7.0-openjdk-1.7.0.65-2.5.2.5.fc20.x86_64/jre/lib/rt.jar:java/io/PrintStream.class: Error: Modifier 'volatile' not allowed on method declarations
-/usr/lib/jvm/java-1.7.0-openjdk-1.7.0.65-2.5.2.5.fc20.x86_64/jre/lib/rt.jar:java/io/PrintStream.class: Error: Modifier 'Unknown javafe GeneratedTag -1' not allowed on method declarations
-/usr/lib/jvm/java-1.7.0-openjdk-1.7.0.65-2.5.2.5.fc20.x86_64/jre/lib/rt.jar:java/io/PrintStream.class: Error: Duplicate declaration of method with same signature
-/usr/lib/jvm/java-1.7.0-openjdk-1.7.0.65-2.5.2.5.fc20.x86_64/jre/lib/rt.jar:java/io/PrintStream.class: Error: Modifier 'volatile' not allowed on method declarations
-/usr/lib/jvm/java-1.7.0-openjdk-1.7.0.65-2.5.2.5.fc20.x86_64/jre/lib/rt.jar:java/io/PrintStream.class: Error: Modifier 'Unknown javafe GeneratedTag -1' not allowed on method declarations
-/usr/lib/jvm/java-1.7.0-openjdk-1.7.0.65-2.5.2.5.fc20.x86_64/jre/lib/rt.jar:java/io/PrintStream.class: Error: Duplicate declaration of method with same signature
-/usr/lib/jvm/java-1.7.0-openjdk-1.7.0.65-2.5.2.5.fc20.x86_64/jre/lib/rt.jar:java/io/PrintStream.class: Error: Different or incompatible return types on overridden(hidden) and overriding(hiding) methods
-/usr/lib/jvm/java-1.7.0-openjdk-1.7.0.65-2.5.2.5.fc20.x86_64/jre/lib/rt.jar:java/io/PrintStream.class: Error: Different or incompatible return types on overridden(hidden) and overriding(hiding) methods
-/usr/lib/jvm/java-1.7.0-openjdk-1.7.0.65-2.5.2.5.fc20.x86_64/jre/lib/rt.jar:java/io/PrintStream.class: Error: Different or incompatible return types on overridden(hidden) and overriding(hiding) methods
 /home/lbentes/Documentos/projeto_JFORTES_atual/jfortes/modules/annotations/test_cases/Bag.java:28: Error: Cannot resolve variable access 'input.length'
                 n = input.length; a = new int[n];
                     ^
@@ -54,14 +30,7 @@ Bag ...
 /home/lbentes/Documentos/projeto_JFORTES_atual/jfortes/modules/annotations/test_cases/Bag.java:29: Error: No method arraycopy(error, int, int[], int, int) matching given argument types
                 System.arraycopy(input, 0, a, 0, n);
                        ^
-/home/lbentes/Documentos/tools/ESCJava/escspecs.jar:java/lang/Integer.jml:356: Error: Modifier 'volatile' not allowed on method declarations
-    /*@ also
-    ^
-/home/lbentes/Documentos/tools/ESCJava/escspecs.jar:java/lang/Integer.jml:356: Error: Modifier 'Unknown javafe GeneratedTag -1' not allowed on method declarations
-    /*@ also
-    ^
-/usr/lib/jvm/java-1.7.0-openjdk-1.7.0.65-2.5.2.5.fc20.x86_64/jre/lib/rt.jar:java/lang/Integer.class: Error: Modifier 'Unknown javafe GeneratedTag -1' not allowed on field declarations
 Caution: Turning off extended static checking due to type error(s)
-  [0.499 s 28861120 bytes total] (aborted)
+  [0.614 s 32386968 bytes total] (aborted)
 2 cautions
-32 errors
+9 errors

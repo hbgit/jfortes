@@ -144,7 +144,7 @@ def main_grammar(_annot_list):
 
 
     # print the header csv file
-    csvheader = 'seq;annot_name;attrName;attrID;attrSequence;attrFromConstructors'
+    csvheader = 'seq;annot_name;attrName;attrID;attrSequence;attrFromConstructors;attrLoc'
     csvlistbody = []
 
     # lldata = []
@@ -176,6 +176,7 @@ def main_grammar(_annot_list):
                 list_actual_annot.append(dic_info['attrId'])
                 list_actual_annot.append(dic_info['attrSequence'])
                 list_actual_annot.append("JFORTES_NONE")
+                list_actual_annot.append(dic_info['attrLoc'])
             else:
                 list_actual_annot.append(dic_info['attrSequence'])
                 list_actual_annot.append(dic_info['annot_name'])
@@ -183,6 +184,8 @@ def main_grammar(_annot_list):
                 list_actual_annot.append("JFORTES_NONE")
                 list_actual_annot.append(dic_info['attrSequence'])
                 list_actual_annot.append(dic_info['attrFromConstr'])
+                list_actual_annot.append(dic_info['attrLoc'])
+
 
 
             listl_all_annot.append(list_actual_annot)

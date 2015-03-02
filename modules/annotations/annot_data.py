@@ -11,47 +11,132 @@ class AnnotData(object):
         self.listOfAnnot = _listOfAnnot
         self.listOfInput = _listOfInput
         self.indexlist = None
+        self.indexlistC = None
 
 
-    def getdatadifromscope(self, _scopename, _varname):
+    def getdatadifromscopeConstr(self, _scopename):
 
         #print(self.listOfInput)
-
         dictInfo = {}
         arglist = []
         typelist = []
         index = 0
         #print("=======")
+        if self.indexlistC != None:
+            index = self.indexlistC
 
-        while index < len(self.listOfInput['Scope']):
-
+        while index < (len(self.listOfInput['Scope'])-1):
             scope = self.listOfInput['Scope'][index]
             variablename = self.listOfInput['Variable'][index]
+            linenumber = self.listOfInput['Line'][index]
 
-            #print("scope: "+ scope + " _scopename: " + _scopename +" _varname: "  + _varname + " variablename: "+ variablename)
-            if scope == _scopename and _varname == variablename:
-                print("igual==============================================")
+            #print("scope: "+ scope + " _scopename: " + _scopename +" _loc: "  + _loc + " linenumber: "+ linenumber)
+            if scope == _scopename:
                 # if self.indexlist == None:
                 #     index = index_la
                 # else:
                 #     index = self.indexlist
 
+
                 arglist.append(variablename)
                 typelist.append(self.listOfInput['Type'][index])
 
 
-                while (self.listOfInput['Line'][index+1]) == self.listOfInput['Line'][index]:
+                while (self.listOfInput['Line'][index+1]) == (self.listOfInput['Line'][index]):
                     index += 1
                     arglist.append(self.listOfInput['Variable'][index])
                     typelist.append(self.listOfInput['Type'][index])
-
             # Cuz we just want the actual element from this index, i.e., from the actual scope
-            break
+                break
+            index +=1
 
         dictInfo['Args'] = arglist
         dictInfo['Type'] = typelist
 
-        # self.indexlist = index + 1
+        self.indexlistC = index + 1
+        #print(dictInfo)
+
+        return dictInfo
+
+    def getdatadifromscopeMethod(self, _scopename):
+        dictInfo = {}
+        arglist = []
+        typelist = []
+        index = 0
+        tamanho = len(self.listOfInput['Scope'])
+        #print("=======")
+
+        while index < (tamanho):
+            scope = self.listOfInput['Scope'][index]
+            variablename = self.listOfInput['Variable'][index]
+            linenumber = self.listOfInput['Line'][index]
+
+            #print("scope: "+ scope + " _scopename: " + _scopename +" _loc: "  + _loc + " linenumber: "+ linenumber)
+            if scope == _scopename:
+                # if self.indexlist == None:
+                #     index = index_la
+                # else:
+                #     index = self.indexlist
+
+
+                arglist.append(variablename)
+                typelist.append(self.listOfInput['Type'][index])
+
+
+                if (index < tamanho -1):
+                    while (self.listOfInput['Line'][index+1]) == (self.listOfInput['Line'][index]):
+                        index += 1
+                        arglist.append(self.listOfInput['Variable'][index])
+                        typelist.append(self.listOfInput['Type'][index])
+            # Cuz we just want the actual element from this index, i.e., from the actual scope
+                break
+            index +=1
+
+        dictInfo['Args'] = arglist
+        dictInfo['Type'] = typelist
+
+        self.indexlist = index + 1
+        #print(dictInfo)
+
+        return dictInfo
+    def getdatadifromscopeAttributes(self, _scopename, _varname):
+        dictInfo = {}
+        arglist = []
+        typelist = []
+        index = 0
+        tamanho = len(self.listOfInput['Scope'])
+        #print("=======")
+
+        while index < (tamanho):
+            scope = self.listOfInput['Scope'][index]
+            variablename = self.listOfInput['Variable'][index]
+            linenumber = self.listOfInput['Line'][index]
+
+            #print("scope: "+ scope + " _scopename: " + _scopename +" _loc: "  + _loc + " linenumber: "+ linenumber)
+            if scope == _scopename and variablename == _varname:
+                # if self.indexlist == None:
+                #     index = index_la
+                # else:
+                #     index = self.indexlist
+
+
+                arglist.append(variablename)
+                typelist.append(self.listOfInput['Type'][index])
+
+
+                if (index < tamanho -1):
+                    while (self.listOfInput['Line'][index+1]) == (self.listOfInput['Line'][index]):
+                        index += 1
+                        arglist.append(self.listOfInput['Variable'][index])
+                        typelist.append(self.listOfInput['Type'][index])
+            # Cuz we just want the actual element from this index, i.e., from the actual scope
+                break
+            index +=1
+
+        dictInfo['Args'] = arglist
+        dictInfo['Type'] = typelist
+
+        self.indexlist = index + 1
         #print(dictInfo)
 
         return dictInfo
@@ -62,19 +147,23 @@ class AnnotData(object):
 
         for index_la, item in enumerate (self.listOfAnnot['annot_name']):
             lista = []
-
+            dict_listofargs = []
             dict_resultattr = {'Args': [], 'Type': []}
 
             # get data from data_input
-            if item == "jfortes_constructor" or item == "jfortes_method":
+            if item == "jfortes_constructor":
                 actualname = self.listOfAnnot['attrName'][index_la]
-                print(">>>>>>>>>>", actualname, self.listOfAnnot['attrName'][index_la])
-                dict_listofargs = self.getdatadifromscope(actualname, self.listOfAnnot['attrName'][index_la])
+                # print(">>>>>>>>>>", actualname, self.listOfAnnot['attrName'][index_la])
+                dict_listofargs = self.getdatadifromscopeConstr(actualname)
+            elif item == "jfortes_method":
+                actualname = self.listOfAnnot['attrName'][index_la]
+                line = self.listOfAnnot['attrLoc'][index_la]
+                dict_listofargs = self.getdatadifromscopeMethod(actualname)
             else:
-                dict_listofargs = self.getdatadifromscope('class', self.listOfAnnot['attrName'][index_la])
+                varname = self.listOfAnnot['attrName'][index_la]
+                dict_listofargs = self.getdatadifromscopeAttributes('class', varname)
 
             #
-            print(dict_listofargs)
             lista.append(item)
             lista.append(dict_listofargs)
             list_all.append(lista)
@@ -101,8 +190,7 @@ class AnnotData(object):
                 # is a list
                 dict_listofargs = self.getdatadifromscope('class', self.listOfAnnot['attrName'][index_la])
                 dict_listoftypes = self.getdatadifromscope('class', self.listOfAnnot['attrName'][index_la])
-                print(dict_listoftypes)
-                print(dict_listofargs)
+
 
                 for item_arg_type in dict_listofargs['Args']:
                     dict_resultattr['Args'].append(item_arg_type)
@@ -110,7 +198,6 @@ class AnnotData(object):
                     dict_resultattr['Type'].append(item_arg_type)
 
         # print for DEBUG
-        print("______________________________________________________________@")
         print(dict_resultattr)
 
 
