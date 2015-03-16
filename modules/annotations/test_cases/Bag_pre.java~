@@ -1,3 +1,5 @@
+<<<<<<< HEAD
+=======
 /**
  * Running uncrustify
  * ./uncrustify -q -l C -c ben.cfg -f <program.java>
@@ -61,3 +63,4 @@ class Bag {
       System.out.println(this.n);
    }
 }
+>>>>>>> Minor changes

@@ -160,17 +160,19 @@ class AnnotData(object):
                 line = self.listOfAnnot['attrLoc'][index_la]
                 dict_listofargs = self.getdatadifromscopeMethod(actualname)
             else:
-                varname = self.listOfAnnot['attrName'][index_la]
-                dict_listofargs = self.getdatadifromscopeAttributes('class', varname)
+                actualname = self.listOfAnnot['attrName'][index_la]
+                dict_listofargs = self.getdatadifromscopeAttributes('class', actualname)
 
             #
             lista.append(item)
+            lista.append(actualname)
             lista.append(dict_listofargs)
             list_all.append(lista)
 
-        print("")
-        for item in list_all:
-            print(item)
+        # print("")
+        # for item in list_all:
+        #     print(item)
+        return list_all
 
 
     def getAttributes(self):

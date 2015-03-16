@@ -14,7 +14,7 @@ class Bag {
     //@ jfortes_attribute name = a, from_constructors = {Bag_0,Bag_1}, sequence = {1, 1}, line = 15;
     int[] a;
     
-    //@ jfortes_constructor name = Bag, id = Bag_1, sequence = 1, line = 18;     
+    //@ jfortes_constructor name = Bag, id = Bag_1, sequence = 0, line = 18;     
 	Bag(int[] input, String name) {
         System.out.println("In Bag: "+name);
 		n = input.length; a = new int[n];
@@ -22,7 +22,7 @@ class Bag {
 	}
 	
 
-	//@ jfortes_constructor name = Bag, id = Bag_0, sequence = 0, line = 26; 
+	//@ jfortes_constructor name = Bag, id = Bag_0, sequence = 1, line = 26; 
 	Bag(int[] input2) {
         System.out.println("In default Bag");
 		n = input.length; a = new int[n];

@@ -377,7 +377,9 @@ class ReadJavaFile(object):
                     annotation = annot_data.AnnotData(listOfCsvDataAnnot, self.listOfCsvDataInput)
 
                     print()
-                    annotation.print_annot()
+                    list_to_print = annotation.print_annot()
+                    for item in list_to_print:
+                        print(item)
                     #annotation.getConstructors()
                     #annotation.getAttributes()
 
