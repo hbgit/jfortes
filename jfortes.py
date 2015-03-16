@@ -96,8 +96,14 @@ class Jfortes(object):
         # Getting claims from the code without preprocessing
         path_escout_ori_code = self.run_esc_java(self.javaFilePath,"._before_pre_escout")
         # Generating csv from self.path_escout_ori_code
-        self.path_csvclaims_ori_code = self.gather_data_claims(path_escout_ori_code,"_before_pre_claims.csv")
 
+        #self.run_esc_java(self.javaFilePath,"._before_pre_escout")
+        #print("OKAY")
+        #sys.exit()
+
+        self.gather_data_claims(path_escout_ori_code,"_before_pre_claims.csv")
+
+        self.path_csvclaims_ori_code = self.gather_data_claims(path_escout_ori_code,"_before_pre_claims.csv")
 
         # Pre-processing the source code of the program
         pathprefilejava = self.javaFilePath.replace(".java","_pre.java")
@@ -146,8 +152,13 @@ class Jfortes(object):
         #os.system("escj -ClassPath "+self.javaClassPath+" -h")
         #sys.exit()
 
-        esc_result_status = commands.getoutput("escj -ClassPath "+self.javaClassPath+" "+_javafile+" &> "+outPathEscJava)
+        esc_result_status = commands.getoutput("escj -ClassPath "+self.javaClassPath+" "+_javafile)
 
+        fileresultesc = open(outPathEscJava, "w")
+        fileresultesc.write(esc_result_status)
+        fileresultesc.close()
+
+        print(fileresultesc)
         return outPathEscJava
 
 
