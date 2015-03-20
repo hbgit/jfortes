@@ -1,0 +1,36 @@
+ESC/Java version ESCJava-2.0.5
+/home/lbentes/Documentos/projeto_JFORTES_atual/jfortes/modules/annotations/test_cases/Bag.java:12: Error: Unrecognized pragma: "jfortes_attribute"
+    //@ jfortes_attribute name = n, from_constructors = {Bag_0,Bag_1}, ...
+        ^
+/home/lbentes/Documentos/projeto_JFORTES_atual/jfortes/modules/annotations/test_cases/Bag.java:14: Error: Unrecognized pragma: "jfortes_attribute"
+    //@ jfortes_attribute name = a, from_constructors = {Bag_0,Bag_1}, ...
+        ^
+/home/lbentes/Documentos/projeto_JFORTES_atual/jfortes/modules/annotations/test_cases/Bag.java:17: Error: Unrecognized pragma: "jfortes_constructor"
+    //@ jfortes_constructor name = Bag, id = Bag_1, sequence = 0, line ...
+        ^
+/home/lbentes/Documentos/projeto_JFORTES_atual/jfortes/modules/annotations/test_cases/Bag.java:25: Error: Unrecognized pragma: "jfortes_constructor"
+        //@ jfortes_constructor name = Bag, id = Bag_0, sequence = 1,  ...
+            ^
+/home/lbentes/Documentos/projeto_JFORTES_atual/jfortes/modules/annotations/test_cases/Bag.java:33: Error: Unrecognized pragma: "jfortes_method"
+        //@ jfortes_method name = extractMin, from_constructors = {Bag ...
+            ^
+/home/lbentes/Documentos/projeto_JFORTES_atual/jfortes/modules/annotations/test_cases/Bag.java:49: Error: Unrecognized pragma: "jfortes_method"
+    //@ jfortes_method name = printN, from_constructors = {Bag_0,Bag_1 ...
+        ^
+/home/lbentes/Documentos/projeto_JFORTES_atual/jfortes/modules/annotations/test_cases/Bag.java: Caution: Using given file as the .java file, even though it is not the java file for Bag on the classpath
+    [0.095 s 18915288 bytes]
+
+Bag ...
+/home/lbentes/Documentos/projeto_JFORTES_atual/jfortes/modules/annotations/test_cases/Bag.java:28: Error: Cannot resolve variable access 'input.length'
+                n = input.length; a = new int[n];
+                    ^
+/home/lbentes/Documentos/projeto_JFORTES_atual/jfortes/modules/annotations/test_cases/Bag.java:29: Error: Undefined variable 'input'
+                System.arraycopy(input, 0, a, 0, n);
+                                 ^
+/home/lbentes/Documentos/projeto_JFORTES_atual/jfortes/modules/annotations/test_cases/Bag.java:29: Error: No method arraycopy(error, int, int[], int, int) matching given argument types
+                System.arraycopy(input, 0, a, 0, n);
+                       ^
+Caution: Turning off extended static checking due to type error(s)
+  [0.522 s 32570032 bytes total] (aborted)
+2 cautions
+9 errors

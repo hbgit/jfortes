@@ -32,6 +32,7 @@ class ReadJavaFile(object):
     def __init__(self):
         self.file_actual_number_line  = 0
         self.listOfCsvDataInput = {}
+        self.contArray = 0
 
 
     def readFile(self, _javaPathFile):
@@ -378,10 +379,113 @@ class ReadJavaFile(object):
 
                     print()
                     list_to_print = annotation.print_annot()
-                    for item in list_to_print:
-                        print(item)
-                    #annotation.getConstructors()
-                    #annotation.getAttributes()
+
+                    id_Constr = 0
+                    last_const = ""
+                    code_all = []
+
+                    print("")
+                    print("public static void main(String[] args){")
+                    for count, item in enumerate(list_to_print):
+                        typeannot = item[0]
+                        name = item[1]
+                        args = item[2]['Args']
+                        types = item[2]['Type']
+                        arg_list = []
+
+                        if typeannot == "jfortes_constructor":
+                            id_Constr += 1
+                            obj_name = "runJFORTES" + str(id_Constr)
+
+                            last_const = obj_name
+
+                            code = "\t" + name + " " +obj_name + " = new " + name + " ("
+                            #no args
+                            if args[0] == "0NONE":
+                                arg = "();"
+                            else:
+                                for eachItem in types:
+                                    #array
+                                    if "[][]" in eachItem:
+                                        tmp = self.generateArray(2, eachItem)
+                                        array = "\t" + tmp[0]
+                                        code_all.append(array)
+                                        arg = tmp[1]
+                                        arg_list.append(arg)
+
+                                    elif "[]" in eachItem:
+                                        tmp = self.generateArray(1, eachItem)
+                                        array = "\t" + tmp[0]
+                                        code_all.append(array)
+                                        arg = tmp[1]
+                                        arg_list.append(arg)
+                                    else:
+                                        arg = (self.generateTypeCode(eachItem))
+                                        arg_list.append(arg)
+
+
+                                num_args = len(arg_list)
+                                for i in range(0, (num_args-1)):
+                                    code = code + arg_list[i] + ", "
+                                code = code + arg_list[num_args-1] + ");"
+
+                            code_all.append(code)
+
+                        elif typeannot == "jfortes_attribute":
+                            #runJFORTES.a = new int [Cute.input.Integer()];
+                            typeAttr = re.sub('[^A-Za-z]+', '', types[0])
+
+                            if "[][]" in types[0]:
+                                tmp = self.generateTypeCode(typeAttr)
+                                tmp = "new " + typeAttr + "[" + tmp + "]" + "[" + tmp + "]"
+                            elif "[]" in types[0]:
+                                tmp = self.generateTypeCode(typeAttr)
+                                tmp = "new " + typeAttr + "[" + tmp + "]"
+
+                            else:
+                                tmp = self.generateTypeCode(types[0])
+
+                            code = "\t" +last_const + "." + name + " = " + tmp + ";"
+                            code_all.append(code)
+
+                        else:
+                            #runJFORTES.extractMin();
+                            code = last_const + "." + name
+
+                            if args[0] == "0NONE":
+                                code = code + "();"
+
+                            else:
+                                for eachItem in types:
+                                    if "[][]" in eachItem:
+                                        tmp = self.generateArray(2, eachItem)
+                                        array = "\t" + tmp[0]
+                                        code_all.append(array)
+                                        arg = tmp[1]
+                                        arg_list.append(arg)
+
+                                    elif "[]" in eachItem:
+                                        tmp = self.generateArray(1, eachItem)
+                                        array = "\t" + tmp[0]
+                                        code_all.append(array)
+                                        arg = tmp[1]
+                                        arg_list.append(arg)
+                                    else:
+                                        arg = (self.generateTypeCode(eachItem))
+                                        arg_list.append(arg)
+
+
+                                num_args = len(arg_list)
+                                for i in range(0, (num_args-1)):
+                                    code = code + arg_list[i] + ", "
+                                code = "\t"+code + arg_list[num_args-1] + ");"
+
+                                code_all.append(code)
+
+                    for line_code in code_all:
+                        print(line_code)
+
+                    print("}")
 
                     sys.exit()
 
@@ -686,46 +790,59 @@ class ReadJavaFile(object):
         return list_result
 
 
-    def generateArrayInt(self, _dimension, type):
+    def generateTypeCode(self, type):
+        if type == "int":
+            return "Cute.input.Integer(\".\")"
+        elif type == "String":
+            return "Cute.input.String(\".\")"
+        elif type == "float":
+            return "Cute.input.Float(\".\")"
+        elif type == "Object":
+            return "Cute.input.Object(\".\")"
+
+    def generateArray(self, _dimension, type):
         """
         Generate an array for JCUTE model using the method Cute.input.*
 
         :param _dimension: the length of the array to be generated
         :return: the text of the code with the array generated
         """
+        self.contArray += 1
+        arrayname = "arrJFORTES" + str(self.contArray)
+
         codetxt = [] # new line, the var
-        if type == 'int':
+        if 'int' in type:
             # For 1
             if _dimension == 1:
-                codetxt.append('int[] arrJFORTES = new int [Cute.input.Integer()]; ')
-                codetxt.append('arrJFORTES')
+                codetxt.append('int[]' + arrayname + ' = new int [Cute.input.Integer()]; ')
+                codetxt.append(arrayname)
 
             #For 2
             if _dimension == 2:
-                codetxt.append('int[][] arrJFORTES = new int [Cute.input.Integer()][Cute.input.Integer()];')
-                codetxt.append('arrJFORTES')
+                codetxt.append('int[][] ' + arrayname + ' = new int [Cute.input.Integer()][Cute.input.Integer()];')
+                codetxt.append(arrayname)
 
-        if type == 'float':
+        if "float" in type:
             # For 1
             if _dimension == 1:
-                codetxt.append('int[] arrJFORTES = new float [Cute.input.Float()]; ')
-                codetxt.append('arrJFORTES')
+                codetxt.append('int[] ' + arrayname + ' = new float [Cute.input.Float()]; ')
+                codetxt.append(arrayname)
 
             #For 2
             if _dimension == 2:
-                codetxt.append('int[][] arrJFORTES = new float [Cute.input.Float()][Cute.input.Float()];')
-                codetxt.append('arrJFORTES')
+                codetxt.append('int[][] ' + arrayname + ' = new float [Cute.input.Float()][Cute.input.Float()];')
+                codetxt.append(arrayname)
 
-        if type == 'String':
+        if "String" in type:
             #For 1
             if _dimension == 1:
-                codetxt.append('int[] arrJFORTES = new String [Cute.input.String()];')
-                codetxt.append('arrJFORTES')
+                codetxt.append('int[] ' + arrayname + ' = new String [Cute.input.String()];')
+                codetxt.append(arrayname)
 
             #For 2
             if _dimension == 2:
-                codetxt.append('int[][] arrJFORTES = new String [Cute.input.String()][Cute.input.String()];')
-                codetxt.append('arrJFORTES')
+                codetxt.append('int[][] ' + arrayname + ' = new String [Cute.input.String()][Cute.input.String()];')
+                codetxt.append(arrayname)
 
         return codetxt
 
