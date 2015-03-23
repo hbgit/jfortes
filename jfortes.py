@@ -314,8 +314,8 @@ class Jfortes(object):
 
         :return: void, the method only remove the files
         """
-        for pathFile in self.list_tmp_files:
-            os.remove(pathFile)
+        # for pathFile in self.list_tmp_files:
+        #     os.remove(pathFile)
 
 
 

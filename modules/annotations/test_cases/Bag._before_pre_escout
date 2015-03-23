@@ -18,7 +18,7 @@ ESC/Java version ESCJava-2.0.5
     //@ jfortes_method name = printN, from_constructors = {Bag_0,Bag_1 ...
         ^
 /home/lbentes/Documentos/projeto_JFORTES_atual/jfortes/modules/annotations/test_cases/Bag.java: Caution: Using given file as the .java file, even though it is not the java file for Bag on the classpath
-    [0.095 s 18915288 bytes]
+    [0.099 s 18885640 bytes]
 
 Bag ...
 /home/lbentes/Documentos/projeto_JFORTES_atual/jfortes/modules/annotations/test_cases/Bag.java:28: Error: Cannot resolve variable access 'input.length'
@@ -31,6 +31,6 @@ Bag ...
                 System.arraycopy(input, 0, a, 0, n);
                        ^
 Caution: Turning off extended static checking due to type error(s)
-  [0.522 s 32570032 bytes total] (aborted)
+  [0.505 s 32388936 bytes total] (aborted)
 2 cautions
 9 errors
