@@ -1,5 +1,0 @@
-line_number?class_name?annotation
-4?testeOrdem?//@jfortes_getSequenceConstructor name = testeOrdem, args = (none), sequence = 1;
-14?testeOrdem?//@jfortes_getSequenceMethod name = resultado, args = (none), sequence = 4, sequencebyconstructor = 3;
-21?testeOrdem?//@jfortes_getSequenceMethod name = soma, args = (none), sequence = 2, sequencebyconstructor = 1;
-26?testeOrdem?//@jfortes_getSequenceMethod name = multiplicacao, args = (none), sequence = 2, sequencebyconstructor = 2;

@@ -1,4 +1,0 @@
-line_number?class_name?annotation
-14?Employee?//@jfortes_getSequenceMethod name = getName, args = (none), sequence = 2, sequencebyconstructor = 1;
-19?Employee?//@jfortes_getSequenceMethod name = getSalary, args = (none), sequence = 3, sequencebyconstructor = 2;
-24?Employee?//@jfortes_getSequenceMethod name = raiseSalary, args = (byPercent), sequence = 4, sequencebyconstructor = 3;

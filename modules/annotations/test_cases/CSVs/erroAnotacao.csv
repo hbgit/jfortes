@@ -1,7 +1,0 @@
-line_number?class_name?annotation
-6?erroAnotacao?//@jfortes_getSequenceConstructor name = Conta, args = (noe), sequence = 1;
-12?erroAnotacao?//@jfortes_getSequenceConstructor name = Bag, args = (novoNome, novoSaldo sequence = 2;
-30?erroAnotacao?//@jfortes_getSequenceMethod name = setSaldo, args = (none), sequence = 4, sequencebyconstructor = 3;
-36?erroAnotacao?//@jfortes_getSequenceMethod name = setSaldo, args = (novoSaldo), seqnce = 5, sequencebyconstructor = 4;
-42?erroAnotacao?//@jfortes_getSequenceMethod name = saca, args = (valor), sequence = 6, sequencebyconstructor = 5;
-48?erroAnotacao?//@jfortes_getSequenceMethod name = deposita, args = (valor), sequence = 7, sequencebyconstructor = 6;

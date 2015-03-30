@@ -1,4 +1,0 @@
-line_number?class_name?annotation
-6?Pessoa?//@jfortes_getSequenceConstructor name = Pessoa, args = (none), sequence = 1;
-14?Pessoa?//@jfortes_getSequenceConstructor name = Pessoa, args = (nome, idade), sequence = 2;
-20?Pessoa?//@jfortes_getSequenceConstructor name = Pessoa, args = (altura, peso), sequence = 3;

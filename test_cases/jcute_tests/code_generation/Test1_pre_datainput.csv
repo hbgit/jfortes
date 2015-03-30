@@ -1,8 +1,0 @@
-Line;Variable;From;Scope;Type
-5;a;attribute;class;int[]
-6;n;attribute;class;int
-10;input;method;Test1;int[]
-10;name;method;Test1;String
-19;input2;method;Test1;int[]
-28;0NONE;method;extractMin;0NONE
-44;0NONE;method;printN;0NONE

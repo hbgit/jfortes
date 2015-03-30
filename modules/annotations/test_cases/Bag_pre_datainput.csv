@@ -1,8 +1,0 @@
-Line;Variable;From;Scope;Type
-13;n;attribute;class;int
-15;a;attribute;class;int[]
-18;input;method;Bag;int[]
-18;name;method;Bag;String
-27;input2;method;Bag;int[]
-36;0NONE;method;extractMin;0NONE
-52;0NONE;method;printN;0NONE
