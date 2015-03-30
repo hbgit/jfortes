@@ -374,10 +374,8 @@ class ReadJavaFile(object):
                     #for item in listOfCsvDataAnnot:
                     #    print(item)
 
-
                     annotation = annot_data.AnnotData(listOfCsvDataAnnot, self.listOfCsvDataInput)
 
-                    print()
                     list_to_print = annotation.print_annot()
 
                     id_Constr = 0
@@ -390,7 +388,6 @@ class ReadJavaFile(object):
                         args = item[2]['Args']
                         types = item[2]['Type']
                         arg_list = []
-                        print (args)
 
                         if typeannot == "jfortes_constructor":
                             id_Constr += 1

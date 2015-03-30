@@ -1,0 +1,80 @@
+ESC/Java version ESCJava-2.0.5
+/home/lbentes/Documentos/projeto_JFORTES_atual/jfortes/modules/annotations/tests/Bag_pre.java:12: Error: Unrecognized pragma: "jfortes_attribute"
+   //@ jfortes_attribute name = n, from_constructors = {Bag_0,Bag_1},  ...
+       ^
+/home/lbentes/Documentos/projeto_JFORTES_atual/jfortes/modules/annotations/tests/Bag_pre.java:14: Error: Unrecognized pragma: "jfortes_attribute"
+   //@ jfortes_attribute name = a, from_constructors = {Bag_0,Bag_1},  ...
+       ^
+/home/lbentes/Documentos/projeto_JFORTES_atual/jfortes/modules/annotations/tests/Bag_pre.java:17: Error: Unrecognized pragma: "jfortes_constructor"
+   //@ jfortes_constructor name = Bag, id = Bag_1, sequence = 0, line  ...
+       ^
+/home/lbentes/Documentos/projeto_JFORTES_atual/jfortes/modules/annotations/tests/Bag_pre.java:27: Error: Unrecognized pragma: "jfortes_constructor"
+   //@ jfortes_constructor name = Bag, id = Bag_0, sequence = 1, line  ...
+       ^
+/home/lbentes/Documentos/projeto_JFORTES_atual/jfortes/modules/annotations/tests/Bag_pre.java:37: Error: Unrecognized pragma: "jfortes_method"
+   //@ jfortes_method name = extractMin, from_constructors = {Bag_0},  ...
+       ^
+/home/lbentes/Documentos/projeto_JFORTES_atual/jfortes/modules/annotations/tests/Bag_pre.java:58: Error: Unrecognized pragma: "jfortes_method"
+   //@ jfortes_method name = printN, from_constructors = {Bag_0,Bag_1} ...
+       ^
+/home/lbentes/Documentos/projeto_JFORTES_atual/jfortes/modules/annotations/tests/Bag_pre.java: Caution: Using given file as the .java file, even though it is not the java file for Bag_pre on the classpath
+    [0.103 s 18891112 bytes]
+
+Bag ...
+  Prover started:0.015 s 38081432 bytes
+    [1.228 s 38744936 bytes]
+
+Bag: Bag(int[], java.lang.String) ...
+------------------------------------------------------------------------
+/home/lbentes/Documentos/projeto_JFORTES_atual/jfortes/modules/annotations/tests/Bag_pre.java:21: Warning: Possible null dereference (Null)
+      n = input.length;
+               ^
+------------------------------------------------------------------------
+    [4.501 s 43278688 bytes]  failed
+
+Bag: Bag(int[]) ...
+------------------------------------------------------------------------
+/home/lbentes/Documentos/projeto_JFORTES_atual/jfortes/modules/annotations/tests/Bag_pre.java:31: Warning: Possible null dereference (Null)
+      n = input2.length;
+                ^
+------------------------------------------------------------------------
+    [2.032 s 65365512 bytes]  failed
+
+Bag: extractMin() ...
+------------------------------------------------------------------------
+/home/lbentes/Documentos/projeto_JFORTES_atual/jfortes/modules/annotations/tests/Bag_pre.java:46: Warning: Possible null dereference (Null)
+         if (a[i] < m)
+              ^
+Execution trace information:
+    Reached top of loop after 0 iterations in "/home/lbentes/Documentos/projeto_JFORTES_atual/jfortes/modules/annotations/tests/Bag_pre.java", line 44, col 6.
+
+------------------------------------------------------------------------
+/home/lbentes/Documentos/projeto_JFORTES_atual/jfortes/modules/annotations/tests/Bag_pre.java:46: Warning: Array index possibly too large (IndexTooBig)
+         if (a[i] < m)
+              ^
+Execution trace information:
+    Reached top of loop after 0 iterations in "/home/lbentes/Documentos/projeto_JFORTES_atual/jfortes/modules/annotations/tests/Bag_pre.java", line 44, col 6.
+
+------------------------------------------------------------------------
+/home/lbentes/Documentos/projeto_JFORTES_atual/jfortes/modules/annotations/tests/Bag_pre.java:53: Warning: Possible null dereference (Null)
+      a[mindex] = a[n];
+                   ^
+Execution trace information:
+    Reached top of loop after 0 iterations in "/home/lbentes/Documentos/projeto_JFORTES_atual/jfortes/modules/annotations/tests/Bag_pre.java", line 44, col 6.
+
+------------------------------------------------------------------------
+/home/lbentes/Documentos/projeto_JFORTES_atual/jfortes/modules/annotations/tests/Bag_pre.java:53: Warning: Possible negative array index (IndexNegative)
+      a[mindex] = a[n];
+                   ^
+Execution trace information:
+    Reached top of loop after 0 iterations in "/home/lbentes/Documentos/projeto_JFORTES_atual/jfortes/modules/annotations/tests/Bag_pre.java", line 44, col 6.
+
+------------------------------------------------------------------------
+    [0.159 s 68159984 bytes]  failed
+
+Bag: printN() ...
+    [0.068 s 34080304 bytes]  passed
+  [7.989 s 34080304 bytes total]
+1 caution
+6 warnings
+6 errors

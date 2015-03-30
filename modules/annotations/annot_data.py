@@ -30,7 +30,7 @@ class AnnotData(object):
             variablename = self.listOfInput['Variable'][index]
             linenumber = self.listOfInput['Line'][index]
 
-            #print("scope: "+ scope + " _scopename: " + _scopename +" _loc: "  + _loc + " linenumber: "+ linenumber)
+            #print("scope: "+ scope + " _scopename: " + _scopename + " linenumber: "+ linenumber)
             if scope == _scopename:
                 # if self.indexlist == None:
                 #     index = index_la
@@ -54,8 +54,6 @@ class AnnotData(object):
         dictInfo['Type'] = typelist
 
         self.indexlistC = index + 1
-        #print(dictInfo)
-
         return dictInfo
 
     def getdatadifromscopeMethod(self, _scopename):

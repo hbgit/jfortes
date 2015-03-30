@@ -158,7 +158,6 @@ class Jfortes(object):
         fileresultesc.write(esc_result_status)
         fileresultesc.close()
 
-        print(fileresultesc)
         return outPathEscJava
 
 
@@ -314,8 +313,9 @@ class Jfortes(object):
 
         :return: void, the method only remove the files
         """
-        # for pathFile in self.list_tmp_files:
-        #     os.remove(pathFile)
+        for pathFile in self.list_tmp_files:
+            if os.path.exists(pathFile):
+                os.remove(pathFile)
 
 
 
