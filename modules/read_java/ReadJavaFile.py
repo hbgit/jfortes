@@ -390,6 +390,7 @@ class ReadJavaFile(object):
                         args = item[2]['Args']
                         types = item[2]['Type']
                         arg_list = []
+                        print (args)
 
                         if typeannot == "jfortes_constructor":
                             id_Constr += 1

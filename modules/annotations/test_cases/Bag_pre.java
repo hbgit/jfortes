@@ -28,9 +28,9 @@ class Bag {
    Bag(int[] input2)
    {
       System.out.println("In default Bag");
-      n = input.length;
+      n = input2.length;
       a = new int[n];
-      System.arraycopy(input, 0, a, 0, n);
+      System.arraycopy(input2, 0, a, 0, n);
    }
 
 

@@ -20,6 +20,9 @@ class Bag {
    Bag(int[] input, String name)
    {
       System.out.println("In Bag: " + name);
+// IN ORIGINAL CODE AT LINE: < 21  > 
+// COMMENT:  Possible null dereference (Null)
+Cute.Assert(  input != null && input.length > 0 ); 
       n = input.length;
       a = new int[n];
       System.arraycopy(input, 0, a, 0, n);
@@ -30,9 +33,12 @@ class Bag {
    Bag(int[] input2)
    {
       System.out.println("In default Bag");
-      n = input.length;
+// IN ORIGINAL CODE AT LINE: < 31  > 
+// COMMENT:  Possible null dereference (Null)
+Cute.Assert(  input2 != null && input2.length > 0 ); 
+      n = input2.length;
       a = new int[n];
-      System.arraycopy(input, 0, a, 0, n);
+      System.arraycopy(input2, 0, a, 0, n);
    }
 
 
@@ -45,6 +51,12 @@ class Bag {
 
       for (int i = 1; i <= n; i++)
       {
+// IN ORIGINAL CODE AT LINE: < 46  > 
+// COMMENT:  Possible null dereference (Null)
+Cute.Assert(  a != null && a.length > 0 ); 
+// IN ORIGINAL CODE AT LINE: < 46  > 
+// COMMENT:  Array index possibly too large (IndexTooBig)
+Cute.Assert(  i < a.length ); 
          if (a[i] < m)
          {
             mindex = i;
@@ -52,6 +64,12 @@ class Bag {
          }
       }
       n--;
+// IN ORIGINAL CODE AT LINE: < 53  > 
+// COMMENT:  Possible null dereference (Null)
+Cute.Assert(  a != null && a.length > 0 ); 
+// IN ORIGINAL CODE AT LINE: < 53  > 
+// COMMENT:  Possible negative array index (IndexNegative)
+Cute.Assert(  n >= 0 ); 
       a[mindex] = a[n];
       return(m);
    }

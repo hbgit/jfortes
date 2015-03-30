@@ -10,7 +10,8 @@ class Bag {
 
 	//@jfortes_getSequenceConstructor name = Bag, args = (b), sequence = 1; 
 	Bag(int[] input) {
-		n = input.length; a = new int[n];
+		n = input.length;
+		a = new int[n];
 		System.arraycopy(input, 0, a, 0, n);
 	}
 

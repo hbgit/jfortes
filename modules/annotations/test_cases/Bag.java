@@ -17,7 +17,8 @@ class Bag {
     //@ jfortes_constructor name = Bag, id = Bag_1, sequence = 0, line = 18;     
 	Bag(int[] input, String name) {
         System.out.println("In Bag: "+name);
-		n = input.length; a = new int[n];
+		n = input.length;
+		a = new int[n];
 		System.arraycopy(input, 0, a, 0, n);
 	}
 	
@@ -25,8 +26,9 @@ class Bag {
 	//@ jfortes_constructor name = Bag, id = Bag_0, sequence = 1, line = 26; 
 	Bag(int[] input2) {
         System.out.println("In default Bag");
-		n = input.length; a = new int[n];
-		System.arraycopy(input, 0, a, 0, n);
+		n = input2.length;
+		a = new int[n];
+		System.arraycopy(input2, 0, a, 0, n);
 	}    
     
 

@@ -1,0 +1,77 @@
+ESC/Java version ESCJava-2.0.5
+/home/lbentes/Dropbox/JFORTES_SAM_DOCs/Results/Sprint_15/testes_jcute/Test1_pre.java:9: Error: Unrecognized pragma: "jfortes_constructor"
+   //@ jfortes_constructor name = Test1, id = Test1_0, sequence = 0, l ...
+       ^
+/home/lbentes/Dropbox/JFORTES_SAM_DOCs/Results/Sprint_15/testes_jcute/Test1_pre.java:19: Error: Unrecognized pragma: "jfortes_constructor"
+   //@ jfortes_constructor name = Test1, id = Test1_1, sequence = 1, l ...
+       ^
+/home/lbentes/Dropbox/JFORTES_SAM_DOCs/Results/Sprint_15/testes_jcute/Test1_pre.java:29: Error: Unrecognized pragma: "jfortes_method"
+   //@ jfortes_method name = extractMin, from_constructors = {Test1_0} ...
+       ^
+/home/lbentes/Dropbox/JFORTES_SAM_DOCs/Results/Sprint_15/testes_jcute/Test1_pre.java:50: Error: Unrecognized pragma: "jfortes_method"
+   //@ jfortes_method name = printN, from_constructors = {Test1_0,Test ...
+       ^
+/home/lbentes/Dropbox/JFORTES_SAM_DOCs/Results/Sprint_15/testes_jcute/Test1_pre.java: Caution: Using given file as the .java file, even though it is not the java file for Test1 on the classpath
+    [0.09 s 18890504 bytes]
+
+Test1 ...
+/home/lbentes/Dropbox/JFORTES_SAM_DOCs/Results/Sprint_15/testes_jcute/Test1_pre.java:4: Caution: type Test1 must be declared in a file named Test1.java if it is to be declared public.
+public class Test1 {
+             ^
+  Prover started:0.014 s 37600736 bytes
+    [1.44 s 38264232 bytes]
+
+Test1: Test1(int[], java.lang.String) ...
+------------------------------------------------------------------------
+/home/lbentes/Dropbox/JFORTES_SAM_DOCs/Results/Sprint_15/testes_jcute/Test1_pre.java:13: Warning: Possible null dereference (Null)
+      n = input.length;
+               ^
+------------------------------------------------------------------------
+    [4.743 s 42714328 bytes]  failed
+
+Test1: Test1(int[]) ...
+------------------------------------------------------------------------
+/home/lbentes/Dropbox/JFORTES_SAM_DOCs/Results/Sprint_15/testes_jcute/Test1_pre.java:23: Warning: Possible null dereference (Null)
+      n = input2.length;
+                ^
+------------------------------------------------------------------------
+    [1.532 s 64639528 bytes]  failed
+
+Test1: extractMin() ...
+------------------------------------------------------------------------
+/home/lbentes/Dropbox/JFORTES_SAM_DOCs/Results/Sprint_15/testes_jcute/Test1_pre.java:38: Warning: Possible null dereference (Null)
+         if (a[i] < m)
+              ^
+Execution trace information:
+    Reached top of loop after 0 iterations in "/home/lbentes/Dropbox/JFORTES_SAM_DOCs/Results/Sprint_15/testes_jcute/Test1_pre.java", line 36, col 6.
+
+------------------------------------------------------------------------
+/home/lbentes/Dropbox/JFORTES_SAM_DOCs/Results/Sprint_15/testes_jcute/Test1_pre.java:38: Warning: Array index possibly too large (IndexTooBig)
+         if (a[i] < m)
+              ^
+Execution trace information:
+    Reached top of loop after 0 iterations in "/home/lbentes/Dropbox/JFORTES_SAM_DOCs/Results/Sprint_15/testes_jcute/Test1_pre.java", line 36, col 6.
+
+------------------------------------------------------------------------
+/home/lbentes/Dropbox/JFORTES_SAM_DOCs/Results/Sprint_15/testes_jcute/Test1_pre.java:45: Warning: Possible null dereference (Null)
+      a[mindex] = a[n];
+                   ^
+Execution trace information:
+    Reached top of loop after 0 iterations in "/home/lbentes/Dropbox/JFORTES_SAM_DOCs/Results/Sprint_15/testes_jcute/Test1_pre.java", line 36, col 6.
+
+------------------------------------------------------------------------
+/home/lbentes/Dropbox/JFORTES_SAM_DOCs/Results/Sprint_15/testes_jcute/Test1_pre.java:45: Warning: Possible negative array index (IndexNegative)
+      a[mindex] = a[n];
+                   ^
+Execution trace information:
+    Reached top of loop after 0 iterations in "/home/lbentes/Dropbox/JFORTES_SAM_DOCs/Results/Sprint_15/testes_jcute/Test1_pre.java", line 36, col 6.
+
+------------------------------------------------------------------------
+    [0.079 s 67857504 bytes]  failed
+
+Test1: printN() ...
+    [0.115 s 32830216 bytes]  passed
+  [7.909 s 32830216 bytes total]
+2 cautions
+6 warnings
+4 errors

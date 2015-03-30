@@ -1,1 +1,7 @@
 Number_of_line;Ori_claim;New_claim;Comment
+21 ; n = input.length ; input != null && input.length > 0 ; Possible null dereference (Null)
+31 ; n = input2.length ; input2 != null && input2.length > 0 ; Possible null dereference (Null)
+46 ; if (a[i] < m) ; a != null && a.length > 0 ; Possible null dereference (Null)
+46 ; if (a[i] < m) ; i < a.length ; Array index possibly too large (IndexTooBig)
+53 ; a[mindex] = a[n] ; a != null && a.length > 0 ; Possible null dereference (Null)
+53 ; a[mindex] = a[n] ; n >= 0 ; Possible negative array index (IndexNegative)
