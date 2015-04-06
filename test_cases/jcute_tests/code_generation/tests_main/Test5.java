@@ -35,7 +35,7 @@ public class Test5 {
          {
 // IN ORIGINAL CODE AT LINE: < 25  >
 // COMMENT:  Possible null dereference (Null)
-//            Cute.Assert(gerador != null && gerador.length > 0);
+            Cute.Assert(gerador != null && gerador.length > 0);
             array2d[lin][col] = gerador.nextInt(100);
          }
       }
@@ -52,4 +52,3 @@ public class Test5 {
       runJFORTES1.preencheMat();
    }
 }
-

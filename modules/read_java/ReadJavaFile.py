@@ -378,11 +378,6 @@ class ReadJavaFile(object):
 
                     list_to_print = annotation.print_annot()
 
-                    print("#####list_to_print ", list_to_print)
-                    print("#####list_annot ", listOfCsvDataAnnot)
-                    print("#####list_input ", self.listOfCsvDataInput)
-
-
                     id_Constr = 0
                     last_const = ""
                     code_all = []

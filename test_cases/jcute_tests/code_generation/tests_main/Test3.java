@@ -59,7 +59,7 @@ public class Test3 {
 
       runJFORTES1.array = new int[Cute.input.Integer()];
       int[] arrJFORTES1 = new int [Cute.input.Integer()];
-      Test3 runJFORTES2 = new Test3(arrJFORTES1, Cute.input.String());
+      Test3 runJFORTES2 = new Test3(arrJFORTES1, Cute.input.Object("."));
 
       runJFORTES2.attr2 = Cute.input.Integer();
       runJFORTES2.array = new int[Cute.input.Integer()];

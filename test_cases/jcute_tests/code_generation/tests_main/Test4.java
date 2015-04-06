@@ -33,7 +33,7 @@ public class Test4 {
          {
 // IN ORIGINAL CODE AT LINE: < 23  >
 // COMMENT:  Possible null dereference (Null)
-//            Cute.Assert(gerador != null && gerador.length > 0);
+            Cute.Assert(gerador != null && gerador.length > 0);
             array2d[lin][col] = gerador.nextInt(100);
          }
       }
@@ -63,23 +63,3 @@ public class Test4 {
       runJFORTES1.printMat();
    }
 }
-
-//@The following comments are auto-generated to save options for testing the current file
-//@jcute.optionLogPath=true
-//@jcute.optionLogTraceAndInput=true
-//@jcute.optionGenerateJUnit=true
-//@jcute.optionExtraOptions=
-//@jcute.optionJUnitOutputFolderName=/home/glarissa/jCute/jcute
-//@jcute.optionJUnitPkgName=
-//@jcute.optionNumberOfPaths=10000
-//@jcute.optionLogLevel=3
-//@jcute.optionDepthForDFS=0
-//@jcute.optionSearchStrategy=0
-//@jcute.optionSequential=true
-//@jcute.optionQuickSearchThreshold=100
-//@jcute.optionLogRace=true
-//@jcute.optionLogDeadlock=true
-//@jcute.optionLogException=true
-//@jcute.optionLogAssertion=true
-//@jcute.optionUseRandomInputs=false
-//@jcute.optionPrintOutput=true

@@ -57,4 +57,3 @@ public class Test2 {
       runJFORTES2.printAttr2();
    }
 }
-

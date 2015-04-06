@@ -77,7 +77,7 @@ public class Test {
    public static void main(String[] args)
    {
       int[] arrJFORTES1 = new int [Cute.input.Integer()];
-      Test runJFORTES1 = new Test(arrJFORTES1, Cute.input.String());
+      Test runJFORTES1 = new Test(arrJFORTES1, Cute.input.Object("."));
 
       runJFORTES1.extractMin();
       runJFORTES1.printN();
