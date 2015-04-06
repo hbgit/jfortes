@@ -795,11 +795,11 @@ class ReadJavaFile(object):
         if type == "int":
             return "Cute.input.Integer()"
         elif type == "String":
-            return "Cute.input.String()"
+            return "Cute.input.Object(\".\")"
         elif type == "float":
             return "Cute.input.Float()"
         elif type == "Object":
-            return "Cute.input.Object()"
+            return "Cute.input.Object(\".\")"
 
     def generateArray(self, _dimension, type):
         """
