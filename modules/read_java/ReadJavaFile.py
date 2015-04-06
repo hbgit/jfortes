@@ -378,6 +378,11 @@ class ReadJavaFile(object):
 
                     list_to_print = annotation.print_annot()
 
+                    print("#####list_to_print ", list_to_print)
+                    print("#####list_annot ", listOfCsvDataAnnot)
+                    print("#####list_input ", self.listOfCsvDataInput)
+
+
                     id_Constr = 0
                     last_const = ""
                     code_all = []
@@ -398,7 +403,8 @@ class ReadJavaFile(object):
                             code = "\t" + name + " " +obj_name + " = new " + name + " ("
                             #no args
                             if args[0] == "0NONE":
-                                arg = "();"
+                                arg = ");"
+                                code = code + arg
                             else:
                                 for eachItem in types:
                                     #array
@@ -432,10 +438,10 @@ class ReadJavaFile(object):
                             typeAttr = re.sub('[^A-Za-z]+', '', types[0])
 
                             if "[][]" in types[0]:
-                                tmp = self.generateTypeCode(typeAttr)
+                                tmp = self.generateTypeCode("int")
                                 tmp = "new " + typeAttr + "[" + tmp + "]" + "[" + tmp + "]"
                             elif "[]" in types[0]:
-                                tmp = self.generateTypeCode(typeAttr)
+                                tmp = self.generateTypeCode("int")
                                 tmp = "new " + typeAttr + "[" + tmp + "]"
 
                             else:
@@ -446,10 +452,10 @@ class ReadJavaFile(object):
 
                         else:
                             #runJFORTES.extractMin();
-                            code = last_const + "." + name
+                            code = last_const + "." + name + " ("
 
                             if args[0] == "0NONE":
-                                code = code + "();"
+                                code = code + ");"
 
 
                             else:
@@ -787,13 +793,13 @@ class ReadJavaFile(object):
 
     def generateTypeCode(self, type):
         if type == "int":
-            return "Cute.input.Integer(\".\")"
+            return "Cute.input.Integer()"
         elif type == "String":
-            return "Cute.input.String(\".\")"
+            return "Cute.input.String()"
         elif type == "float":
-            return "Cute.input.Float(\".\")"
+            return "Cute.input.Float()"
         elif type == "Object":
-            return "Cute.input.Object(\".\")"
+            return "Cute.input.Object()"
 
     def generateArray(self, _dimension, type):
         """
@@ -820,23 +826,23 @@ class ReadJavaFile(object):
         if "float" in type:
             # For 1
             if _dimension == 1:
-                codetxt.append('int[] ' + arrayname + ' = new float [Cute.input.Float()]; ')
+                codetxt.append('float[] ' + arrayname + ' = new float [Cute.input.Integer()]; ')
                 codetxt.append(arrayname)
 
             #For 2
             if _dimension == 2:
-                codetxt.append('int[][] ' + arrayname + ' = new float [Cute.input.Float()][Cute.input.Float()];')
+                codetxt.append('float[][] ' + arrayname + ' = new float [Cute.input.Integer()][Cute.input.Integer()];')
                 codetxt.append(arrayname)
 
         if "String" in type:
             #For 1
             if _dimension == 1:
-                codetxt.append('int[] ' + arrayname + ' = new String [Cute.input.String()];')
+                codetxt.append('String[] ' + arrayname + ' = new String [Cute.input.Integer()];')
                 codetxt.append(arrayname)
 
             #For 2
             if _dimension == 2:
-                codetxt.append('int[][] ' + arrayname + ' = new String [Cute.input.String()][Cute.input.String()];')
+                codetxt.append('String[][] ' + arrayname + ' = new String [Cute.input.Integer()][Cute.input.Integer()];')
                 codetxt.append(arrayname)
 
         return codetxt

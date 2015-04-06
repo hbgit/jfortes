@@ -162,7 +162,7 @@ def main_grammar(_annot_list):
 
             for key, value in parsed_annot.items():
                 if type(value) is ParseResults:
-                    txt = ' '.join(value)
+                    txt = ''.join(value)
                 else:
                     txt = value
 
