@@ -789,8 +789,8 @@ class ReadJavaFile(object):
     def generateTypeCode(self, type):
         if type == "int":
             return "Cute.input.Integer()"
-        elif type == "String":
-            return "Cute.input.Object(\".\")"
+        elif type == "boolean":
+            return "Cute.input.Boolean()"
         elif type == "float":
             return "Cute.input.Float()"
         elif type == "Object":

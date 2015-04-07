@@ -7,7 +7,7 @@ public class Test {
     
     
     //@ jfortes_constructor name = Test, id = Test_0, sequence = {0}, line = 18;     
-	Test (int[] input, String name) {
+	Test (int[] input, boolean name) {
         System.out.println("In Test: "+name);
 		n = input.length;
 		a = new int[n];

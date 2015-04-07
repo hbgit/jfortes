@@ -9,7 +9,7 @@ public class Test {
 
 
    //@ jfortes_constructor name = Test, id = Test_0, sequence = {0}, line = 18;
-   Test(int[] input, String name)
+   Test(int[] input, boolean name)
    {
       System.out.println("In Test: " + name);
 // IN ORIGINAL CODE AT LINE: < 13  >
@@ -77,7 +77,7 @@ public class Test {
    public static void main(String[] args)
    {
       int[] arrJFORTES1 = new int [Cute.input.Integer()];
-      Test runJFORTES1 = new Test(arrJFORTES1, Cute.input.Object("."));
+      Test runJFORTES1 = new Test(arrJFORTES1, Cute.input.Boolean());
 
       runJFORTES1.extractMin();
       runJFORTES1.printN();
