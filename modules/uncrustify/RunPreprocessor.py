@@ -58,7 +58,12 @@ class CodeBeautify(object):
         if _mode:
             cmdRun = self.path_tool+" "+self.option_to_run_tool+" -c "+self.setFileConf+" -f "+pathJavaProgram
             #print(cmdRun)
-            commands.getoutput(cmdRun+" &> "+_pathfiletosave)
+            #commands.getoutput(cmdRun+" &> "+_pathfiletosave) # BUG
+            result = commands.getoutput(cmdRun) # BUG
+            fileoutputbeatify = file(_pathfiletosave, "w")
+            fileoutputbeatify.write(result)
+            fileoutputbeatify.close()
+
         else:
             cmdRun = self.path_tool+" "+self.option_to_run_tool+" -c "+self.setFileConf+" -f "+pathJavaProgram
             os.system(cmdRun)
