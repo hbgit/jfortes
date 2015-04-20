@@ -874,7 +874,7 @@ class ReadJavaFile(object):
         # Gettting the name of the functions
         get_start_data_method = commands.getoutput("ctags --sort=NO -x --c-kinds=f "+_javaPathFile).split("\n")
         for line in get_start_data_method:
-            print(line)
+            #print(line)
             matchDataMethod = re.search(r'([a-zA-Z0-9\_\(\)\[\]]*)[ ]*([a-zA-Z0-9]*)[ ]*([0-9]*)', line)
             if matchDataMethod:
                 if matchDataMethod.group(2) == "method":
