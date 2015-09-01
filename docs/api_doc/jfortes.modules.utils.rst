@@ -4,7 +4,7 @@ utils Package
 :mod:`utils` Package
 --------------------
 
-.. automodule:: modules.utils
+.. automodule:: jfortes.modules.utils
     :members:
     :undoc-members:
     :show-inheritance:
@@ -12,7 +12,7 @@ utils Package
 :mod:`ReaderCsvOutput` Module
 -----------------------------
 
-.. automodule:: modules.utils.ReaderCsvOutput
+.. automodule:: jfortes.modules.utils.ReaderCsvOutput
     :members:
     :undoc-members:
     :show-inheritance:

@@ -4,7 +4,7 @@ uncrustify Package
 :mod:`uncrustify` Package
 -------------------------
 
-.. automodule:: modules.uncrustify
+.. automodule:: jfortes.modules.uncrustify
     :members:
     :undoc-members:
     :show-inheritance:
@@ -12,7 +12,7 @@ uncrustify Package
 :mod:`RunPreprocessor` Module
 -----------------------------
 
-.. automodule:: modules.uncrustify.RunPreprocessor
+.. automodule:: jfortes.modules.uncrustify.RunPreprocessor
     :members:
     :undoc-members:
     :show-inheritance:

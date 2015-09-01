@@ -4,7 +4,7 @@ read_java Package
 :mod:`read_java` Package
 ------------------------
 
-.. automodule:: modules.read_java
+.. automodule:: jfortes.modules.read_java
     :members:
     :undoc-members:
     :show-inheritance:
@@ -12,7 +12,7 @@ read_java Package
 :mod:`ReadJavaFile` Module
 --------------------------
 
-.. automodule:: modules.read_java.ReadJavaFile
+.. automodule:: jfortes.modules.read_java.ReadJavaFile
     :members:
     :undoc-members:
     :show-inheritance:

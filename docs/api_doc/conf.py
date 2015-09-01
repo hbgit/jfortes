@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # jfortes documentation build configuration file, created by
-# sphinx-quickstart on Wed Jan 28 13:13:35 2015.
+# sphinx-quickstart on Mon Jul 27 09:25:43 2015.
 #
 # This file is execfile()d with the current directory set to its containing dir.
 #
