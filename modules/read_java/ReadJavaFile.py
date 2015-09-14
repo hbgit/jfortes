@@ -352,7 +352,7 @@ class ReadJavaFile(object):
 
                     if len(list_annots) == 1:
                         # Stop the generic main generation
-                        list_program_asserts.append("}")
+                        #list_program_asserts.append("}")
                         return list_program_asserts
 
                     result_parse_annot = annot_grammar.main_grammar(list_annots)
