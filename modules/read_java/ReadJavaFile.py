@@ -794,7 +794,7 @@ class ReadJavaFile(object):
         elif type == "float":
             return "Cute.input.Float()"
         elif type == "Object":
-            return "Cute.input.Object(\".\")"
+            return "Cute.input.Integer()"
 
     def generateArray(self, _dimension, type):
         """
