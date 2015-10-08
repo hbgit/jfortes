@@ -600,8 +600,8 @@ class IsolateDataClaim(object):
             #                     self.test_num_total_incomplete_trans_cl += 1
 
 
-        elif tagComm == 'Exception':
-            self.claim_translated = "@Test(expected = RuntimeException.class)"
+        #elif tagComm == 'Exception':
+         #   self.claim_translated = "@Test(expected = RuntimeException.class)"
             
 
 

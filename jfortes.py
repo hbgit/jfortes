@@ -152,7 +152,7 @@ class Jfortes(object):
         #os.system("escj -ClassPath "+self.javaClassPath+" -h")
         #sys.exit()
 
-        esc_result_status = commands.getoutput("escj -ClassPath "+self.javaClassPath+" "+_javafile)
+        esc_result_status = commands.getoutput("escj -ClassPath "+self.javaClassPath+" -source 1.4 "+_javafile)
         # print(esc_result_status)
         # sys.exit()
         fileresultesc = open(outPathEscJava, "w")
