@@ -62,7 +62,7 @@ class AnnotData(object):
         typelist = []
         index = 0
         tamanho = len(self.listOfInput['Scope'])
-        #print("=======")
+
 
         while index < (tamanho):
             scope = self.listOfInput['Scope'][index]
@@ -80,12 +80,18 @@ class AnnotData(object):
                 arglist.append(variablename)
                 typelist.append(self.listOfInput['Type'][index])
 
-
-                if (index < tamanho -1):
-                    while (self.listOfInput['Line'][index+1]) == (self.listOfInput['Line'][index]):
-                        index += 1
+                for index in range(index, tamanho-1):
+                    if(self.listOfInput['Line'][index+1] != self.listOfInput['Line'][index]):
+                        break;
+                    else:
                         arglist.append(self.listOfInput['Variable'][index])
                         typelist.append(self.listOfInput['Type'][index])
+
+                #if (index < (tamanho-1)):
+                 #   while (self.listOfInput['Line'][index+1]) == (self.listOfInput['Line'][index]):
+                  #      index += 1
+                   #     arglist.append(self.listOfInput['Variable'][index])
+                    #    typelist.append(self.listOfInput['Type'][index])
             # Cuz we just want the actual element from this index, i.e., from the actual scope
                 break
             index +=1
@@ -143,6 +149,8 @@ class AnnotData(object):
     def print_annot(self):
         list_all = []
 
+        print(self.listOfAnnot)
+        print(self.listOfInput)
         for index_la, item in enumerate (self.listOfAnnot['annot_name']):
             lista = []
             dict_listofargs = []

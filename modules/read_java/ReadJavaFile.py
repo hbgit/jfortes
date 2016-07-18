@@ -337,7 +337,8 @@ class ReadJavaFile(object):
                 if numToCompare == index:
                     list_program_asserts.append("// IN ORIGINAL CODE AT LINE: < "+str(listOfCsvFirstClColummns['Number_of_line'][i])+" > ")
                     list_program_asserts.append("// COMMENT: "+str(listOfCsvFirstClColummns['Comment'][i]))
-                    list_program_asserts.append("Cute.Assert( " + str(listOfCsvNewClColummns['New_claim'][i]) + "); ")
+                    #list_program_asserts.append("Cute.Assert( " + str(listOfCsvNewClColummns['New_claim'][i]) + "); ")
+                    list_program_asserts.append("Cute.Assert(true);")
 
 
             if lenoffile == (index+1):
@@ -352,7 +353,7 @@ class ReadJavaFile(object):
 
                     if len(list_annots) == 1:
                         # Stop the generic main generation
-                        #list_program_asserts.append("}")
+                        list_program_asserts.append("}")
                         return list_program_asserts
 
                     result_parse_annot = annot_grammar.main_grammar(list_annots)
@@ -377,7 +378,6 @@ class ReadJavaFile(object):
                     annotation = annot_data.AnnotData(listOfCsvDataAnnot, self.listOfCsvDataInput)
 
                     list_to_print = annotation.print_annot()
-
                     id_Constr = 0
                     last_const = ""
                     code_all = []
@@ -390,6 +390,7 @@ class ReadJavaFile(object):
                         arg_list = []
 
                         if typeannot == "jfortes_constructor":
+                            print("oi")
                             id_Constr += 1
                             obj_name = "runJFORTES" + str(id_Constr)
 
@@ -397,7 +398,10 @@ class ReadJavaFile(object):
 
                             code = "\t" + name + " " +obj_name + " = new " + name + " ("
                             #no args
-                            if args[0] == "0NONE":
+                            if (len(args)==0):
+                                arg = ");"
+                                code = code + arg
+                            elif args[0] == "0NONE":
                                 arg = ");"
                                 code = code + arg
                             else:
@@ -421,10 +425,13 @@ class ReadJavaFile(object):
                                         arg_list.append(arg)
 
 
+
                                 num_args = len(arg_list)
+
                                 for i in range(0, (num_args-1)):
                                     code = code + arg_list[i] + ", "
                                 code = code + arg_list[num_args-1] + ");"
+
 
                             list_program_asserts.append(code)
 
@@ -795,6 +802,8 @@ class ReadJavaFile(object):
             return "Cute.input.Float()"
         elif type == "Object":
             return "Cute.input.Integer()"
+        elif type == "String":
+            return "new String(\"JFORTES\")";
 
     def generateArray(self, _dimension, type):
         """
